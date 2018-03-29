@@ -48,7 +48,6 @@ public class FirstController {
                 file_ture_name = file_ture_name.concat(".gif");
             } else {file_ture_name = file_ture_name.concat(".jpg");}
              /*保存文件*/
-
             pic.transferTo(new File(uploadPath+File.separator+file_ture_name));
             String url= request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/upload"+"/pic/"+file_ture_name;
             logger.info(url);
