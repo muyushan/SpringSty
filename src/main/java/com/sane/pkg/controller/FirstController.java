@@ -17,7 +17,7 @@ import java.io.IOException;
 @Controller
 public class FirstController {
     private Logger logger = Logger.getLogger(FirstController.class);
-    @RequestMapping("/main")
+    @RequestMapping("/main") 
     public  String main(@RequestPart("pic")MultipartFile pic, String uname, HttpServletRequest request){
         try {
 
