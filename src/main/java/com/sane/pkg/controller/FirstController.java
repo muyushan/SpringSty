@@ -28,7 +28,6 @@ public class FirstController {
     @RequestMapping("/main")
     public  String main(@RequestPart("pic")MultipartFile pic, String uname, HttpServletRequest request){
         try {
-
             String uploadPath=ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("upload"+File.separator+"pic");
             File filePath=new File(uploadPath);
             if(!filePath.exists()){
@@ -57,4 +56,5 @@ public class FirstController {
         }
         return "main";
     }
+
 }

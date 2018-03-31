@@ -1,5 +1,6 @@
 package com.sane.pkg.controller;
 
+import com.sane.pkg.exception.ItemDuplicateException;
 import com.sane.pkg.exception.ItemNotFoundException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.stereotype.Controller;
@@ -31,11 +32,19 @@ public class RedirectController {
         model.addAttribute("item",id);
         return "itemView";
     }
+    @RequestMapping("add")
+    public  String addItem(){
+        if(true){
+            throw new ItemDuplicateException();
+        }
 
-    @ExceptionHandler(ItemNotFoundException.class)
-    public  String handlerNotFoundItemException(){
-        return "error/itemlost";
+        return "itemView";
     }
+
+//    @ExceptionHandler(ItemNotFoundException.class)
+//    public  String handlerNotFoundItemException(){
+//        return "error/itemlost";
+//    }
 
 
 }
