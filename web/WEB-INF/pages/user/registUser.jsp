@@ -17,6 +17,6 @@
     确认密码：<input type="password" name="confirmPassword"/><br/>
     <input type="submit" value="注册">
 
-</form>>
+</form>
 </body>
 </html>
