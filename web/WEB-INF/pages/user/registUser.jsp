@@ -11,7 +11,7 @@
     <title>注册</title>
 </head>
 <body>
-<form action="/user/regist.do">
+<form action="regist.do" method="post">
     用户名：<input name="emailPhone" type="text"/><br/>
     密码：<input type="password" name="password"/><br/>
     确认密码：<input type="password" name="confirmPassword"/><br/>

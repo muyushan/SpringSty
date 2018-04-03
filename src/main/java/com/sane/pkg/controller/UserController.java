@@ -17,11 +17,13 @@ public class UserController {
     }
     @RequestMapping("/regist")
     public String registUser(User user){
-       int result= userService.addUser(user);
+       int result=userService.addUser(user);
        if(result==1){
            return "user/success";
        }else{
            return "user/faile";
        }
+
+
     }
 }
