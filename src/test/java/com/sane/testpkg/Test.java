@@ -29,7 +29,7 @@ public class Test {
     public  void test2(){
         LocalPersistenceService persistenceService=new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File("/Users/lixiuli/Documents/cache")));
 
-        CacheManager cacheManager= CacheManagerBuilder.newCacheManagerBuilder().withCache("preConfigured", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class,String.class, ResourcePoolsBuilder.(10))).build();
+//        CacheManager cacheManager= CacheManagerBuilder.newCacheManagerBuilder().withCache("preConfigured", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class,String.class, ResourcePoolsBuilder.(10))).build();
 
     }
 }
