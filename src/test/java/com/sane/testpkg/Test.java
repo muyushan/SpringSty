@@ -1,35 +1,53 @@
 package com.sane.testpkg;
 
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
-import org.ehcache.config.builders.CacheConfigurationBuilder;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.core.spi.service.LocalPersistenceService;
-import org.ehcache.impl.config.persistence.DefaultPersistenceConfiguration;
-import org.ehcache.impl.persistence.DefaultLocalPersistenceService;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Test {
     @org.junit.Test
     public  void test1(){
-        CacheManager cacheManager= CacheManagerBuilder.newCacheManagerBuilder().withCache("preConfigured", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class,String.class, ResourcePoolsBuilder.heap(10))).build();
-        cacheManager.init();
-        Cache preConfigured=cacheManager.getCache("preConfigured",Long.class,String.class);
-        preConfigured.put(1L,"SANE");
-        preConfigured.put(1L,"SANE MU");
-        System.out.println(preConfigured.get(1L));
-        System.out.println(preConfigured.containsKey(1L));
-        System.out.println(preConfigured.get(2L));
+      CacheManager cacheManager=CacheManager.create();
+
+        Cache cache=new Cache("testCache", 5000, false, false, 5, 2);
+
+
+
+        Element element=new Element("key1","value1");
+        cache.put(element);
+        cacheManager.addCache(cache);
+      System.out.println(cacheManager.getCacheNames().length);
+
 
 
     }
-
+@org.junit.Test
     public  void test2(){
-        LocalPersistenceService persistenceService=new DefaultLocalPersistenceService(new DefaultPersistenceConfiguration(new File("/Users/lixiuli/Documents/cache")));
 
-        CacheManager cacheManager= CacheManagerBuilder.newCacheManagerBuilder().withCache("preConfigured", CacheConfigurationBuilder.newCacheConfigurationBuilder(Long.class,String.class, ResourcePoolsBuilder.(10))).build();
+    try {
+       File file= ResourceUtils.getFile("classpath:config/ehcache.xml");
+        CacheManager cacheManager=CacheManager.create(file.getAbsolutePath());
+        Cache sampleCache1=cacheManager.getCache("sampleCache1");
+        for(int i=0;i<15;i++){
+            Element element=new Element("key"+i,"value"+i);
+            sampleCache1.put(element);
+        }
+        System.out.println(cacheManager.getName());
+        for(String str:cacheManager.getCacheNames()){
+
+            System.out.println(str);
+        }
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+
 
     }
 }

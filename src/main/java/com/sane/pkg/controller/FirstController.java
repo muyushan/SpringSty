@@ -56,5 +56,9 @@ public class FirstController {
         }
         return "main";
     }
+    @RequestMapping("bly")
+    public  void playerPage(){
+
+    }
 
 }
