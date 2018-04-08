@@ -10,8 +10,12 @@
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 ">
     <mvc:annotation-driven />
-    <context:component-scan base-package="com.sane.pkg.controller" >
-    </context:component-scan>
+    <mvc:resources location="/static/js/" mapping="/js/**"></mvc:resources>
+    <mvc:resources location="/static/css/" mapping="/css/**"></mvc:resources>
+    <mvc:resources location="/static/images/" mapping="/img/**"></mvc:resources>
+    <!--<mvc:resources location="/moves/" mapping="/moves/**"></mvc:resources>-->
+    <mvc:resources location="/ckplayer/" mapping="/ckplayer/**"></mvc:resources>
+    <context:component-scan base-package="com.sane.pkg.controller" ></context:component-scan>
 
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -25,7 +29,5 @@
         <property name="maxUploadSize" value="104857600" />
         <property name="maxInMemorySize" value="4096" />
     </bean>
-    <mvc:resources location="/WEB-INF/pages/js" mapping="/js/**"></mvc:resources>
-    <mvc:resources location="/WEB-INF/pages/css" mapping="/css/**"></mvc:resources>
-    <mvc:resources location="/WEB-INF/pages/images" mapping="/img/**"></mvc:resources>
+
 </beans>
