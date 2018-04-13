@@ -10,10 +10,10 @@
        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 ">
     <mvc:annotation-driven />
+    <!--这种配置适用于webxmlDispatcherServlet的拦截路径是 /*的情况。如果配置成*.do就不需要这个配置了-->
     <mvc:resources location="/static/js/" mapping="/js/**"></mvc:resources>
     <mvc:resources location="/static/css/" mapping="/css/**"></mvc:resources>
     <mvc:resources location="/static/images/" mapping="/img/**"></mvc:resources>
-    <!--<mvc:resources location="/moves/" mapping="/moves/**"></mvc:resources>-->
     <mvc:resources location="/ckplayer/" mapping="/ckplayer/**"></mvc:resources>
     <context:component-scan base-package="com.sane.pkg.controller" ></context:component-scan>
 
