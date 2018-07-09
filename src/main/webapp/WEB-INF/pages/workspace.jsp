@@ -9,11 +9,6 @@
         ul.layui-tab-title li:first-child i{
             display: none;
         }
-        iframe{
-            border: 0px;
-            height: 100%;
-            border:1px solid red;
-        }
     </style>
 </head>
 <body class="layui-layout-body">
@@ -61,8 +56,7 @@
             </ul>
         </div>
     </div>
-
-    <div class="layui-body">
+    <div class="layui-body" style="overflow: hidden;">
         <!-- 内容主体区域 -->
             <div class="layui-tab layui-tab-brief" lay-allowClose="true" lay-filter="myTab">
                 <ul class="layui-tab-title">
@@ -72,6 +66,9 @@
                     <div class="layui-tab-item layui-show">首页</div>
                 </div>
             </div>
+    </div>
+    <div class="layui-footer">
+        <center>SaneMu权所有&copy;QQ:917763727</center>
     </div>
 </div>
 <script>
@@ -84,7 +81,9 @@
 
     var operation = {
         tabAdd: function (url,title){
-            var content="<iframe  width='100%'  src="+url+"></iframe>"
+            var content='<iframe name="mainFrame" scrolling="no" frameborder="0"  src="'
+            + url
+            + '" style="width:100%;height:100%;"></iframe>';
                  element.tabAdd('myTab',{
                  title: title,
                  content: content,

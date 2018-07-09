@@ -12,7 +12,8 @@
         layui.use('table', function(){
             var table = layui.table;
             table.render({
-                elem: '#listTypeTable', //指定原始表格元素选择器（推荐id选择器）
+                elem: '#listTypeTable',
+                height: 350,
                 url:'http://localhost:8080/springsty/baseListType/queryBaseListType.do',
                 page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                 cols: [[
