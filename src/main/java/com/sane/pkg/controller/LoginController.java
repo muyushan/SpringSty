@@ -39,4 +39,8 @@ public class LoginController {
         return  msgBean;
 
     }
+    @RequestMapping("redirect_to_workspcae")
+    public  String toWorkSpace(){
+        return "workspace";
+    }
 }
