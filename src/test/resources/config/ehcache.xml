@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false"
+         monitoring="autodetect" dynamicConfig="true">
+
+
+    <!-- 设置缓存的磁盘路径
+          user.home - User's home directory
+          user.dir - User's current working directory
+          java.io.tmpdir - Default temp file path -->
+    <diskStore path="user.home/cache_directory"/>
+
+
+    <!--默认的缓存配置
+     -->
+
+    <defaultCache
+
+            maxElementsInMemory="10"
+            eternal="false"
+            timeToIdleSeconds="5"
+            timeToLiveSeconds="10"
+            overflowToDisk="false"
+    />
+
+    <!--预定义缓存.  如果没有预定定义缓存 在CacheManager 创建时将会log提醒
+
+             下面这些事必须设置的：
+
+         name                           - 设置缓存的名称，在一个CacheManager 中必须唯一
+
+         maxElementsInMemory            - 设置缓存可以在内存中创建的对象的最大数量。
+
+         eternal                        - 设置element 是否是永恒的，如果设置为true timeout 属性的设置对该缓存的设置失效。元素将永不过期
+
+         overflowToDisk                 - 设置缓存中缓存的元素如果超出maxElementsInMemory设定的最大个数后是否允许写入到磁盘
+
+         下面的这些属性设置是可选的:
+         timeToIdleSeconds              - 设置对象在cache中的最大闲置时间，就是 在一直不访问这个对象的前提下，这个对象可以在cache中的存活时间。
+                                            仅对 eternal=false的元素有效 0 是默认值，默认是无穷大
+
+
+         timeToLiveSeconds              - 用于设置对象在cache中的最大存活时间，就是 无论对象访问或是不访问(闲置),这个对象在cache中的存活时间。
+                                         0 是默认值，无限存活
+         diskPersistent                 - 是否缓存虚拟机重启期数据。 默认 false（Server重启时将缓存序列化到本地，后再加载，保证缓存在重启后依然有效,
+                                          在重启时候需要告知EhCache，你要重启了，让EhCache去序列化内容到磁盘）。
+
+         diskExpiryThreadIntervalSeconds - 检查磁盘上的缓存超期的线程的运行周期 默认为120s
+
+         diskSpoolBufferSizeMB         -DiskStore使用的磁盘大小，默认值30MB
+
+         memoryStoreEvictionPolicy     -如果内存中数据超过内存限制，向磁盘缓存时的策略。默认值LRU，可选FIFO、LFU。
+
+         缓存的3 种清空策略 ：
+                                        FIFO————————first in first out (先进先出).
+                                        LFU—————————Less Frequently Used (最少使用).意思是一直以来最少被使用的。
+                                                    缓存的元素有一个hit 属性，hit 值最小的将会被清出缓存。
+                                        LRU————————Least Recently Used(最近最少使用). (ehcache 默认值).
+                                        缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，
+                                        那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。
+         -->
+
+    <!-- Sample cache named sampleCache1 -->
+    <cache name="sampleCache1"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="10"
+           timeToLiveSeconds="20"
+           overflowToDisk="true"
+    />
+
+    <!-- Sample cache named sampleCache2. Is eternal -->
+    <cache name="userCache"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false">
+        <searchable allowDynamicIndexing="true">
+            <searchAttribute name="user" class="com.sane.pkg.searchable.UserAttribuateExtrator" properties="a=1,b=2"></searchAttribute>
+        </searchable>
+    </cache>
+
+    <!-- Sample cache named sampleCacheNoIdle, which does not specify the optional idle time -->
+    <cache name="userCache2"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToLiveSeconds="5"
+           overflowToDisk="false"
+    >
+        <searchable keys="false" values="false">
+
+            <searchAttribute name="emailPhone"></searchAttribute>
+        </searchable>
+    </cache>
+
+    <!-- Sample cache named sampleCacheNotEternalButNoIdleOrExpiry -->
+    <cache name="userCache3"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+    >
+        <searchable>
+            <searchAttribute name="emailPhone" expression="value.emailPhone"></searchAttribute>
+        </searchable>
+    </cache>
+    <cache name="userCache4"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+    >
+        <searchable>
+            <searchAttribute name="emailPhone" expression="value.getEmailPhone()"></searchAttribute>
+        </searchable>
+    </cache>
+
+    <cache name="userCache5"
+           maxElementsInMemory="1000"
+           eternal="false"
+           overflowToDisk="false"
+    >
+        <searchable>
+            <searchAttribute name="hitCount" expression="element.getHitCount()"></searchAttribute>
+        </searchable>
+    </cache>
+
+    <!-- A cache with short idle and live expiries, suitable for tests -->
+    <cache name="userCache6"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="2"
+           timeToLiveSeconds="5"
+           overflowToDisk="false"
+    >
+        <!--<searchable></searchable>-->
+        <searchable allowDynamicIndexing="true">
+            <searchAttribute name="emailPhone" expression="value.getEmailPhone()"></searchAttribute>
+        </searchable>
+    </cache>
+
+    <!-- A cache which overflows to disk. The disk store is persistent
+          between cache and VM restarts. The disk expiry thread interval is set to 10 minutes, overriding
+          the default of 2 minutes. -->
+    <cache name="persistentLongExpiryIntervalCache"
+           maxElementsInMemory="500"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           overflowToDisk="true"
+           diskPersistent="true"
+           diskExpiryThreadIntervalSeconds="600"
+    />
+
+    <!-- Page Caches -->
+
+    <cache name="CachedLogin"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="10000"
+           timeToLiveSeconds="10000"
+           overflowToDisk="true"
+    />
+
+    <cache name="FooterPageCache"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="10000"
+           timeToLiveSeconds="10000"
+           overflowToDisk="true"
+    />
+
+</ehcache>

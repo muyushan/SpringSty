@@ -1,24 +1,21 @@
 package com.sane.pkg.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriUtils;
-import sun.security.provider.MD5;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.net.URLEncoder;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -55,6 +52,45 @@ public class FirstController {
             e.printStackTrace();
         }
         return "main";
+    }
+    @RequestMapping("/bly")
+    public  String playerPage(){
+
+        return "bly";
+    }
+//    @RequestMapping("/bly/{num}.mp4")
+    public  void play(@PathVariable("num")String ep, HttpServletRequest request, HttpServletResponse response){
+       String cc= ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("moves"+File.separator);
+       File file=new File(cc+"EP"+ep+".mp4");
+       System.out.println(cc);
+
+            InputStream in = null;
+            ServletOutputStream out = null;
+            try {
+                in = new FileInputStream(file);
+                out = response.getOutputStream();
+                byte[] buffer = new byte[4 * 1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("文件读取失败,文件不存在");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("文件流输出异常");
+                e.printStackTrace();
+            } finally {
+                try {
+                    in.close();
+                    out.close();
+                } catch (IOException e) {
+                    System.out.println("文件流关闭异常");
+                    e.printStackTrace();
+                }
+            }
+
+
     }
 
 }
