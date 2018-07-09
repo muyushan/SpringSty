@@ -53,44 +53,7 @@ public class FirstController {
         }
         return "main";
     }
-    @RequestMapping("/bly")
-    public  String playerPage(){
-
-        return "bly";
-    }
-//    @RequestMapping("/bly/{num}.mp4")
-    public  void play(@PathVariable("num")String ep, HttpServletRequest request, HttpServletResponse response){
-       String cc= ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("moves"+File.separator);
-       File file=new File(cc+"EP"+ep+".mp4");
-       System.out.println(cc);
-
-            InputStream in = null;
-            ServletOutputStream out = null;
-            try {
-                in = new FileInputStream(file);
-                out = response.getOutputStream();
-                byte[] buffer = new byte[4 * 1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("文件读取失败,文件不存在");
-                e.printStackTrace();
-            } catch (IOException e) {
-                System.out.println("文件流输出异常");
-                e.printStackTrace();
-            } finally {
-                try {
-                    in.close();
-                    out.close();
-                } catch (IOException e) {
-                    System.out.println("文件流关闭异常");
-                    e.printStackTrace();
-                }
-            }
 
 
-    }
 
 }
