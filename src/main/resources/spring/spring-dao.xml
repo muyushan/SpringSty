@@ -14,13 +14,27 @@
         <property name="mapperLocations">
             <list>
                 <value>classpath:mappers/*Mapper.xml</value>
+                <value>classpath:mappers/udmappers/*Mapper.xml</value>
             </list>
+        </property>
+    <!-- 配置分页插件 -->
+        <property name="plugins">
+            <array>
+                 				<bean class="com.github.pagehelper.PageInterceptor">
+                <property name="properties">
+                    <value>
+                        helperDialect=mysql
+                        pageSizeZero=true
+                    </value>
+                </property>
+            </bean>
+            </array>
         </property>
     </bean>
     <!-- Mapper类扫描和对应数据源Factory绑定-->
     <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--basePackage指定要扫描的包，在此包之下的映射器都会被搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
-        <property name="basePackage" value="com.sane.pkg.dao.intiface"/>
+        <property name="basePackage" value="com.sane.pkg.dao.mappers"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 </beans>

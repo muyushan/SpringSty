@@ -13,12 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RedirectController {
-    @RequestMapping("redirect")
+    @RequestMapping("redirect_to_workspcae")
     public String redirect(RedirectAttributes redirectAttributes){
-
-        redirectAttributes.addAttribute("attr1","a1");
-        redirectAttributes.addFlashAttribute("flashattr","flash1");
-        return  "redirect:re.jsp";
+        return  "workspace";
     }
 
 @RequestMapping("finditem")
