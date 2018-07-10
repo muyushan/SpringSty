@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+
+%>
 <html>
 <head>
     <link rel="stylesheet" href="<c:url value="/js/layui/css/layui.css"/>"/>
@@ -17,6 +20,9 @@
     <style type="text/css" > /*解决layui 表格复选框不垂直居中问题*/
         [lay-skin=primary].layui-form-checkbox i {top:5px !important;}
     </style>
+    <script>
+        var webRoot="<c:out value="${WebRoot}"></c:out>";
+    </script>
 </head>
 <body>
 

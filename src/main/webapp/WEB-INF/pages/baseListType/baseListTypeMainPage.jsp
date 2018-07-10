@@ -5,17 +5,16 @@
 <html>
 
 <head>
-
-    <title></title>
     <script>
-
+        var table;
         layui.use('table', function(){
-            var table = layui.table;
+            table = layui.table;
             table.render({
                 elem: '#listTypeTable',
-                height: 350,
-                url:'http://localhost:8080/springsty/baseListType/queryBaseListType.do',
+                id:'listTypeTable',
+                url:webRoot+"baseListType/queryBaseListType.do",
                 page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
+                height:'full-180',
                 cols: [[
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
@@ -36,6 +35,17 @@
         });
         $(document).ready(function(){
 
+            $("#queryBtn").click(function(){
+                var  typeName=$("#listTypeName").val();
+                table.reload('listTypeTable', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                            typename: typeName
+                    }
+                });
+            });
             $("#createNewType").click(function(){
                 layer.open({
                     type: 1,
@@ -82,7 +92,7 @@
     <div class="layui-inline">
         <label class="layui-form-label">字典类型</label>
         <div class="layui-input-inline" >
-            <input type="text" name="listTypeName" placeholder="请填入要查询的字典类型名称" style="width:200px; " class="layui-input">
+            <input type="text" id="listTypeName" placeholder="请填入要查询的字典类型名称" style="width:200px; " class="layui-input">
         </div>
         &nbsp;<button class="layui-btn" id="queryBtn">查询</button>
     </div>

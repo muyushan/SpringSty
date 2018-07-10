@@ -2,6 +2,7 @@ package com.sane.pkg.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.BaseListType;
+import com.sane.pkg.beans.BaseListTypeParam;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.BaseListTypeService;
 import com.sane.pkg.utils.SessionUtil;
@@ -29,9 +30,9 @@ public class BaseListTypeController {
 
     @RequestMapping("queryBaseListType")
     @ResponseBody
-    public Map<String,Object>queryBalistTypePage(){
+    public Map<String,Object>queryBalistTypePage(BaseListTypeParam param){
         PageInfo<BaseListType> pageInfo=new PageInfo<>();
-        pageInfo=baseListTypeService.queryBaseListType(new BaseListType(),10,1);
+        pageInfo=baseListTypeService.queryBaseListType(param,param.getLimit(),param.getPage());
         Map<String,Object> result=new HashMap<>();
         result.put("code","0");
         result.put("msg","");
