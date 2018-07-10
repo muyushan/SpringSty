@@ -1,17 +1,19 @@
 <%@ taglib prefix="c"
            uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="../common.jsp"></c:import>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" %>
 <html>
 
 <head>
     <script>
         var table;
+        var form;
         layui.use('table', function(){
             table = layui.table;
             table.render({
                 elem: '#listTypeTable',
                 id:'listTypeTable',
+                method:'post',
                 url:webRoot+"baseListType/queryBaseListType.do",
                 page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                 height:'full-180',
@@ -33,18 +35,14 @@
                 ]]
             });
         });
+        layui.use('form', function(){
+            form = layui.form;
+        });
         $(document).ready(function(){
 
             $("#queryBtn").click(function(){
-                var  typeName=$("#listTypeName").val();
-                table.reload('listTypeTable', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                            typename: typeName
-                    }
-                });
+
+                search();
             });
             $("#createNewType").click(function(){
                 layer.open({
@@ -54,6 +52,10 @@
                     yes:function(){save()},
                     btn2:function(index, layero){
                         layer.close(index);
+                        resetAddForm();
+                    },
+                    cancel: function(index, layero){
+                        resetAddForm();
                     },
                     skin: 'layui-layer-molv',
                     area: ['380px', '220px'],
@@ -63,6 +65,17 @@
             });
         });
 
+        function search(){
+            var  typeName=$("#listTypeName").val();
+            table.reload('listTypeTable', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    typename: typeName
+                }
+            });
+        }
         function save(){
             var name=$("#typeName").val();
             var enabled=$("#enabled")[0]['checked'];
@@ -79,11 +92,21 @@
             var url="<c:url value="/baseListType/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
+                    resetAddForm();
                     layer.close(layer.index);
+                    search();
                 }
 
             });
 
+        }
+
+        function resetAddForm(){
+            form.val("addForm", {
+                "enabled": false,
+                "typeName": ""
+            });
+            form.render();
         }
     </script>
 </head>
@@ -109,18 +132,20 @@
 
 </body>
 <div id="createType" style="display:none; padding-top: 10px;">
+    <form class="layui-form" action="" lay-filter="addForm">
     <div class="layui-form-item " >
         <label class="layui-form-label">类别名称</label>
         <div class="layui-input-inline">
-            <input id="typeName" type="text"  required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            <input id="typeName" type="text" name="typeName" lay-filter="typeName"  required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">是否启用</label>
         <div class="layui-input-block layui-form">
-            <input type="checkbox" id="enabled" lay-skin="switch" checked  lay-text="启用|禁用"/>
+            <input type="checkbox" name="enabled" id="enabled" lay-skin="switch" checked  lay-text="启用|禁用" lay-filter="enabled"/>
         </div>
     </div>
+    </form>
 </div>
 
 </html>
