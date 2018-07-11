@@ -10,11 +10,13 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -56,5 +58,18 @@ public class BaseListTypeController {
             msgBean.setMessage(ExceptionUtils.getMessage(e));
         }
         return msgBean;
+    }
+    @ResponseBody
+    @RequestMapping("delete")
+    public MsgBean deleteBaseLstType(@RequestParam(value="idList[]") List<Integer>idList){
+
+        MsgBean msgBean=new MsgBean();
+        try {
+           msgBean= baseListTypeService.deleteBaseListType(idList);
+        } catch (Exception e) {
+            msgBean.setCode("500");
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return  msgBean;
     }
 }

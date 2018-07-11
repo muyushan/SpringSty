@@ -10,8 +10,10 @@ import com.sane.pkg.service.BaseListTypeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -24,11 +26,20 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
         MsgBean msgBean=new MsgBean();
         if(StringUtils.isEmpty(baseListType.getTypename())){
             msgBean.setMessage(MsgBean.FAIL);
-            msgBean.setMessage("基础字典类型不能为空");
+            msgBean.setMessage("基础字典类型名称不能为空");
             return  msgBean;
         }
-        baseListTypeMapper.insertSelective(baseListType);
-        msgBean.setCode(MsgBean.SUCCESS);
+        BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
+        BaseListTypeCriteria.Criteria criteria=baseListTypeCriteria.createCriteria();
+        criteria.andTypenameEqualTo(baseListType.getTypename());
+        int count=baseListTypeMapper.countByExample(baseListTypeCriteria);
+        if(count>0){
+            msgBean.setMessage("已经存在了该类型字典，请更换名字");
+            msgBean.setCode("500");
+        }else{
+            baseListTypeMapper.insertSelective(baseListType);
+            msgBean.setCode(MsgBean.SUCCESS);
+        }
         return msgBean;
     }
 
@@ -42,5 +53,21 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
         PageHelper.startPage(pageNo,pageSize);
        PageInfo pageInfo=new PageInfo(baseListTypeMapper.selectByExample(baseListTypeCriteria));
        return pageInfo;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public MsgBean deleteBaseListType(List<Integer> idList) throws Exception{
+       MsgBean msgBean=new MsgBean();
+        BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
+        BaseListTypeCriteria.Criteria criteria= baseListTypeCriteria.createCriteria();
+        criteria.andTypeidIn(idList);
+        int count=baseListTypeMapper.deleteByExample(baseListTypeCriteria);
+        if(count!=idList.size()){
+            throw  new Exception("删除失败");
+        }else{
+            msgBean.setCode("200");
+        }
+        return msgBean;
     }
 }

@@ -41,8 +41,10 @@
         $(document).ready(function(){
 
             $("#queryBtn").click(function(){
-
                 search();
+            });
+            $("#deleteListType").click(function(){
+                deleteBaseListType();
             });
             $("#createNewType").click(function(){
                 layer.open({
@@ -93,14 +95,39 @@
             $.post(url,param,function(data){
                 if(data.code=="200"){
                     resetAddForm();
-                    layer.close(layer.index);
+                    layer.closeAll();
                     search();
+                }else{
+                    layer.open({
+                        type: 0,
+                        title:'提示',
+                        content: data.message
+                    });
                 }
 
             });
-
         }
 
+        function deleteBaseListType() {
+            var checkedRow=table.checkStatus('listTypeTable');
+            if(checkedRow.data.length==0){
+                layer.msg('请选择要删除的记录',{time:1000});
+                return;
+            }
+            var idList=new Array();
+            for(var i=0;i<checkedRow.data.length;i++){
+                idList.push(checkedRow.data[i]["typeid"]);
+            }
+
+            $.post(webRoot+"baseListType/delete.do",{idList:idList},function(data){
+                if(data.code=="200"){
+                    layer.msg('删除成功',{time:1000});
+                    search();
+                }else{
+                    layer.alert(data.message, {icon: 1});
+                }
+            });
+        }
         function resetAddForm(){
             form.val("addForm", {
                 "enabled": false,
@@ -124,8 +151,8 @@
 <hr class="layui-bg-gray">
 <div class="layui-btn-group">
     <button class="layui-btn" id="createNewType"> <i class="layui-icon">&#xe654;</i>增加</button>
-    <button class="layui-btn"> <i class="layui-icon">&#xe642;</i>编辑</button>
-    <button class="layui-btn"> <i class="layui-icon">&#xe640;</i>删除</button>
+    <button class="layui-btn" id="editListType"> <i class="layui-icon">&#xe642;</i>编辑</button>
+    <button class="layui-btn" id="deleteListType"> <i class="layui-icon">&#xe640;</i>删除</button>
 </div>
 <table id="listTypeTable" lay-filter="listTypeTable">
 </table>
