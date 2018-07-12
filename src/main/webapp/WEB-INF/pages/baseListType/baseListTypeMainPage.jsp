@@ -46,6 +46,9 @@
             $("#deleteListType").click(function(){
                 deleteBaseListType();
             });
+            $("#editListType").click(function(){
+                showEditWindow();
+            });
             $("#createNewType").click(function(){
                 layer.open({
                     type: 1,
@@ -134,6 +137,39 @@
                 "typeName": ""
             });
             form.render();
+        }
+        function showEditWindow(){
+            var checkedRow=table.checkStatus('listTypeTable');
+            if(checkedRow.data.length==0){
+                layer.msg('请选择一条要编辑的记录',{time:1000});
+                return;
+            }
+            if(checkedRow.data.length>1){
+                layer.msg('只能选择一条记录',{time:1000});
+                return;
+            }
+            form.val("addForm", {
+                "enabled": checkedRow.data[0]["enaled"]==1?true:false,
+                "typeName": checkedRow.data[0]["typename"]
+            });
+            form.render();
+            layer.open({
+                type: 1,
+                closeBtn:1,
+                btn: ['保存', '关闭'],
+                yes:function(){save()},
+                btn2:function(index, layero){
+                    layer.close(index);
+                    resetAddForm();
+                },
+                cancel: function(index, layero){
+                    resetAddForm();
+                },
+                skin: 'layui-layer-molv',
+                area: ['380px', '220px'],
+                title:'编辑字典类型',
+                content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            });
         }
     </script>
 </head>
