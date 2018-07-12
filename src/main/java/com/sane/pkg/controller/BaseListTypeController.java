@@ -33,9 +33,9 @@ public class BaseListTypeController {
     @RequestMapping("queryBaseListType")
     @ResponseBody
     public Map<String,Object>queryBalistTypePage(BaseListTypeParam param){
-        PageInfo<BaseListType> pageInfo=new PageInfo<>();
+        PageInfo<BaseListType> pageInfo=new PageInfo<BaseListType>();
         pageInfo=baseListTypeService.queryBaseListType(param,param.getLimit(),param.getPage());
-        Map<String,Object> result=new HashMap<>();
+        Map<String,Object> result=new HashMap<String,Object>();
         result.put("code","0");
         result.put("msg","");
         result.put("count",pageInfo.getTotal());
