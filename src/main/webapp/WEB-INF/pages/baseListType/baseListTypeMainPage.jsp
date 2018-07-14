@@ -25,6 +25,10 @@
                     {field: 'creatdate',title: '创建时间', width:200,templet:function(record){
                         return formatDateTime(record.creatdate);
                     }},
+                    {field: 'modifier',title: '修改者', width:100},
+                    {field: 'modifydate',title: '修改时间', width:200,templet:function(record){
+                        return formatDateTime(record.modifydate);
+                    }},
                     {field: 'enaled',title: '是否启用',align:'center',width: 100,templet:function(record){
                         if(record.enaled=="1"){
                             return "是";
@@ -157,7 +161,7 @@
                 type: 1,
                 closeBtn:1,
                 btn: ['保存', '关闭'],
-                yes:function(){save()},
+                yes:function(){saveEditBaselistType()},
                 btn2:function(index, layero){
                     layer.close(index);
                     resetAddForm();
@@ -171,6 +175,41 @@
                 content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         }
+
+        function saveEditBaselistType() {
+            var checkedRow = table.checkStatus('listTypeTable');
+            var baselistType = {};
+
+            var name = $("#typeName").val();
+            var enabled = $("#enabled")[0]['checked'];
+            if (name == "") {
+                layer.msg('类型名称不能为空', {time: 1000});
+                return false;
+            }
+            if (enabled) {
+                enabled = 1;
+            } else {
+                enabled = 0;
+            }
+            baselistType.typeid = checkedRow.data[0]["typeid"];
+            baselistType.typename = name;
+            baselistType.enaled = enabled;
+            var url = "<c:url value="/baseListType/edit.do"/>";
+            $.post(url, baselistType, function (data) {
+                if (data.code == "200") {
+                    resetAddForm();
+                    layer.closeAll();
+                    search();
+                } else {
+                    layer.open({
+                        type: 0,
+                        title: '提示',
+                        content: data.message
+                    });
+                }
+            });
+        }
+
     </script>
 </head>
 <body>

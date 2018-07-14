@@ -10,6 +10,7 @@ import java.util.Map;
 public interface BaseListTypeService {
 
     public MsgBean addBaseListType(BaseListType baseListType);
+    public MsgBean editBaseListType(BaseListType baseListType);
     public PageInfo<BaseListType> queryBaseListType(BaseListType baseListType, Integer pageSize, Integer pageNo);
     public MsgBean deleteBaseListType(List<Integer> idList) throws Exception;
 }

@@ -31,6 +31,9 @@ function formatDate(longDate){
 }
 
 function formatDateTime(longDate){
+    if(longDate==null){
+        return "";
+    }
     var result="";
     var  date =new Date();
     date.setTime(longDate);

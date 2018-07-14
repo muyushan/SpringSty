@@ -70,4 +70,22 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
         }
         return msgBean;
     }
+
+    @Override
+    public MsgBean editBaseListType(BaseListType baseListType) {
+        MsgBean msgBean=new MsgBean();
+        BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
+        BaseListTypeCriteria.Criteria criteria=baseListTypeCriteria.createCriteria();
+        criteria.andTypeidNotEqualTo(baseListType.getTypeid());
+        criteria.andTypenameEqualTo(baseListType.getTypename());
+        int count=baseListTypeMapper.countByExample(baseListTypeCriteria);
+        if(count>0){
+            msgBean.setCode("500");
+            msgBean.setMessage("字典类型已经存在，请更换名称");
+            return  msgBean;
+        }
+        baseListTypeMapper.updateByPrimaryKeySelective(baseListType);
+        msgBean.setCode("200");
+        return msgBean;
+    }
 }

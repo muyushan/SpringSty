@@ -59,6 +59,22 @@ public class BaseListTypeController {
         }
         return msgBean;
     }
+    @RequestMapping("/edit")
+    @ResponseBody
+    public MsgBean editBaseListType(BaseListType baseListType, HttpServletRequest request){
+        MsgBean msgBean=null;
+        try {
+            String userName=SessionUtil.getCurrentUserInfo(request);
+            baseListType.setModifydate(new Date());
+            baseListType.setModifier(userName);
+            msgBean=baseListTypeService.editBaseListType(baseListType);
+        } catch (Exception e) {
+            msgBean=new MsgBean();
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return msgBean;
+    }
     @ResponseBody
     @RequestMapping("delete")
     public MsgBean deleteBaseLstType(@RequestParam(value="idList[]") List<Integer>idList){
