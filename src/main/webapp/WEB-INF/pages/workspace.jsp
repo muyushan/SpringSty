@@ -47,7 +47,7 @@
                     <a href="javascript:;">基础数据管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListType/showMainPage.do"/>','字典类别管理')">字典类别管理</a></dd>
-                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="javascript:operation.tabAdd('<c:url value="baseListItem/baseListItemPage.do"/>','数据字典维护')">数据字典维护</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
