@@ -11,16 +11,18 @@
         layui.use('table', function(){
             table = layui.table;
             table.render({
-                elem: '#listTypeTable',
-                id:'listTypeTable',
+                elem: '#listItemTable',
+                id:'listItemTable',
                 method:'post',
-                url:webRoot+"baseListType/queryBaseListType.do",
+                url:webRoot+"baseListItem/queryBaseListItem.do",
                 page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                 height:'full-180',
                 cols: [[
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
-                    {field: 'typename',title: '类型名称', width:200},
+                    {field: 'typeid',title: '类型名称', width:200},
+                    {field: 'listvalue',title: '字典值', width:200},
+                    {field: 'listname',title: '字典名称', width:200},
                     {field: 'creator',title: '创建者', width:100},
                     {field: 'creatdate',title: '创建时间', width:200,templet:function(record){
                         return formatDateTime(record.creatdate);
@@ -28,13 +30,6 @@
                     {field: 'modifier',title: '修改者', width:100},
                     {field: 'modifydate',title: '修改时间', width:200,templet:function(record){
                         return formatDateTime(record.modifydate);
-                    }},
-                    {field: 'enaled',title: '是否启用',align:'center',width: 100,templet:function(record){
-                        if(record.enaled=="1"){
-                            return "是";
-                        }else{
-                            return "否";
-                        }
                     }}
                 ]]
             });
@@ -43,6 +38,21 @@
             form = layui.form;
         });
         $(document).ready(function(){
+            $.ajax({
+                type:'get',
+                url: webRoot+'baseListType/queryBaseListType.do?page=1&limit=1000',
+                success:function(data){
+                    var html='';
+                    $.each(data.data,function(key,value){
+                        html+="<option value='"+value.typeid+"'>"+value.typename+"</option>";
+                    })
+                    $("#listTypeName").html(html);
+                    form.render("select");
+                },
+                error:function(res){
+                    console.log(res);
+                }
+            });
 
             $("#queryBtn").click(function(){
                 search();
@@ -213,11 +223,11 @@
     </script>
 </head>
 <body>
-<div class="layui-form-item">
+<div class="layui-form">
     <div class="layui-inline">
         <label class="layui-form-label">字典类型</label>
         <div class="layui-input-inline" >
-            <input type="text" id="listTypeName" placeholder="请填入要查询的字典类型名称" style="width:200px; " class="layui-input">
+            <select lay-filter="listTypeName"  id="listTypeName" placeholder="请选择要查询的字典类型名称" lay-search=""></select>
         </div>
         &nbsp;<button class="layui-btn" id="queryBtn">查询</button>
     </div>
@@ -229,7 +239,7 @@
     <button class="layui-btn" id="editListType"> <i class="layui-icon">&#xe642;</i>编辑</button>
     <button class="layui-btn" id="deleteListType"> <i class="layui-icon">&#xe640;</i>删除</button>
 </div>
-<table id="listTypeTable" lay-filter="listTypeTable">
+<table id="listItemTable" lay-filter="listItemTable">
 </table>
 
 </body>
@@ -238,7 +248,7 @@
     <div class="layui-form-item " >
         <label class="layui-form-label">类别名称</label>
         <div class="layui-input-inline">
-            <input id="typeName" type="text" name="typeName" lay-filter="typeName"  required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+
         </div>
     </div>
     <div class="layui-form-item">

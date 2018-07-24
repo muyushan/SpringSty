@@ -81,15 +81,21 @@
 
     var operation = {
         tabAdd: function (url,title){
-            var content='<iframe name="mainFrame" scrolling="no" frameborder="0"  src="'
-            + url
-            + '" style="width:100%;height:100%;"></iframe>';
-                 element.tabAdd('myTab',{
-                 title: title,
-                 content: content,
-                 id: "tab_"+title
-            });
-            element.tabChange("myTab", "tab_"+title);
+           var layIdLength= $("li[lay-id=tab_"+title+"]").length;
+           if(layIdLength==1){
+               element.tabChange("myTab", "tab_"+title);
+           }else{
+               var content='<iframe name="mainFrame" scrolling="no" frameborder="0"  src="'
+                   + url
+                   + '" style="width:100%;height:100%;"></iframe>';
+               element.tabAdd('myTab',{
+                   title: title,
+                   content: content,
+                   id: "tab_"+title
+               });
+               element.tabChange("myTab", "tab_"+title);
+           }
+
         }
     }
 </script>

@@ -20,6 +20,9 @@ function showToolTip(selector,text,position) {
 }
 
 function formatDate(longDate){
+    if(longDate==null||longDate==""){
+        return "";
+    }
     var  date =new Date();
     date.setTime(longDate);
     var year=date.getFullYear();
@@ -31,7 +34,7 @@ function formatDate(longDate){
 }
 
 function formatDateTime(longDate){
-    if(longDate==null){
+    if(longDate==null||longDate==""){
         return "";
     }
     var result="";
