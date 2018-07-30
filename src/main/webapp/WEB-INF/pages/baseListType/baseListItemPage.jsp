@@ -20,7 +20,7 @@
                 cols: [[
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
-                    {field: 'typeid',title: '类型名称', width:200},
+                    {field: 'typeName',title: '类型名称', width:200},
                     {field: 'listvalue',title: '字典值', width:200},
                     {field: 'listname',title: '字典名称', width:200},
                     {field: 'creator',title: '创建者', width:100},

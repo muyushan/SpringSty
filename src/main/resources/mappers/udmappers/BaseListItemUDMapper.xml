@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sane.pkg.dao.mappers.udmappers.BaseListItemUDMapper" >
+  <resultMap id="BaseResultMap" type="com.sane.pkg.beans.BaseListItemUD" >
+    <id column="ListID" property="listid" jdbcType="INTEGER" />
+    <result column="TypeID" property="typeid" jdbcType="SMALLINT" />
+    <result column="ListValue" property="listvalue" jdbcType="SMALLINT" />
+    <result column="ListName" property="listname" jdbcType="VARCHAR" />
+    <result column="TypeName" property="typeName" jdbcType="VARCHAR" />
+    <result column="ListSort" property="listsort" jdbcType="SMALLINT" />
+    <result column="Creator" property="creator" jdbcType="VARCHAR" />
+    <result column="CreatDate" property="creatdate" jdbcType="TIMESTAMP" />
+    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
+    <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+
+    ListID,
+    a.TypeID,
+    a.ListValue,
+    ListName,
+    typeName,
+    ListSort,
+    a.Creator,
+    a.CreatDate,
+    a.Modifier,
+    a.ModifyDate
+  </sql>
+  <select id="queryBaseListItemByTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+
+
+    <include refid="Base_Column_List" />
+    FROM baselistitem a left join baselisttype b on a.TypeID=b.TypeID
+    <where>
+      <if test="typeId != null" >
+         a.TypeID=#{typeId}
+      </if>
+
+    </where>
+
+  </select>
+
+</mapper>
