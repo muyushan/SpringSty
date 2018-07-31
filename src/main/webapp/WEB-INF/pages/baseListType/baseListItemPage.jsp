@@ -47,10 +47,8 @@
                         html+="<option value='"+value.typeid+"'>"+value.typename+"</option>";
                     })
                     $("#listTypeName").html(html);
+                    $("#typeId").html(html);
                     form.render("select");
-                },
-                error:function(res){
-                    console.log(res);
                 }
             });
 
@@ -63,7 +61,7 @@
             $("#editListType").click(function(){
                 showEditWindow();
             });
-            $("#createNewType").click(function(){
+            $("#createNewItem").click(function(){
                 layer.open({
                     type: 1,
                     closeBtn:1,
@@ -77,9 +75,9 @@
                         resetAddForm();
                     },
                     skin: 'layui-layer-molv',
-                    area: ['380px', '220px'],
-                    title:'创建字典类型',
-                    content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    area: ['380px', '400px'],
+                    title:'创建字典项',
+                    content: $('#createItem') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 });
             });
         });
@@ -96,19 +94,26 @@
             });
         }
         function save(){
-            var name=$("#typeName").val();
-            var enabled=$("#enabled")[0]['checked'];
-            if(name==""){
-                layer.msg('请填写类型名称',{time:1000});
+            var typeId=$("#typeId").val();
+            var itemName=$("#listName").val();
+            var itemValue=$("#listValue").val();
+            alert(typeId);
+            alert(itemName);
+            alert(itemValue);
+            if(typeId==null||typeId==""){
+                layer.msg('请选择字典类型',{time:1000});
                 return false;
             }
-            if(enabled){
-                enabled=1;
-            }else {
-                enabled=0;
+            if(itemName==null||itemName==""){
+                layer.msg('请填写字典项名称',{time:1000});
+                return false;
             }
-         var param={typename:name,enaled:enabled};
-            var url="<c:url value="/baseListType/add.do"/>";
+            if(itemValue==null||itemValue==""){
+                layer.msg('请填写字典项值',{time:1000});
+                return false;
+            }
+         var param={typename:name};
+            var url="<c:url value="/baseListItem/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
                     resetAddForm();
@@ -180,9 +185,9 @@
                     resetAddForm();
                 },
                 skin: 'layui-layer-molv',
-                area: ['380px', '220px'],
-                title:'编辑字典类型',
-                content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: ['380px', '400px'],
+                title:'编辑字典项',
+                content: $('#createItem') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         }
 
@@ -235,28 +240,36 @@
 
 <hr class="layui-bg-gray">
 <div class="layui-btn-group">
-    <button class="layui-btn" id="createNewType"> <i class="layui-icon">&#xe654;</i>增加</button>
-    <button class="layui-btn" id="editListType"> <i class="layui-icon">&#xe642;</i>编辑</button>
-    <button class="layui-btn" id="deleteListType"> <i class="layui-icon">&#xe640;</i>删除</button>
+    <button class="layui-btn" id="createNewItem"> <i class="layui-icon">&#xe654;</i>增加</button>
+    <button class="layui-btn" id="editListItem"> <i class="layui-icon">&#xe642;</i>编辑</button>
+    <button class="layui-btn" id="deleteListItem"> <i class="layui-icon">&#xe640;</i>删除</button>
 </div>
 <table id="listItemTable" lay-filter="listItemTable">
 </table>
 
 </body>
-<div id="createType" style="display:none; padding-top: 10px;">
+    <div id="createItem" style="display:none; padding-top: 10px;">
     <form class="layui-form" action="" lay-filter="addForm">
-    <div class="layui-form-item " >
-        <label class="layui-form-label">类别名称</label>
-        <div class="layui-input-inline">
+        <div class="layui-form-item">
+            <label class="layui-form-label">字典类型</label>
+            <div class="layui-input-inline">
+                <select lay-filter="typeId"  id="typeId" lay-search=""></select>
+            </div>
+        </div>
 
+        <div class="layui-form-item">
+        <label class="layui-form-label">字典名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="listName" id="listName"   lay-verify="required" placeholder="请输入字典名" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">是否启用</label>
-        <div class="layui-input-block layui-form">
-            <input type="checkbox" name="enabled" id="enabled" lay-skin="switch" checked  lay-text="启用|禁用" lay-filter="enabled"/>
         </div>
-    </div>
+
+        <div class="layui-form-item">
+        <label class="layui-form-label">字典值</label>
+        <div class="layui-input-inline">
+            <input type="text" name="listValue" id="listValue"   lay-verify="required" placeholder="请输入字典值" autocomplete="off" class="layui-input">
+        </div>
+        </div>
     </form>
 </div>
 

@@ -11,6 +11,7 @@
         }
     </style>
 </head>
+<title>库存管理系统</title>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-black">

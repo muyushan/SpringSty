@@ -4,11 +4,15 @@ import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.BaseListItem;
 import com.sane.pkg.beans.BaseListType;
 import com.sane.pkg.beans.BaseListTypeParam;
+import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.BaseListItemService;
+import com.sane.pkg.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,5 +39,16 @@ public class BaseListItemController {
         result.put("count",pageInfo.getTotal());
         result.put("data",pageInfo.getList());
         return  result;
+    }
+
+    @ResponseBody
+    @RequestMapping("add")
+    public MsgBean addListItem(BaseListItem baseListItem){
+        try {
+          String userName=  SessionUtil.getCurrentUserInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
 }
