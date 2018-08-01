@@ -97,9 +97,6 @@
             var typeId=$("#typeId").val();
             var itemName=$("#listName").val();
             var itemValue=$("#listValue").val();
-            alert(typeId);
-            alert(itemName);
-            alert(itemValue);
             if(typeId==null||typeId==""){
                 layer.msg('请选择字典类型',{time:1000});
                 return false;
@@ -112,7 +109,7 @@
                 layer.msg('请填写字典项值',{time:1000});
                 return false;
             }
-         var param={typename:name};
+         var param={typeid:typeId,listvalue:itemValue,listname:itemName};
             var url="<c:url value="/baseListItem/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
@@ -152,8 +149,9 @@
         }
         function resetAddForm(){
             form.val("addForm", {
-                "enabled": false,
-                "typeName": ""
+                "typeId": "",
+                "listName": "",
+                "listValue": ""
             });
             form.render();
         }
@@ -260,14 +258,14 @@
         <div class="layui-form-item">
         <label class="layui-form-label">字典名</label>
         <div class="layui-input-inline">
-            <input type="text" name="listName" id="listName"   lay-verify="required" placeholder="请输入字典名" autocomplete="off" class="layui-input">
+            <input lay-filter="listName" type="text" name="listName" id="listName"   lay-verify="required" placeholder="请输入字典名" autocomplete="off" class="layui-input">
         </div>
         </div>
 
         <div class="layui-form-item">
         <label class="layui-form-label">字典值</label>
         <div class="layui-input-inline">
-            <input type="text" name="listValue" id="listValue"   lay-verify="required" placeholder="请输入字典值" autocomplete="off" class="layui-input">
+            <input lay-filter="listValue" type="text" name="listValue" id="listValue"   lay-verify="required" placeholder="请输入字典值" autocomplete="off" class="layui-input">
         </div>
         </div>
     </form>

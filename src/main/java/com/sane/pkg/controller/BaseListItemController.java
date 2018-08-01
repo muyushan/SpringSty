@@ -7,6 +7,7 @@ import com.sane.pkg.beans.BaseListTypeParam;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.utils.SessionUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,11 +46,16 @@ public class BaseListItemController {
     @ResponseBody
     @RequestMapping("add")
     public MsgBean addListItem(BaseListItem baseListItem){
+       MsgBean msgBean=null;
         try {
           String userName=  SessionUtil.getCurrentUserInfo();
+          baseListItem.setCreatdate(new Date());
+          baseListItem.setCreator(userName);
+            msgBean=baseListItemService.addBaseListItem(baseListItem);
         } catch (Exception e) {
-            e.printStackTrace();
+            msgBean.setMessage(MsgBean.FAIL);
+            msgBean.setMessage("异常："+ ExceptionUtils.getMessage(e));
         }
-        return  null;
+        return  msgBean;
     }
 }
