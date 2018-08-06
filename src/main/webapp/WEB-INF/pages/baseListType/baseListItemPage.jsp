@@ -83,13 +83,13 @@
         });
 
         function search(){
-            var  typeName=$("#listTypeName").val();
-            table.reload('listTypeTable', {
+            var  typeid=$("#listTypeName").val();
+            table.reload('listItemTable', {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
                 ,where: {
-                    typename: typeName
+                    typeid: typeid
                 }
             });
         }
@@ -108,6 +108,11 @@
             if(itemValue==null||itemValue==""){
                 layer.msg('请填写字典项值',{time:1000});
                 return false;
+            }
+            if(isNaN(itemValue)){
+                layer.msg('字典项的值必须是数字',{time:1000});
+                return false;
+
             }
          var param={typeid:typeId,listvalue:itemValue,listname:itemName};
             var url="<c:url value="/baseListItem/add.do"/>";
@@ -128,7 +133,7 @@
         }
 
         function deleteBaseListType() {
-            var checkedRow=table.checkStatus('listTypeTable');
+            var checkedRow=table.checkStatus('listItemTable');
             if(checkedRow.data.length==0){
                 layer.msg('请选择要删除的记录',{time:1000});
                 return;
@@ -156,7 +161,7 @@
             form.render();
         }
         function showEditWindow(){
-            var checkedRow=table.checkStatus('listTypeTable');
+            var checkedRow=table.checkStatus('listItemTable');
             if(checkedRow.data.length==0){
                 layer.msg('请选择一条要编辑的记录',{time:1000});
                 return;
@@ -190,7 +195,7 @@
         }
 
         function saveEditBaselistType() {
-            var checkedRow = table.checkStatus('listTypeTable');
+            var checkedRow = table.checkStatus('listItemTable');
             var baselistType = {};
 
             var name = $("#typeName").val();

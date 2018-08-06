@@ -28,6 +28,7 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     @Override
     public MsgBean addBaseListItem(BaseListItem baseListItem) {
         MsgBean msgBean=new MsgBean();
+
         if(isRepeat(baseListItem)){
             msgBean.setMessage("字典项重复，不允许添加");
             msgBean.setCode(MsgBean.FAIL);
