@@ -7,6 +7,7 @@ import com.sane.pkg.beans.BaseListTypeParam;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.utils.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -56,6 +58,54 @@ public class BaseListItemController {
             msgBean.setMessage(MsgBean.FAIL);
             msgBean.setMessage("异常："+ ExceptionUtils.getMessage(e));
         }
+        return  msgBean;
+    }
+    @RequestMapping("edit")
+    @ResponseBody
+    public MsgBean editListItem(BaseListItem baseListItem){
+        MsgBean msgBean=new MsgBean();
+        if(baseListItem.getListid()==null){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage("唯一ID为空无法修改数据");
+            return  msgBean;
+        }
+        if(baseListItem.getTypeid()==null){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage("字典类型不能为空");
+            return  msgBean;
+        }
+        if(baseListItem.getListvalue()==null){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage("字典项值不能为空");
+            return  msgBean;
+        }
+        if(StringUtils.isEmpty(baseListItem.getListname())){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage("字典项名称不能为空");
+            return  msgBean;
+        }
+        try {
+           msgBean= baseListItemService.editBaseListItem(baseListItem);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return msgBean;
+
+    }
+
+    @ResponseBody
+    @RequestMapping("delete")
+    public MsgBean deleteBaseListItem(List<Integer> idList){
+        MsgBean msgBean=new MsgBean();
+
+        try {
+            msgBean=baseListItemService.deleteBaseListItem(idList);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+
         return  msgBean;
     }
 }

@@ -11,6 +11,9 @@ import com.sane.pkg.dao.mappers.udmappers.BaseListItemUDMapper;
 import com.sane.pkg.service.BaseListItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class BaseListItemServiceImpl implements BaseListItemService {
@@ -25,8 +28,9 @@ public class BaseListItemServiceImpl implements BaseListItemService {
         return pageInfo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public MsgBean addBaseListItem(BaseListItem baseListItem) {
+    public MsgBean addBaseListItem(BaseListItem baseListItem) throws Exception{
         MsgBean msgBean=new MsgBean();
 
         if(isRepeat(baseListItem)){
@@ -43,6 +47,34 @@ public class BaseListItemServiceImpl implements BaseListItemService {
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("保存失败，请重试");
         }
+        return msgBean;
+    }
+
+    @Override
+    public MsgBean editBaseListItem(BaseListItem baseListItem) throws Exception {
+        MsgBean msgBean=new MsgBean();
+        if(isRepeat(baseListItem)){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage("字典重复了，请重新修改");
+            return msgBean;
+        }
+        baseListItemMapper.updateByPrimaryKeySelective(baseListItem);
+        msgBean.setCode(MsgBean.SUCCESS);
+        return msgBean;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public MsgBean deleteBaseListItem(List<Integer> idList) throws Exception {
+        BaseListItemCriteria baseListItemCriteria =new BaseListItemCriteria();
+        BaseListItemCriteria.Criteria baseListItemSQL=baseListItemCriteria.createCriteria();
+        baseListItemSQL.andListidIn(idList);
+        int count =baseListItemMapper.deleteByExample(baseListItemCriteria);
+        if(count!=idList.size()){
+            throw new Exception("删除失败，请重试");
+        }
+        MsgBean msgBean=new MsgBean();
+        msgBean.setCode(MsgBean.SUCCESS);
         return msgBean;
     }
 
