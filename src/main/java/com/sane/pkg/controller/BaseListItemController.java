@@ -12,6 +12,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -69,11 +70,7 @@ public class BaseListItemController {
             msgBean.setMessage("唯一ID为空无法修改数据");
             return  msgBean;
         }
-        if(baseListItem.getTypeid()==null){
-            msgBean.setCode(MsgBean.FAIL);
-            msgBean.setMessage("字典类型不能为空");
-            return  msgBean;
-        }
+
         if(baseListItem.getListvalue()==null){
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("字典项值不能为空");
@@ -85,6 +82,8 @@ public class BaseListItemController {
             return  msgBean;
         }
         try {
+            baseListItem.setModifier(SessionUtil.getCurrentUserInfo());
+            baseListItem.setModifydate(new Date());
            msgBean= baseListItemService.editBaseListItem(baseListItem);
         } catch (Exception e) {
             msgBean.setCode(MsgBean.FAIL);
@@ -96,7 +95,7 @@ public class BaseListItemController {
 
     @ResponseBody
     @RequestMapping("delete")
-    public MsgBean deleteBaseListItem(List<Integer> idList){
+    public MsgBean deleteBaseListItem(@RequestParam(value="idList[]") List<Integer> idList){
         MsgBean msgBean=new MsgBean();
 
         try {

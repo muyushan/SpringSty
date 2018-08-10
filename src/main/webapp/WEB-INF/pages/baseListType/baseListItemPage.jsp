@@ -40,7 +40,7 @@
         $(document).ready(function(){
             $.ajax({
                 type:'get',
-                url: webRoot+'baseListType/queryBaseListType.do?page=1&limit=1000',
+                url: webRoot+'baseListType/queryBaseListType.do?page=1&limit=1000&showAll=true',
                 success:function(data){
                     var html='';
                     $.each(data.data,function(key,value){
@@ -55,10 +55,10 @@
             $("#queryBtn").click(function(){
                 search();
             });
-            $("#deleteListType").click(function(){
-                deleteBaseListType();
+            $("#deleteListItem").click(function(){
+                deleteListItem();
             });
-            $("#editListType").click(function(){
+            $("#editListItem").click(function(){
                 showEditWindow();
             });
             $("#createNewItem").click(function(){
@@ -132,7 +132,7 @@
             });
         }
 
-        function deleteBaseListType() {
+        function deleteListItem() {
             var checkedRow=table.checkStatus('listItemTable');
             if(checkedRow.data.length==0){
                 layer.msg('请选择要删除的记录',{time:1000});
@@ -140,24 +140,32 @@
             }
             var idList=new Array();
             for(var i=0;i<checkedRow.data.length;i++){
-                idList.push(checkedRow.data[i]["typeid"]);
+                idList.push(checkedRow.data[i]["listid"]);
             }
 
-            $.post(webRoot+"baseListType/delete.do",{idList:idList},function(data){
-                if(data.code=="200"){
-                    layer.msg('删除成功',{time:1000});
-                    search();
-                }else{
-                    layer.alert(data.message, {icon: 1});
-                }
+            layer.confirm('确认删除所选项目?', {icon: 3, title:'确认'}, function(index){
+                $.post(webRoot+"baseListItem/delete.do",{idList:idList},function(data){
+                    if(data.code=="200"){
+                        layer.msg('删除成功',{time:1000});
+                        layer.close(index);
+                        search();
+
+                    }else{
+                        layer.alert(data.message, {icon: 1});
+                    }
+                });
+
             });
+
+
         }
         function resetAddForm(){
             form.val("addForm", {
-                "typeId": "",
                 "listName": "",
                 "listValue": ""
             });
+            $("#typeId").val(-1);
+            $("#typeId").removeAttr("disabled");
             form.render();
         }
         function showEditWindow(){
@@ -171,15 +179,19 @@
                 return;
             }
             form.val("addForm", {
-                "enabled": checkedRow.data[0]["enaled"]==1?true:false,
-                "typeName": checkedRow.data[0]["typename"]
+                "listName":checkedRow.data[0]["listname"],
+                "listValue": checkedRow.data[0]["listvalue"]
+
             });
+            $("#typeId").val(checkedRow.data[0]["typeid"]);
+            $("#listId").val(checkedRow.data[0]["listid"]);
+            $("#typeId").attr("disabled","disabled");
             form.render();
             layer.open({
                 type: 1,
                 closeBtn:1,
                 btn: ['保存', '关闭'],
-                yes:function(){saveEditBaselistType()},
+                yes:function(){saveEditBaselistItem()},
                 btn2:function(index, layero){
                     layer.close(index);
                     resetAddForm();
@@ -194,26 +206,25 @@
             });
         }
 
-        function saveEditBaselistType() {
+        function saveEditBaselistItem() {
             var checkedRow = table.checkStatus('listItemTable');
-            var baselistType = {};
+            var baselistItem = {};
+            var listid=$("#listId").val();
+            var typeid=$("#typeId").val();
+            var listvalue=$("#listValue").val();
+            var listname=$("#listName").val();
+            if(typeid==-1){
+                layer.msg('请选择一项字典类型',{time:1000});
+                return;
 
-            var name = $("#typeName").val();
-            var enabled = $("#enabled")[0]['checked'];
-            if (name == "") {
-                layer.msg('类型名称不能为空', {time: 1000});
-                return false;
             }
-            if (enabled) {
-                enabled = 1;
-            } else {
-                enabled = 0;
-            }
-            baselistType.typeid = checkedRow.data[0]["typeid"];
-            baselistType.typename = name;
-            baselistType.enaled = enabled;
-            var url = "<c:url value="/baseListType/edit.do"/>";
-            $.post(url, baselistType, function (data) {
+            baselistItem.listid=listid;
+            baselistItem.typeid=typeid;
+            baselistItem.listvalue=listvalue;
+            baselistItem.listname=listname;
+
+            var url = "<c:url value="/baseListItem/edit.do"/>";
+            $.post(url, baselistItem, function (data) {
                 if (data.code == "200") {
                     resetAddForm();
                     layer.closeAll();
@@ -253,6 +264,7 @@
 </body>
     <div id="createItem" style="display:none; padding-top: 10px;">
     <form class="layui-form" action="" lay-filter="addForm">
+        <input type="hidden" lay-filter="listId" id="listId">
         <div class="layui-form-item">
             <label class="layui-form-label">字典类型</label>
             <div class="layui-input-inline">
