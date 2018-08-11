@@ -126,14 +126,21 @@
                 idList.push(checkedRow.data[i]["typeid"]);
             }
 
-            $.post(webRoot+"baseListType/delete.do",{idList:idList},function(data){
-                if(data.code=="200"){
-                    layer.msg('删除成功',{time:1000});
-                    search();
-                }else{
-                    layer.alert(data.message, {icon: 1});
-                }
+            layer.confirm('确认删除所选项目?', {icon: 3, title:'确认'}, function(index){
+
+                $.post(webRoot+"baseListType/delete.do",{idList:idList},function(data){
+                    if(data.code=="200"){
+                        layer.msg('删除成功',{time:1000});
+                        layer.close(index);
+                        search();
+                    }else{
+                        layer.alert(data.message, {icon: 1});
+                    }
+                });
+
             });
+
+
         }
         function resetAddForm(){
             form.val("addForm", {

@@ -35,8 +35,8 @@
     <include refid="Base_Column_List" />
     FROM baselistitem a left join baselisttype b on a.TypeID=b.TypeID
     <where>
-      <if test="typeId != null" >
-         a.TypeID=#{typeId}
+      <if test="typeid != null and typeid!=-1" >
+         a.TypeID=#{typeid}
       </if>
 
     </where>

@@ -35,6 +35,12 @@ public class BaseListTypeController {
     public Map<String,Object>queryBalistTypePage(BaseListTypeParam param){
         PageInfo<BaseListType> pageInfo=new PageInfo<BaseListType>();
         pageInfo=baseListTypeService.queryBaseListType(param,param.getLimit(),param.getPage());
+        if(param.isShowAll()){
+            BaseListType all=new BaseListType();
+            all.setTypename("全部");
+            all.setTypeid(-1);
+            pageInfo.getList().add(0,all);
+        }
         Map<String,Object> result=new HashMap<String,Object>();
         result.put("code","0");
         result.put("msg","");
