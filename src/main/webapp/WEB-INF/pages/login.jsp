@@ -23,7 +23,7 @@
 <div class="form-signin">
     <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
     <label for="inputEmail" class="sr-only">用户名</label>
-    <input type="text" id="inputEmail" class="form-control" value="123" placeholder="用户名/邮箱" autofocus/>
+    <input type="text" id="inputEmail" class="form-control" value="muys2" placeholder="用户名/邮箱" autofocus/>
     <br/>
     <label for="inputPassword" class="sr-only">密码</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="密码" value="ddd" />
