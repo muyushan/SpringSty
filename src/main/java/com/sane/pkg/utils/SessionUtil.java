@@ -20,6 +20,10 @@ public class SessionUtil {
         if(null==session){
         throw  new Exception("登录信息超时请重新登录");
         }
+       Object obj= session.getAttribute(CURRENT_USER);
+        if(obj==null){
+            throw  new Exception("登录信息超时请重新登录");
+        }
       String userName=  session.getAttribute(CURRENT_USER).toString();
         return  userName;
     }

@@ -61,6 +61,9 @@
             $("#editListItem").click(function(){
                 showEditWindow();
             });
+            $("#uploadListItem").click(function(){
+                showUploadDialog();
+            });
             $("#createNewItem").click(function(){
                 layer.open({
                     type: 1,
@@ -239,6 +242,25 @@
             });
         }
 
+        function showUploadDialog(){
+            layer.open({
+                type: 1,
+                closeBtn:1,
+                btn: ['上传', '关闭'],
+                yes:function(){},
+                btn2:function(index, layero){
+                    layer.close(index);
+                },
+                cancel: function(index, layero){
+                    resetAddForm();
+                },
+                skin: 'layui-layer-molv',
+                area: ['380px', '200px'],
+                title:'上传字典项',
+                content: $('#uploadDialog')
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -257,6 +279,7 @@
     <button class="layui-btn" id="createNewItem"> <i class="layui-icon">&#xe654;</i>增加</button>
     <button class="layui-btn" id="editListItem"> <i class="layui-icon">&#xe642;</i>编辑</button>
     <button class="layui-btn" id="deleteListItem"> <i class="layui-icon">&#xe640;</i>删除</button>
+    <button class="layui-btn" id="uploadListItem"> <i class="layui-icon layui-icon-upload"></i>批量上传</button>
 </div>
 <table id="listItemTable" lay-filter="listItemTable">
 </table>
@@ -287,5 +310,11 @@
         </div>
     </form>
 </div>
-
+<div id="uploadDialog" style="display: none; padding-top: 10px;">
+    <form class="layui-form" action="" lay-filter="uploadForm">
+        <input type="file" id="uploadFile" class="layui-inline" /><button type="button" class="layui-btn" id="downLoadButton">
+        <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
+    </button>
+    </form>
+</div>
 </html>
