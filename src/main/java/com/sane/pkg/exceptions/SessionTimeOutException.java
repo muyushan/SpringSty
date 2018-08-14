@@ -9,6 +9,8 @@ public class SessionTimeOutException extends  Exception{
         super(message);
     }
     public SessionTimeOutException(String errorCode,String errorMessage){
+        super(errorMessage);
+        this.errorCode=errorCode;
 
     }
     public String getErrorCode() {

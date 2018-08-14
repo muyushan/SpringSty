@@ -1,24 +1,23 @@
 package com.sane.pkg.intercepts;
 
+import com.sane.pkg.exceptions.SessionTimeOutException;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Logger;
 
-public class HandlerInterceptor extends HandlerInterceptorAdapter {
-    private  String[] allowUrls;
+public class SessionCheckInterceptor extends HandlerInterceptorAdapter {
+   private org.slf4j.Logger logger= LoggerFactory.getLogger(SessionCheckInterceptor.class);
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        logger.info("=============session check=========");
         String requestUrl=request.getRequestURI();
-        //检查请求过来的是否是请求白名单中的一个
-        for(String url:allowUrls){
-            if(requestUrl.endsWith(url)||requestUrl.contains(url)){
-                return  true;
-            }
-        }
+
         //如果请求中携带有x-requested-with 请求头则说明是ajax请求过来的
         if(request.getHeader("x-requested-with")!=null&&request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){
 
@@ -37,7 +36,18 @@ public class HandlerInterceptor extends HandlerInterceptorAdapter {
                 return  false;
             }
         }else{
-            throw new SessionTimeOutException();
+            try{
+                String loginName= SessionUtil.getCurrentUserInfo(request);
+                if(StringUtils.isEmpty(loginName)){
+
+                    throw  new SessionTimeOutException("Session 过期请重新登录");
+                }
+                return  true;
+            }
+            catch (Exception ex){
+               throw  new SessionTimeOutException(ex.getMessage());
+            }
+
         }
     }
 
