@@ -1,5 +1,9 @@
 package com.sane.pkg.intercepts;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
+import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.exceptions.SessionTimeOutException;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -40,12 +44,18 @@ public class SessionCheckInterceptor extends HandlerInterceptorAdapter {
                 String loginName= SessionUtil.getCurrentUserInfo(request);
                 if(StringUtils.isEmpty(loginName)){
 
-                    throw  new SessionTimeOutException("Session 过期请重新登录");
+                    MsgBean msgBean=new MsgBean();
+                    msgBean.setCode("timeout");
+                    msgBean.setMessage("Session 过期请重新登录");
+                    throw  new SessionTimeOutException(JSON.toJSONString(msgBean));
                 }
                 return  true;
             }
             catch (Exception ex){
-               throw  new SessionTimeOutException(ex.getMessage());
+                MsgBean msgBean=new MsgBean();
+                msgBean.setCode("timeout");
+                msgBean.setMessage(ex.getMessage());
+               throw  new SessionTimeOutException(JSON.toJSONString(msgBean));
             }
 
         }

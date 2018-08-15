@@ -1,5 +1,11 @@
 package com.sane.pkg.controller;
 
+import com.alibaba.druid.support.json.JSONParser;
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonParser;
+import com.sane.pkg.beans.commons.MsgBean;
+import com.sane.pkg.exceptions.BizException;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.io.FileUtils;
@@ -31,7 +37,10 @@ public class DownLoadFileController {
         String realPath=RequestContextUtils.getWebApplicationContext(request).getServletContext().getRealPath(filePath);
         File file=new File(realPath);
         if(!file.exists()){
-            throw  new FileNotFoundException("未找到文件"+fileName);
+            MsgBean msgBean=new MsgBean();
+            msgBean.setCode("402");
+            msgBean.setMessage("未找到文件"+fileName);
+            throw  new BizException( JSON.toJSONString(msgBean));
         }
       InputStream fileInputStream=FileUtils.openInputStream(file);
         OutputStream os = response.getOutputStream();

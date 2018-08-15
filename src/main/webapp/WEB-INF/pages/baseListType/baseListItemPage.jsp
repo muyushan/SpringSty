@@ -315,7 +315,7 @@
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <input type="file" id="uploadFile" class="layui-inline" class="layui-input"/>
-                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('ddd.xls')">
+                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('dddd.xls')">
                     <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
                 </button>
             </div>
