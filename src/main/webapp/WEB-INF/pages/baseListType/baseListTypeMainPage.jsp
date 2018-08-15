@@ -139,8 +139,6 @@
                 });
 
             });
-
-
         }
         function resetAddForm(){
             form.val("addForm", {

@@ -80,7 +80,7 @@
                     skin: 'layui-layer-molv',
                     area: ['380px', '400px'],
                     title:'创建字典项',
-                    content: $('#createItem') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    content: $('#createItem')
                 });
             });
         });
@@ -205,7 +205,7 @@
                 skin: 'layui-layer-molv',
                 area: ['380px', '400px'],
                 title:'编辑字典项',
-                content: $('#createItem') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                content: $('#createItem')
             });
         }
 
@@ -310,11 +310,17 @@
         </div>
     </form>
 </div>
-<div id="uploadDialog" style="display: none; padding-top: 10px;">
+<div id="uploadDialog" style="display: none; padding-top: 10px;padding-left: 10px;>
     <form class="layui-form" action="" lay-filter="uploadForm">
-        <input type="file" id="uploadFile" class="layui-inline" /><button type="button" class="layui-btn" id="downLoadButton">
-        <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
-    </button>
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="file" id="uploadFile" class="layui-inline" class="layui-input"/>
+                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('ddd.xls')">
+                    <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
+                </button>
+            </div>
+        </div>
+
     </form>
 </div>
 </html>
