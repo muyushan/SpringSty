@@ -60,6 +60,6 @@
         <welcome-file>showLogin.do</welcome-file>
     </welcome-file-list>
     <session-config>
-        <session-timeout>240</session-timeout>
+        <session-timeout>1</session-timeout>
     </session-config>
 </web-app>
