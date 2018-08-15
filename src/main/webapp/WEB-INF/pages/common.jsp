@@ -19,6 +19,17 @@
     </style>
     <script>
         var webRoot="<c:out value="${WebRoot}"></c:out>";
+        $.ajaxSetup({
+            complete: function(xhr,status) {
+                var sessionStatus = xhr.getResponseHeader('sessionstatus');
+                if(sessionStatus == 'timeout') {
+                    layer.confirm('由于长时间未操作界面已经过期，点击【确定】按钮重新登录', {icon: 3, title:'提示'}, function(index){
+                        window.top.location.href = webRoot;
+                    });
+
+                }
+            }
+        });
     </script>
 </head>
 <body>

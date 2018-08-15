@@ -30,8 +30,7 @@ public class LoginController {
             if(StringUtils.equals(msgBean.getCode(),MsgBean.SUCCESS)){
                 SessionUtil.setCurrentUserInfo(request,userInfo);
             }
-
-            request.getSession().setAttribute("WebRoot",getWebRoot(request));
+            request.getSession().setAttribute("WebRoot",SessionUtil.getWebRoot(request));
         }
         catch (Exception e){
             msgBean=new MsgBean();
@@ -41,33 +40,7 @@ public class LoginController {
         return  msgBean;
 
     }
-    private  String getWebRoot(HttpServletRequest request){
-        StringBuffer sbRoot = new StringBuffer(50);
-        String protocol = request.getProtocol();//表示的是‘http’
-        int port = request.getServerPort();//表示的是ip、或者是localhost
-        String serverName = request.getServerName();//获取对应的项目的名称
-        sbRoot.append(serverName);
-        if(protocol.toLowerCase().startsWith("https")){
-            sbRoot.insert(0, "https://");
-            if(port != 443){
-                sbRoot.append(":").append(port);
-            }
-        }else if(protocol.toLowerCase().startsWith("http")){
-            sbRoot.insert(0, "http://");
-            if(port != 80){
-                sbRoot.append(":").append(port);
-            }
-        }
 
-        String strContextPath = request.getContextPath();
-        if (strContextPath != null && !strContextPath.equals("/")){
-            sbRoot.append(strContextPath);
-        }
-
-        sbRoot.append("/");
-        return sbRoot.toString();
-
-    }
     @RequestMapping("redirect_to_workspcae")
     public  String toWorkSpace(){
         return "workspace";

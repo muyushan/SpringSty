@@ -34,8 +34,10 @@
             <mvc:exclude-mapping path="/login.do"></mvc:exclude-mapping>
         <bean class="com.sane.pkg.intercepts.SessionCheckInterceptor"/>
         </mvc:interceptor>
-
     </mvc:interceptors>
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView" value="error/error"></property>
+    </bean>
     <!--<mvc:resources location="/WEB-INF/pages/js" mapping="/js/**"></mvc:resources>-->
     <!--<mvc:resources location="/WEB-INF/pages/css" mapping="/css/**"></mvc:resources>-->
     <!--<mvc:resources location="/WEB-INF/pages/images" mapping="/img/**"></mvc:resources>-->

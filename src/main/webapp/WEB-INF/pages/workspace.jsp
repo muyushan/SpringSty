@@ -43,7 +43,6 @@
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListItem/baseListItemPage.do"/>','数据字典维护')">数据字典维护</a></dd>
                     </dl>
                 </li>
-
             </ul>
         </div>
     </div>

@@ -32,4 +32,39 @@ public class SessionUtil {
         HttpServletRequest request=((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         return  getCurrentUserInfo(request);
     }
+
+    public static   Object getSessionAttribute(HttpServletRequest request,String attr){
+        return  request.getSession().getAttribute(attr);
+    }
+
+    public  static   String getWebRoot(HttpServletRequest request){
+        StringBuffer sbRoot = new StringBuffer(50);
+        //表示的是‘http’
+        String protocol = request.getProtocol();
+        //表示的是ip、或者是localhost
+        int port = request.getServerPort();
+        //获取对应的项目的名称
+        String serverName = request.getServerName();
+        sbRoot.append(serverName);
+        if(protocol.toLowerCase().startsWith("https")){
+            sbRoot.insert(0, "https://");
+            if(port != 443){
+                sbRoot.append(":").append(port);
+            }
+        }else if(protocol.toLowerCase().startsWith("http")){
+            sbRoot.insert(0, "http://");
+            if(port != 80){
+                sbRoot.append(":").append(port);
+            }
+        }
+
+        String strContextPath = request.getContextPath();
+        if (strContextPath != null && !strContextPath.equals("/")){
+            sbRoot.append(strContextPath);
+        }
+
+        sbRoot.append("/");
+        return sbRoot.toString();
+
+    }
 }
