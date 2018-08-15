@@ -91,3 +91,11 @@ function getSecond(date){
     }
     return second;
 }
+
+function downFile(fileName){
+var url=webRoot+"downloadFile/"+fileName+"/down.do";
+    // $.get(url);
+    var form = $("<form></form>").attr("action", url).attr("method", "post");
+    form.appendTo('body').submit().remove();
+
+}
