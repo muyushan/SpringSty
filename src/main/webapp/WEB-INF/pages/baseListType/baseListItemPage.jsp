@@ -5,6 +5,7 @@
 <html>
 
 <head>
+    <script type="text/javascript" src="<c:url value="/js/ajaxfileupload.js"/>"></script>
     <script>
         var table;
         var form;
@@ -315,7 +316,7 @@
         <div class="layui-form-item">
             <div class="layui-input-inline">
                 <input type="file" id="uploadFile" class="layui-inline" class="layui-input"/>
-                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('dddd.xls')">
+                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('字典项上传模板.xls')">
                     <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
                 </button>
             </div>

@@ -17,6 +17,7 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +26,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
-@RequestMapping("/downloadFile")
+@RequestMapping(value = "/downloadFile")
 @Controller
 public class DownLoadFileController {
     private Log logger= LogFactory.getLog(getClass());
     @RequestMapping("{file}/down")
     public void downLoad(@PathVariable("file") String fileName, HttpServletRequest request, HttpServletResponse response) throws  Exception{
         String basePath="/WEB-INF/pages/downloadFile/";
+        fileName= URLDecoder.decode(fileName,"UTF-8");
         String filePath=basePath+fileName;
         String realPath=RequestContextUtils.getWebApplicationContext(request).getServletContext().getRealPath(filePath);
         File file=new File(realPath);
@@ -42,11 +47,11 @@ public class DownLoadFileController {
             msgBean.setMessage("未找到文件"+fileName);
             throw  new BizException( JSON.toJSONString(msgBean));
         }
-      InputStream fileInputStream=FileUtils.openInputStream(file);
+        InputStream fileInputStream=FileUtils.openInputStream(file);
         OutputStream os = response.getOutputStream();
         response.reset();
+        fileName= URLEncoder.encode(fileName,"UTF-8");
         response.setHeader("Content-disposition","attachment;filename="+fileName);
-        response.setContentType("application/vnd.ms-excel");
         int index=0;
         byte[] bytes = new byte[4096];
         while((index= fileInputStream.read(bytes))!= -1){
@@ -55,7 +60,5 @@ public class DownLoadFileController {
         }
         os.close();
         fileInputStream.close();
-        logger.info(realPath);
-
     }
 }
