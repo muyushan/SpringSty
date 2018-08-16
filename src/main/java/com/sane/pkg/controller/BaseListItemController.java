@@ -9,14 +9,19 @@ import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +30,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("baseListItem")
 public class BaseListItemController {
+    private Log logger= LogFactory.getLog(getClass());
     @Autowired
     private BaseListItemService baseListItemService;
 
@@ -106,5 +112,16 @@ public class BaseListItemController {
         }
 
         return  msgBean;
+    }
+
+
+    @RequestMapping("upload")
+    public MsgBean uploadBaseListItem(@RequestPart("excelFile")MultipartFile excelFile, HttpServletRequest request){
+
+//       excelFile.getInputStream();
+
+
+
+        return  null;
     }
 }

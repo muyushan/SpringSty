@@ -5,6 +5,7 @@
 <html>
 
 <head>
+    <script type="text/javascript" src="<c:url value="/js/ajaxfileupload.js"/>"></script>
     <script>
         var table;
         var form;
@@ -247,7 +248,7 @@
                 type: 1,
                 closeBtn:1,
                 btn: ['上传', '关闭'],
-                yes:function(){},
+                yes:function(){duUploadFile()},
                 btn2:function(index, layero){
                     layer.close(index);
                 },
@@ -258,6 +259,27 @@
                 area: ['380px', '200px'],
                 title:'上传字典项',
                 content: $('#uploadDialog')
+            });
+        }
+
+        function duUploadFile(){
+            // 发送请求
+            $.ajaxFileUpload({
+                url : webRoot+"baseListItem/upload.do",
+                secureuri : false,// 安全协议
+                fileElementId : "excelFile",// id
+                type : 'POST',
+                dataType : 'jsonp',
+                async : false,
+                error : function(data,status, e) {
+                },
+                success : function(data) {
+                    var result=eval("("+data+")")
+                    if(result.code!=null){
+
+                    }else{
+                    }
+                }
             });
         }
 
@@ -311,11 +333,14 @@
     </form>
 </div>
 <div id="uploadDialog" style="display: none; padding-top: 10px;padding-left: 10px;>
-    <form class="layui-form" action="" lay-filter="uploadForm">
+    <form class=" lay-filter="uploadForm">
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <input type="file" id="uploadFile" class="layui-inline" class="layui-input"/>
-                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('dddd.xls')">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" id="excelFile" name="excelFile" class="layui-inline" class="layui-input"/>
+                </form>
+
+                <button type="button" class="layui-btn" id="downLoadButton" onclick="downFile('字典项上传模板.xls')">
                     <i class="layui-icon layui-icon-download-circle"></i>下载上传模板
                 </button>
             </div>
