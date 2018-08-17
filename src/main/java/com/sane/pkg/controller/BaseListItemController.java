@@ -2,10 +2,12 @@ package com.sane.pkg.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.BaseListItem;
+import com.sane.pkg.beans.BaseListItemExcel;
 import com.sane.pkg.beans.BaseListType;
 import com.sane.pkg.beans.BaseListTypeParam;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.BaseListItemService;
+import com.sane.pkg.utils.ExcelUtil;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -119,17 +121,17 @@ public class BaseListItemController {
 
 
     @RequestMapping("upload")
+    @ResponseBody
     public MsgBean uploadBaseListItem(@RequestPart("excelFile")MultipartFile excelFile, HttpServletRequest request){
-
+        MsgBean msgBean= new MsgBean();
         try{
             InputStream inputStream=excelFile.getInputStream();
+            List<BaseListItemExcel> listItemExcels= ExcelUtil.readExcel(inputStream,excelFile, BaseListItemExcel.class);
+           logger.info(listItemExcels.size());
         }catch (Exception ex){
-
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage(ExceptionUtils.getMessage(ex));
         }
-
-
-
-
-        return  null;
+        return  msgBean;
     }
 }

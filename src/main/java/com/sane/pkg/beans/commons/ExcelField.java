@@ -11,7 +11,7 @@ public @interface ExcelField {
 
     String displayName() default "";
 
-    enum  FieldType{INT,DOUBLE,STRING,DATETIME};
+    enum  FieldType{INT,DOUBLE,STRING,DATETIME,SHORT};
 
     FieldType fieldType() default FieldType.STRING;
 

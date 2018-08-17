@@ -4,9 +4,9 @@ import com.sane.pkg.beans.commons.ExcelField;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public class BaseListItemExcel {
-    @ExcelField(displayName = "字典类型名称",fieldType = ExcelField.FieldType.STRING)
+    @ExcelField(displayName = "字典类型",fieldType = ExcelField.FieldType.STRING)
     private String typeName;
-    @ExcelField(displayName = "字典值",fieldType = ExcelField.FieldType.INT)
+    @ExcelField(displayName = "字典项值",fieldType = ExcelField.FieldType.SHORT)
     private Short listValue;
     @ExcelField(displayName = "字典项名称",fieldType = ExcelField.FieldType.STRING)
     private String listName;
