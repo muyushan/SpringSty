@@ -6,6 +6,7 @@ import com.sane.pkg.beans.BaseListItemExcel;
 import com.sane.pkg.beans.BaseListType;
 import com.sane.pkg.beans.BaseListTypeParam;
 import com.sane.pkg.beans.commons.MsgBean;
+import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.utils.ExcelUtil;
 import com.sane.pkg.utils.SessionUtil;
@@ -127,8 +128,12 @@ public class BaseListItemController {
         try{
             InputStream inputStream=excelFile.getInputStream();
             List<BaseListItemExcel> listItemExcels= ExcelUtil.readExcel(inputStream,excelFile, BaseListItemExcel.class);
-           logger.info(listItemExcels.size());
-        }catch (Exception ex){
+            msgBean=baseListItemService.uploadBaseListItem(listItemExcels);
+        }catch (BizException bizException){
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(bizException));
+        }
+        catch (Exception ex){
            msgBean.setCode(MsgBean.FAIL);
            msgBean.setMessage(ExceptionUtils.getMessage(ex));
         }

@@ -8,8 +8,10 @@ import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.dao.mappers.BaseListTypeMapper;
 import com.sane.pkg.service.BaseListTypeService;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.TRANSACTION_REQUIRED;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
     @Autowired
     private BaseListTypeMapper baseListTypeMapper;
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public MsgBean addBaseListType(BaseListType baseListType) {
         MsgBean msgBean=new MsgBean();
         if(StringUtils.isEmpty(baseListType.getTypename())){

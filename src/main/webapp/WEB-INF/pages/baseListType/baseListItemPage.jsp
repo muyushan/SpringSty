@@ -272,12 +272,25 @@
                 dataType : 'jsonp',
                 async : false,
                 error : function(data,status, e) {
+                    layer.open({
+                        type: 0,
+                        title: '提示',
+                        content: status
+                    });
                 },
                 success : function(data) {
                     var result=eval("("+data+")")
-                    if(result.code!=null){
+                    if(result.code!=null&& result.code=="200"){
+                        layer.closeAll();
+                        layer.msg('上传成功',{time:1000});
+                        search();
 
                     }else{
+                        layer.open({
+                            type: 0,
+                            title: '提示',
+                            content: result.message
+                        });
                     }
                 }
             });
