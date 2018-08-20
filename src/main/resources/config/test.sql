@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-08-14 19:27:29
+Date: 2018-08-20 20:03:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `baselistitem`;
 CREATE TABLE `baselistitem` (
   `ListID` int(11) NOT NULL AUTO_INCREMENT COMMENT '列表项Id',
   `TypeID` smallint(6) NOT NULL COMMENT '列表项类型Id',
-  `ListValue` smallint(6) NOT NULL COMMENT '列表项值',
+  `ListValue` varchar(20) NOT NULL COMMENT '列表项值',
   `ListName` varchar(20) NOT NULL COMMENT '列表项显示内容',
   `ListSort` smallint(6) DEFAULT NULL COMMENT '列表项排序',
   `Creator` varchar(20) NOT NULL COMMENT '创建人',
@@ -32,27 +32,13 @@ CREATE TABLE `baselistitem` (
   PRIMARY KEY (`ListID`),
   UNIQUE KEY `ListValue_UNIQUE` (`TypeID`,`ListValue`) USING BTREE,
   KEY `TypeID` (`TypeID`,`ListName`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='字典选项信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='字典选项信息表';
 
 -- ----------------------------
 -- Records of baselistitem
 -- ----------------------------
-INSERT INTO `baselistitem` VALUES ('3', '29', '1', '蓝莓', null, 'muys2', '2018-08-14 14:22:04', null, null);
-INSERT INTO `baselistitem` VALUES ('4', '29', '2', '芒果', null, 'muys2', '2018-08-14 14:22:23', null, null);
-INSERT INTO `baselistitem` VALUES ('5', '29', '3', '山楂', null, 'muys2', '2018-08-14 14:23:13', null, null);
-INSERT INTO `baselistitem` VALUES ('6', '30', '1', '1.5大口', null, 'muys2', '2018-08-14 14:23:55', null, null);
-INSERT INTO `baselistitem` VALUES ('7', '30', '2', '莲花', null, 'muys2', '2018-08-14 14:24:14', null, null);
-INSERT INTO `baselistitem` VALUES ('8', '29', '4', '苹果', null, 'muys2', '2018-08-14 14:40:40', null, null);
-INSERT INTO `baselistitem` VALUES ('9', '29', '5', '原味', null, 'muys2', '2018-08-14 14:41:34', null, null);
-INSERT INTO `baselistitem` VALUES ('10', '29', '6', '水蜜桃', null, 'muys2', '2018-08-14 14:42:52', null, null);
-INSERT INTO `baselistitem` VALUES ('11', '29', '7', '青柠', null, 'muys2', '2018-08-14 15:05:32', null, null);
-INSERT INTO `baselistitem` VALUES ('12', '30', '3', '1.5把子', null, 'muys2', '2018-08-14 15:07:02', null, null);
-INSERT INTO `baselistitem` VALUES ('13', '30', '4', '1.0把子', null, 'muys2', '2018-08-14 15:07:40', null, null);
-INSERT INTO `baselistitem` VALUES ('14', '32', '1', '箱', null, 'muys2', '2018-08-14 15:08:38', null, null);
-INSERT INTO `baselistitem` VALUES ('15', '32', '2', '件', null, 'muys2', '2018-08-14 15:09:12', null, null);
-INSERT INTO `baselistitem` VALUES ('16', '32', '3', '支', null, 'muys2', '2018-08-14 15:10:16', null, null);
-INSERT INTO `baselistitem` VALUES ('17', '32', '4', '个', null, 'muys2', '2018-08-14 15:10:56', null, null);
-INSERT INTO `baselistitem` VALUES ('18', '32', '5', '瓶', null, 'muys2', '2018-08-14 15:11:23', null, null);
+INSERT INTO `baselistitem` VALUES ('24', '35', 'AAAA', '蓝莓', null, 'muys2', '2018-08-20 20:00:33', null, null);
+INSERT INTO `baselistitem` VALUES ('25', '35', 'AAAB', '芒果', null, 'muys2', '2018-08-20 20:01:44', null, null);
 
 -- ----------------------------
 -- Table structure for baselisttype
@@ -60,39 +46,81 @@ INSERT INTO `baselistitem` VALUES ('18', '32', '5', '瓶', null, 'muys2', '2018-
 DROP TABLE IF EXISTS `baselisttype`;
 CREATE TABLE `baselisttype` (
   `TypeID` int(11) NOT NULL AUTO_INCREMENT COMMENT '列表项类型Id',
+  `TypeValue` varchar(4) NOT NULL,
   `TypeName` varchar(8) NOT NULL COMMENT '列表项类型描述',
   `Enaled` tinyint(4) DEFAULT '1' COMMENT '是否有效',
-  `Creator` varchar(20) NOT NULL COMMENT '创建人',
-  `CreatDate` datetime NOT NULL COMMENT '创建时间',
+  `Creator` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `CreatDate` datetime DEFAULT NULL COMMENT '创建时间',
   `Modifier` varchar(20) DEFAULT NULL COMMENT '修改人',
   `ModifyDate` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`TypeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='字典类型信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='字典类型信息表';
 
 -- ----------------------------
 -- Records of baselisttype
 -- ----------------------------
-INSERT INTO `baselisttype` VALUES ('29', '口味', '1', 'muys2', '2018-08-14 14:16:48', null, null);
-INSERT INTO `baselisttype` VALUES ('30', '包装规格', '1', 'muys2', '2018-08-14 14:17:27', 'muys2', '2018-08-14 14:17:47');
-INSERT INTO `baselisttype` VALUES ('31', '包装类型', '1', 'muys2', '2018-08-14 14:17:41', null, null);
-INSERT INTO `baselisttype` VALUES ('32', '包装单位', '1', 'muys2', '2018-08-14 14:18:22', null, null);
+INSERT INTO `baselisttype` VALUES ('35', 'AA', '口味', '1', 'muys2', '2018-08-20 19:31:14', null, null);
+INSERT INTO `baselisttype` VALUES ('36', 'AB', '规格', '1', 'muys2', '2018-08-20 19:31:41', null, null);
+INSERT INTO `baselisttype` VALUES ('37', 'AC', '单位', '1', 'muys2', '2018-08-20 19:32:01', null, null);
+INSERT INTO `baselisttype` VALUES ('38', 'AD', '包装规格', '1', 'muys2', '2018-08-20 19:32:26', null, null);
+INSERT INTO `baselisttype` VALUES ('39', 'AE', '包装类型', '1', 'muys2', '2018-08-20 19:32:36', null, null);
 
 -- ----------------------------
--- Table structure for customer
+-- Table structure for customerinfo
 -- ----------------------------
-DROP TABLE IF EXISTS `customer`;
-CREATE TABLE `customer` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `contact` varchar(255) DEFAULT NULL,
-  `telephone` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `remark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+DROP TABLE IF EXISTS `customerinfo`;
+CREATE TABLE `customerinfo` (
+  `CustomerId` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `CustomerCode` varchar(10) NOT NULL COMMENT '客户编码，系统生成',
+  `CustomerName` varchar(30) NOT NULL COMMENT '客户名称',
+  `CustomerZipCode` varchar(10) DEFAULT NULL COMMENT '客户邮编',
+  `CustomerPhone` varchar(30) DEFAULT NULL COMMENT '客户联系电话',
+  `CustomerEmail` varchar(30) DEFAULT NULL COMMENT '客户电子邮件地址',
+  `CustomerAddress` varchar(30) DEFAULT NULL COMMENT '联系地址',
+  PRIMARY KEY (`CustomerId`),
+  UNIQUE KEY `CustomerCode` (`CustomerCode`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of customer
+-- Records of customerinfo
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for productinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `productinfo`;
+CREATE TABLE `productinfo` (
+  `ProductCode` varchar(20) NOT NULL COMMENT '商品编码',
+  `ProductName` varchar(30) DEFAULT NULL COMMENT '商品名称',
+  `ProductCategory` int(11) DEFAULT NULL COMMENT '商品类表',
+  `HasBarCode` int(11) DEFAULT '0' COMMENT '是否有条码0：没有，1:有',
+  `BarCode` varchar(20) DEFAULT NULL COMMENT '条码',
+  `Unit` varchar(255) DEFAULT NULL COMMENT '单位',
+  `Weight` float DEFAULT '0' COMMENT '单位重量',
+  `Volume` float DEFAULT '0' COMMENT '单位体积',
+  PRIMARY KEY (`ProductCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of productinfo
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for storageproduct
+-- ----------------------------
+DROP TABLE IF EXISTS `storageproduct`;
+CREATE TABLE `storageproduct` (
+  `StorageProductId` int(11) NOT NULL AUTO_INCREMENT,
+  `ProductCode` varchar(20) DEFAULT NULL,
+  `PlaceholderQuantity` double DEFAULT '0',
+  `Quantity` double DEFAULT '0',
+  `Type` int(11) DEFAULT NULL COMMENT '库存类型：1:正常库存2：损耗库存',
+  PRIMARY KEY (`StorageProductId`),
+  UNIQUE KEY `StorageProduct_type` (`ProductCode`,`Type`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of storageproduct
 -- ----------------------------
 
 -- ----------------------------
