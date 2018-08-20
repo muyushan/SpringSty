@@ -123,7 +123,6 @@ public class BaseListItemServiceImpl implements BaseListItemService {
             baseListItem.setCreator(SessionUtil.getCurrentUserInfo());
             baseListItem.setCreatDate(new Date());
             baseListItem.setListName(baseListItemExcel.getListName());
-            baseListItem.setListValue(baseListItemExcel.getListValue());
             BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
             BaseListTypeCriteria.Criteria baseListTypeSql=baseListTypeCriteria.createCriteria();
             baseListTypeSql.andTypeNameEqualTo(baseListItemExcel.getTypeName());
@@ -136,6 +135,7 @@ public class BaseListItemServiceImpl implements BaseListItemService {
                 baseListType.setTypeName(baseListItemExcel.getTypeName());
                 baseListType.setEnaled(Byte.valueOf("1"));
                 baseListTypeService.addBaseListType(baseListType);
+
             }else{
                 baseListType=baseListTypeList.get(0);
             }
@@ -144,7 +144,6 @@ public class BaseListItemServiceImpl implements BaseListItemService {
             if(msgBean.getCode().equals(MsgBean.FAIL)){
                 throw new BizException(msgBean.getMessage());
             }
-
         }
         msgBean.setCode(MsgBean.SUCCESS);
         return msgBean;

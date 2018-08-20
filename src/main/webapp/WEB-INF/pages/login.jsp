@@ -11,7 +11,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="<c:url value="/js/bootstrap-4.1.1-dist/css/bootstrap.css"/>"/>
-    <script type="text/javascript" src="<c:url value="/js/jquery-3.3.1.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/jquery-2.2.4.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/popper.min.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/bootstrap-4.1.1-dist/js/bootstrap.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/util.js"/>"></script>

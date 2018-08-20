@@ -100,7 +100,7 @@
         function save(){
             var typeId=$("#typeId").val();
             var itemName=$("#listName").val();
-            if(typeId==null||typeId==""){
+            if(typeId==null||typeId==-1){
                 layer.msg('请选择字典类型',{time:1000});
                 return false;
             }
