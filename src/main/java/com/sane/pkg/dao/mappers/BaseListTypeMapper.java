@@ -10,7 +10,7 @@ public interface BaseListTypeMapper {
 
     int deleteByExample(BaseListTypeCriteria example);
 
-    int deleteByPrimaryKey(Integer typeid);
+    int deleteByPrimaryKey(Integer typeID);
 
     int insert(BaseListType record);
 
@@ -18,7 +18,7 @@ public interface BaseListTypeMapper {
 
     List<BaseListType> selectByExample(BaseListTypeCriteria example);
 
-    BaseListType selectByPrimaryKey(Integer typeid);
+    BaseListType selectByPrimaryKey(Integer typeID);
 
     int updateByExampleSelective(@Param("record") BaseListType record, @Param("example") BaseListTypeCriteria example);
 

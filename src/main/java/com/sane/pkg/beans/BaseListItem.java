@@ -3,62 +3,62 @@ package com.sane.pkg.beans;
 import java.util.Date;
 
 public class BaseListItem {
-    private Integer listid;
+    private Integer listID;
 
-    private Short typeid;
+    private Short typeID;
 
-    private Short listvalue;
+    private String listValue;
 
-    private String listname;
+    private String listName;
 
-    private Short listsort;
+    private Short listSort;
 
     private String creator;
 
-    private Date creatdate;
+    private Date creatDate;
 
     private String modifier;
 
-    private Date modifydate;
+    private Date modifyDate;
 
-    public Integer getListid() {
-        return listid;
+    public Integer getListID() {
+        return listID;
     }
 
-    public void setListid(Integer listid) {
-        this.listid = listid;
+    public void setListID(Integer listID) {
+        this.listID = listID;
     }
 
-    public Short getTypeid() {
-        return typeid;
+    public Short getTypeID() {
+        return typeID;
     }
 
-    public void setTypeid(Short typeid) {
-        this.typeid = typeid;
+    public void setTypeID(Short typeID) {
+        this.typeID = typeID;
     }
 
-    public Short getListvalue() {
-        return listvalue;
+    public String getListValue() {
+        return listValue;
     }
 
-    public void setListvalue(Short listvalue) {
-        this.listvalue = listvalue;
+    public void setListValue(String listValue) {
+        this.listValue = listValue == null ? null : listValue.trim();
     }
 
-    public String getListname() {
-        return listname;
+    public String getListName() {
+        return listName;
     }
 
-    public void setListname(String listname) {
-        this.listname = listname == null ? null : listname.trim();
+    public void setListName(String listName) {
+        this.listName = listName == null ? null : listName.trim();
     }
 
-    public Short getListsort() {
-        return listsort;
+    public Short getListSort() {
+        return listSort;
     }
 
-    public void setListsort(Short listsort) {
-        this.listsort = listsort;
+    public void setListSort(Short listSort) {
+        this.listSort = listSort;
     }
 
     public String getCreator() {
@@ -69,12 +69,12 @@ public class BaseListItem {
         this.creator = creator == null ? null : creator.trim();
     }
 
-    public Date getCreatdate() {
-        return creatdate;
+    public Date getCreatDate() {
+        return creatDate;
     }
 
-    public void setCreatdate(Date creatdate) {
-        this.creatdate = creatdate;
+    public void setCreatDate(Date creatDate) {
+        this.creatDate = creatDate;
     }
 
     public String getModifier() {
@@ -85,11 +85,11 @@ public class BaseListItem {
         this.modifier = modifier == null ? null : modifier.trim();
     }
 
-    public Date getModifydate() {
-        return modifydate;
+    public Date getModifyDate() {
+        return modifyDate;
     }
 
-    public void setModifydate(Date modifydate) {
-        this.modifydate = modifydate;
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }

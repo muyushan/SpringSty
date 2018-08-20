@@ -22,15 +22,15 @@
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
                     {field: 'typeName',title: '类型名称', width:200},
-                    {field: 'listvalue',title: '字典值', width:200},
-                    {field: 'listname',title: '字典名称', width:200},
+                    {field: 'listValue',title: '字典值', width:200},
+                    {field: 'listName',title: '字典名称', width:200},
                     {field: 'creator',title: '创建者', width:100},
-                    {field: 'creatdate',title: '创建时间', width:200,templet:function(record){
-                        return formatDateTime(record.creatdate);
+                    {field: 'creatDate',title: '创建时间', width:200,templet:function(record){
+                        return formatDateTime(record.creatDate);
                     }},
                     {field: 'modifier',title: '修改者', width:100},
                     {field: 'modifydate',title: '修改时间', width:200,templet:function(record){
-                        return formatDateTime(record.modifydate);
+                        return formatDateTime(record.modifyDate);
                     }}
                 ]]
             });
@@ -45,7 +45,7 @@
                 success:function(data){
                     var html='';
                     $.each(data.data,function(key,value){
-                        html+="<option value='"+value.typeid+"'>"+value.typename+"</option>";
+                        html+="<option value='"+value.typeID+"'>"+value.typeName+"</option>";
                     })
                     $("#listTypeName").html(html);
                     $("#typeId").html(html);
@@ -93,7 +93,7 @@
                     curr: 1 //重新从第 1 页开始
                 }
                 ,where: {
-                    typeid: typeid
+                    typeID: typeid
                 }
             });
         }
@@ -113,12 +113,8 @@
                 layer.msg('请填写字典项值',{time:1000});
                 return false;
             }
-            if(isNaN(itemValue)){
-                layer.msg('字典项的值必须是数字',{time:1000});
-                return false;
 
-            }
-         var param={typeid:typeId,listvalue:itemValue,listname:itemName};
+         var param={typeID:typeId,listValue:itemValue,listName:itemName};
             var url="<c:url value="/baseListItem/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
@@ -183,12 +179,12 @@
                 return;
             }
             form.val("addForm", {
-                "listName":checkedRow.data[0]["listname"],
-                "listValue": checkedRow.data[0]["listvalue"]
+                "listName":checkedRow.data[0]["listName"],
+                "listValue": checkedRow.data[0]["listValue"]
 
             });
-            $("#typeId").val(checkedRow.data[0]["typeid"]);
-            $("#listId").val(checkedRow.data[0]["listid"]);
+            $("#typeId").val(checkedRow.data[0]["typeID"]);
+            $("#listId").val(checkedRow.data[0]["listID"]);
             $("#typeId").attr("disabled","disabled");
             form.render();
             layer.open({
@@ -222,10 +218,10 @@
                 return;
 
             }
-            baselistItem.listid=listid;
-            baselistItem.typeid=typeid;
-            baselistItem.listvalue=listvalue;
-            baselistItem.listname=listname;
+            baselistItem.listID=listid;
+            baselistItem.typeID=typeid;
+            baselistItem.listValue=listvalue;
+            baselistItem.listName=listname;
 
             var url = "<c:url value="/baseListItem/edit.do"/>";
             $.post(url, baselistItem, function (data) {

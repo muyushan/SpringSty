@@ -27,14 +27,14 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
     @Transactional(propagation = Propagation.NESTED)
     public MsgBean addBaseListType(BaseListType baseListType) {
         MsgBean msgBean=new MsgBean();
-        if(StringUtils.isEmpty(baseListType.getTypename())){
+        if(StringUtils.isEmpty(baseListType.getTypeName())){
             msgBean.setMessage(MsgBean.FAIL);
             msgBean.setMessage("基础字典类型名称不能为空");
             return  msgBean;
         }
         BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
         BaseListTypeCriteria.Criteria criteria=baseListTypeCriteria.createCriteria();
-        criteria.andTypenameEqualTo(baseListType.getTypename());
+        criteria.andTypeNameEqualTo(baseListType.getTypeName());
         int count=baseListTypeMapper.countByExample(baseListTypeCriteria);
         if(count>0){
             msgBean.setMessage("已经存在了该类型字典，请更换名字");
@@ -50,8 +50,8 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
     public PageInfo<BaseListType> queryBaseListType(BaseListType baseListType, Integer pageSize, Integer pageNo) {
         BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
         BaseListTypeCriteria.Criteria criteria=baseListTypeCriteria.createCriteria();
-        if(StringUtils.isNotEmpty(baseListType.getTypename())){
-           criteria.andTypenameLike("%"+baseListType.getTypename()+"%");
+        if(StringUtils.isNotEmpty(baseListType.getTypeName())){
+           criteria.andTypeNameLike("%"+baseListType.getTypeName()+"%");
        }
         PageHelper.startPage(pageNo,pageSize);
        PageInfo pageInfo=new PageInfo(baseListTypeMapper.selectByExample(baseListTypeCriteria));
@@ -64,7 +64,7 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
        MsgBean msgBean=new MsgBean();
         BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
         BaseListTypeCriteria.Criteria criteria= baseListTypeCriteria.createCriteria();
-        criteria.andTypeidIn(idList);
+        criteria.andTypeIDIn(idList);
         int count=baseListTypeMapper.deleteByExample(baseListTypeCriteria);
         if(count!=idList.size()){
             throw  new Exception("删除失败");
@@ -79,8 +79,8 @@ public class BaseListTypeServiceImpl implements BaseListTypeService {
         MsgBean msgBean=new MsgBean();
         BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
         BaseListTypeCriteria.Criteria criteria=baseListTypeCriteria.createCriteria();
-        criteria.andTypeidNotEqualTo(baseListType.getTypeid());
-        criteria.andTypenameEqualTo(baseListType.getTypename());
+        criteria.andTypeIDNotEqualTo(baseListType.getTypeID());
+        criteria.andTypeNameEqualTo(baseListType.getTypeName());
         int count=baseListTypeMapper.countByExample(baseListTypeCriteria);
         if(count>0){
             msgBean.setCode("500");

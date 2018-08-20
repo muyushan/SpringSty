@@ -37,8 +37,8 @@ public class BaseListTypeController {
         pageInfo=baseListTypeService.queryBaseListType(param,param.getLimit(),param.getPage());
         if(param.isShowAll()){
             BaseListType all=new BaseListType();
-            all.setTypename("全部");
-            all.setTypeid(-1);
+            all.setTypeName("全部");
+            all.setTypeID(-1);
             pageInfo.getList().add(0,all);
         }
         Map<String,Object> result=new HashMap<String,Object>();
@@ -54,7 +54,7 @@ public class BaseListTypeController {
         MsgBean msgBean=null;
         try {
           String userName=SessionUtil.getCurrentUserInfo(request);
-          baseListType.setCreatdate(new Date());
+          baseListType.setCreatDate(new Date());
           baseListType.setCreator(userName);
           msgBean=baseListTypeService.addBaseListType(baseListType);
 
@@ -71,7 +71,7 @@ public class BaseListTypeController {
         MsgBean msgBean=null;
         try {
             String userName=SessionUtil.getCurrentUserInfo(request);
-            baseListType.setModifydate(new Date());
+            baseListType.setModifyDate(new Date());
             baseListType.setModifier(userName);
             msgBean=baseListTypeService.editBaseListType(baseListType);
         } catch (Exception e) {
