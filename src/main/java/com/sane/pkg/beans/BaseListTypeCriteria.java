@@ -185,6 +185,76 @@ public class BaseListTypeCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andTypeValueIsNull() {
+            addCriterion("TypeValue is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueIsNotNull() {
+            addCriterion("TypeValue is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueEqualTo(String value) {
+            addCriterion("TypeValue =", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueNotEqualTo(String value) {
+            addCriterion("TypeValue <>", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueGreaterThan(String value) {
+            addCriterion("TypeValue >", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueGreaterThanOrEqualTo(String value) {
+            addCriterion("TypeValue >=", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueLessThan(String value) {
+            addCriterion("TypeValue <", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueLessThanOrEqualTo(String value) {
+            addCriterion("TypeValue <=", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueLike(String value) {
+            addCriterion("TypeValue like", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueNotLike(String value) {
+            addCriterion("TypeValue not like", value, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueIn(List<String> values) {
+            addCriterion("TypeValue in", values, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueNotIn(List<String> values) {
+            addCriterion("TypeValue not in", values, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueBetween(String value1, String value2) {
+            addCriterion("TypeValue between", value1, value2, "typeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andTypeValueNotBetween(String value1, String value2) {
+            addCriterion("TypeValue not between", value1, value2, "typeValue");
+            return (Criteria) this;
+        }
+
         public Criteria andTypeNameIsNull() {
             addCriterion("TypeName is null");
             return (Criteria) this;

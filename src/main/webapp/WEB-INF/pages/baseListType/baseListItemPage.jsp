@@ -100,7 +100,6 @@
         function save(){
             var typeId=$("#typeId").val();
             var itemName=$("#listName").val();
-            var itemValue=$("#listValue").val();
             if(typeId==null||typeId==""){
                 layer.msg('请选择字典类型',{time:1000});
                 return false;
@@ -109,12 +108,8 @@
                 layer.msg('请填写字典项名称',{time:1000});
                 return false;
             }
-            if(itemValue==null||itemValue==""){
-                layer.msg('请填写字典项值',{time:1000});
-                return false;
-            }
 
-         var param={typeID:typeId,listValue:itemValue,listName:itemName};
+         var param={typeID:typeId,listName:itemName};
             var url="<c:url value="/baseListItem/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
@@ -161,8 +156,7 @@
         }
         function resetAddForm(){
             form.val("addForm", {
-                "listName": "",
-                "listValue": ""
+                "listName": ""
             });
             $("#typeId").val(-1);
             $("#typeId").removeAttr("disabled");
@@ -179,8 +173,7 @@
                 return;
             }
             form.val("addForm", {
-                "listName":checkedRow.data[0]["listName"],
-                "listValue": checkedRow.data[0]["listValue"]
+                "listName":checkedRow.data[0]["listName"]
 
             });
             $("#typeId").val(checkedRow.data[0]["typeID"]);
@@ -211,7 +204,6 @@
             var baselistItem = {};
             var listid=$("#listId").val();
             var typeid=$("#typeId").val();
-            var listvalue=$("#listValue").val();
             var listname=$("#listName").val();
             if(typeid==-1){
                 layer.msg('请选择一项字典类型',{time:1000});
@@ -220,7 +212,6 @@
             }
             baselistItem.listID=listid;
             baselistItem.typeID=typeid;
-            baselistItem.listValue=listvalue;
             baselistItem.listName=listname;
 
             var url = "<c:url value="/baseListItem/edit.do"/>";
@@ -330,13 +321,6 @@
         <label class="layui-form-label">字典名</label>
         <div class="layui-input-inline">
             <input lay-filter="listName" type="text" name="listName" id="listName"   lay-verify="required" placeholder="请输入字典名" autocomplete="off" class="layui-input">
-        </div>
-        </div>
-
-        <div class="layui-form-item">
-        <label class="layui-form-label">字典值</label>
-        <div class="layui-input-inline">
-            <input lay-filter="listValue" type="text" name="listValue" id="listValue"   lay-verify="required" placeholder="请输入字典值" autocomplete="off" class="layui-input">
         </div>
         </div>
     </form>

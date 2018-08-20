@@ -10,6 +10,7 @@ import com.sane.pkg.dao.mappers.udmappers.BaseListItemUDMapper;
 import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.service.BaseListTypeService;
+import com.sane.pkg.utils.CommonUtil;
 import com.sane.pkg.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,13 +41,28 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     @Override
     public MsgBean addBaseListItem(BaseListItem baseListItem) throws Exception{
         MsgBean msgBean=new MsgBean();
-
         if(isRepeat(baseListItem)){
             msgBean.setMessage("字典项重复，不允许添加");
             msgBean.setCode(MsgBean.FAIL);
             return msgBean;
         }
-
+        BaseListType baseListType=baseListTypeMapper.selectByPrimaryKey(baseListItem.getTypeID().intValue());
+        BaseListItemCriteria baseListItemCriteria=new BaseListItemCriteria();
+        BaseListItemCriteria.Criteria baseListItemCriteriaSql=baseListItemCriteria.createCriteria();
+        baseListItemCriteriaSql.andTypeIDEqualTo(baseListItem.getTypeID());
+        baseListItemCriteria.setLimitStart(0);
+        baseListItemCriteria.setLimitEnd(1);
+        baseListItemCriteria.setOrderByClause("ListID DESC");
+        List<BaseListItem> baseListItemList=baseListItemMapper.selectByExample(baseListItemCriteria);
+        String nextCode="";
+        if (CollectionUtils.isEmpty(baseListItemList)){
+            nextCode=CommonUtil.generageNextCode("","");
+        }else{
+            BaseListItem last=baseListItemList.get(0);
+            nextCode =CommonUtil.generageNextCode(last.getListValue().substring(2,3),last.getListValue().substring(3,4));
+        }
+        nextCode=baseListType.getTypeValue()+nextCode;
+        baseListItem.setListValue(nextCode);
         int count=baseListItemMapper.insertSelective(baseListItem);
 
         if(count==1){
@@ -89,7 +105,6 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     private  boolean isRepeat(BaseListItem baseListItem){
         BaseListItemCriteria baseListItemCriteria=new BaseListItemCriteria();
         BaseListItemCriteria.Criteria criteria=baseListItemCriteria.createCriteria();
-        criteria.andListValueEqualTo(baseListItem.getListValue());
         criteria.andTypeIDEqualTo(baseListItem.getTypeID());
         criteria.andListNameEqualTo(baseListItem.getListName());
         if(baseListItem.getListID()!=null){

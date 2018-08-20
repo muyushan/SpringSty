@@ -21,6 +21,7 @@
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
                     {field: 'typeName',title: '类型名称', width:200},
+                    {field: 'typeValue',title: '类型编码', width:200},
                     {field: 'creator',title: '创建者', width:100},
                     {field: 'creatDate',title: '创建时间', width:200,templet:function(record){
                         return formatDateTime(record.creatDate);

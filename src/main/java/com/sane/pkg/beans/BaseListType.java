@@ -5,6 +5,8 @@ import java.util.Date;
 public class BaseListType {
     private Integer typeID;
 
+    private String typeValue;
+
     private String typeName;
 
     private Byte enaled;
@@ -23,6 +25,14 @@ public class BaseListType {
 
     public void setTypeID(Integer typeID) {
         this.typeID = typeID;
+    }
+
+    public String getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue == null ? null : typeValue.trim();
     }
 
     public String getTypeName() {
