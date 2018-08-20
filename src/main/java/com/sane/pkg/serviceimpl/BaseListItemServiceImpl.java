@@ -10,6 +10,7 @@ import com.sane.pkg.dao.mappers.udmappers.BaseListItemUDMapper;
 import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.service.BaseListTypeService;
+import com.sane.pkg.utils.CommonUtil;
 import com.sane.pkg.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     @Override
     public PageInfo<BaseListItem> queryBaseListItem(BaseListTypeParam baseListTypeParam) {
         PageHelper.startPage(baseListTypeParam.getPage(),baseListTypeParam.getLimit());
-        PageInfo pageInfo=new PageInfo(baseListItemUdMapper.queryBaseListItemByTypeId(baseListTypeParam.getTypeid()));
+        PageInfo pageInfo=new PageInfo(baseListItemUdMapper.queryBaseListItemByTypeId(baseListTypeParam.getTypeID()));
         return pageInfo;
     }
 
@@ -40,13 +41,28 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     @Override
     public MsgBean addBaseListItem(BaseListItem baseListItem) throws Exception{
         MsgBean msgBean=new MsgBean();
-
         if(isRepeat(baseListItem)){
             msgBean.setMessage("字典项重复，不允许添加");
             msgBean.setCode(MsgBean.FAIL);
             return msgBean;
         }
-
+        BaseListType baseListType=baseListTypeMapper.selectByPrimaryKey(baseListItem.getTypeID().intValue());
+        BaseListItemCriteria baseListItemCriteria=new BaseListItemCriteria();
+        BaseListItemCriteria.Criteria baseListItemCriteriaSql=baseListItemCriteria.createCriteria();
+        baseListItemCriteriaSql.andTypeIDEqualTo(baseListItem.getTypeID());
+        baseListItemCriteria.setLimitStart(0);
+        baseListItemCriteria.setLimitEnd(1);
+        baseListItemCriteria.setOrderByClause("ListID DESC");
+        List<BaseListItem> baseListItemList=baseListItemMapper.selectByExample(baseListItemCriteria);
+        String nextCode="";
+        if (CollectionUtils.isEmpty(baseListItemList)){
+            nextCode=CommonUtil.generageNextCode("","");
+        }else{
+            BaseListItem last=baseListItemList.get(0);
+            nextCode =CommonUtil.generageNextCode(last.getListValue().substring(2,3),last.getListValue().substring(3,4));
+        }
+        nextCode=baseListType.getTypeValue()+nextCode;
+        baseListItem.setListValue(nextCode);
         int count=baseListItemMapper.insertSelective(baseListItem);
 
         if(count==1){
@@ -76,7 +92,7 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     public MsgBean deleteBaseListItem(List<Integer> idList) throws Exception {
         BaseListItemCriteria baseListItemCriteria =new BaseListItemCriteria();
         BaseListItemCriteria.Criteria baseListItemSQL=baseListItemCriteria.createCriteria();
-        baseListItemSQL.andListidIn(idList);
+        baseListItemSQL.andListIDIn(idList);
         int count =baseListItemMapper.deleteByExample(baseListItemCriteria);
         if(count!=idList.size()){
             throw new Exception("删除失败，请重试");
@@ -89,11 +105,10 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     private  boolean isRepeat(BaseListItem baseListItem){
         BaseListItemCriteria baseListItemCriteria=new BaseListItemCriteria();
         BaseListItemCriteria.Criteria criteria=baseListItemCriteria.createCriteria();
-        criteria.andListvalueEqualTo(baseListItem.getListvalue());
-        criteria.andTypeidEqualTo(baseListItem.getTypeid());
-        criteria.andListnameEqualTo(baseListItem.getListname());
-        if(baseListItem.getListid()!=null){
-            criteria.andListidNotEqualTo(baseListItem.getListid());
+        criteria.andTypeIDEqualTo(baseListItem.getTypeID());
+        criteria.andListNameEqualTo(baseListItem.getListName());
+        if(baseListItem.getListID()!=null){
+            criteria.andListIDNotEqualTo(baseListItem.getListID());
         }
         int count=baseListItemMapper.countByExample(baseListItemCriteria);
         return  count>0;
@@ -106,25 +121,25 @@ public class BaseListItemServiceImpl implements BaseListItemService {
         for(BaseListItemExcel baseListItemExcel:baseListItemExcels){
             BaseListItem baseListItem=new BaseListItem();
             baseListItem.setCreator(SessionUtil.getCurrentUserInfo());
-            baseListItem.setCreatdate(new Date());
-            baseListItem.setListname(baseListItemExcel.getListName());
-            baseListItem.setListvalue(baseListItemExcel.getListValue());
+            baseListItem.setCreatDate(new Date());
+            baseListItem.setListName(baseListItemExcel.getListName());
+            baseListItem.setListValue(baseListItemExcel.getListValue());
             BaseListTypeCriteria baseListTypeCriteria=new BaseListTypeCriteria();
             BaseListTypeCriteria.Criteria baseListTypeSql=baseListTypeCriteria.createCriteria();
-            baseListTypeSql.andTypenameEqualTo(baseListItemExcel.getTypeName());
+            baseListTypeSql.andTypeNameEqualTo(baseListItemExcel.getTypeName());
             List<BaseListType> baseListTypeList=baseListTypeMapper.selectByExample(baseListTypeCriteria);
             BaseListType baseListType=null;
             if(CollectionUtils.isEmpty(baseListTypeList)){
                 baseListType=new BaseListType();
-                baseListType.setCreatdate(new Date());
+                baseListType.setCreatDate(new Date());
                 baseListType.setCreator(SessionUtil.getCurrentUserInfo());
-                baseListType.setTypename(baseListItemExcel.getTypeName());
+                baseListType.setTypeName(baseListItemExcel.getTypeName());
                 baseListType.setEnaled(Byte.valueOf("1"));
                 baseListTypeService.addBaseListType(baseListType);
             }else{
                 baseListType=baseListTypeList.get(0);
             }
-            baseListItem.setTypeid(baseListType.getTypeid().shortValue());
+            baseListItem.setTypeID(baseListType.getTypeID().shortValue());
             msgBean=addBaseListItem(baseListItem);
             if(msgBean.getCode().equals(MsgBean.FAIL)){
                 throw new BizException(msgBean.getMessage());

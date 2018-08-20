@@ -10,7 +10,7 @@ public interface BaseListItemMapper {
 
     int deleteByExample(BaseListItemCriteria example);
 
-    int deleteByPrimaryKey(Integer listid);
+    int deleteByPrimaryKey(Integer listID);
 
     int insert(BaseListItem record);
 
@@ -18,7 +18,7 @@ public interface BaseListItemMapper {
 
     List<BaseListItem> selectByExample(BaseListItemCriteria example);
 
-    BaseListItem selectByPrimaryKey(Integer listid);
+    BaseListItem selectByPrimaryKey(Integer listID);
 
     int updateByExampleSelective(@Param("record") BaseListItem record, @Param("example") BaseListItemCriteria example);
 

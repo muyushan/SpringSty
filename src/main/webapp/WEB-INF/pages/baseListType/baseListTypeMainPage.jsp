@@ -20,14 +20,15 @@
                 cols: [[
                     {title:'序号',type:'numbers'},
                     {type:'checkbox'},
-                    {field: 'typename',title: '类型名称', width:200},
+                    {field: 'typeName',title: '类型名称', width:200},
+                    {field: 'typeValue',title: '类型编码', width:200},
                     {field: 'creator',title: '创建者', width:100},
-                    {field: 'creatdate',title: '创建时间', width:200,templet:function(record){
-                        return formatDateTime(record.creatdate);
+                    {field: 'creatDate',title: '创建时间', width:200,templet:function(record){
+                        return formatDateTime(record.creatDate);
                     }},
                     {field: 'modifier',title: '修改者', width:100},
-                    {field: 'modifydate',title: '修改时间', width:200,templet:function(record){
-                        return formatDateTime(record.modifydate);
+                    {field: 'modifyDate',title: '修改时间', width:200,templet:function(record){
+                        return formatDateTime(record.modifyDate);
                     }},
                     {field: 'enaled',title: '是否启用',align:'center',width: 100,templet:function(record){
                         if(record.enaled=="1"){
@@ -81,7 +82,7 @@
                     curr: 1 //重新从第 1 页开始
                 }
                 ,where: {
-                    typename: typeName
+                    typeName: typeName
                 }
             });
         }
@@ -97,7 +98,7 @@
             }else {
                 enabled=0;
             }
-         var param={typename:name,enaled:enabled};
+         var param={typeName:name,enaled:enabled};
             var url="<c:url value="/baseListType/add.do"/>";
             $.post(url,param,function(data){
                 if(data.code=="200"){
@@ -123,7 +124,7 @@
             }
             var idList=new Array();
             for(var i=0;i<checkedRow.data.length;i++){
-                idList.push(checkedRow.data[i]["typeid"]);
+                idList.push(checkedRow.data[i]["typeID"]);
             }
 
             layer.confirm('确认删除所选项目?', {icon: 3, title:'确认'}, function(index){
@@ -159,7 +160,7 @@
             }
             form.val("addForm", {
                 "enabled": checkedRow.data[0]["enaled"]==1?true:false,
-                "typeName": checkedRow.data[0]["typename"]
+                "typeName": checkedRow.data[0]["typeName"]
             });
             form.render();
             layer.open({
@@ -196,8 +197,8 @@
             } else {
                 enabled = 0;
             }
-            baselistType.typeid = checkedRow.data[0]["typeid"];
-            baselistType.typename = name;
+            baselistType.typeID = checkedRow.data[0]["typeID"];
+            baselistType.typeName = name;
             baselistType.enaled = enabled;
             var url = "<c:url value="/baseListType/edit.do"/>";
             $.post(url, baselistType, function (data) {
@@ -254,5 +255,4 @@
     </div>
     </form>
 </div>
-
 </html>

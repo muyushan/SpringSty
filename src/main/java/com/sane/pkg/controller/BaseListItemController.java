@@ -64,7 +64,7 @@ public class BaseListItemController {
        MsgBean msgBean=null;
         try {
           String userName=  SessionUtil.getCurrentUserInfo();
-          baseListItem.setCreatdate(new Date());
+          baseListItem.setCreatDate(new Date());
           baseListItem.setCreator(userName);
             msgBean=baseListItemService.addBaseListItem(baseListItem);
         } catch (Exception e) {
@@ -77,25 +77,25 @@ public class BaseListItemController {
     @ResponseBody
     public MsgBean editListItem(BaseListItem baseListItem){
         MsgBean msgBean=new MsgBean();
-        if(baseListItem.getListid()==null){
+        if(baseListItem.getListID()==null){
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("唯一ID为空无法修改数据");
             return  msgBean;
         }
 
-        if(baseListItem.getListvalue()==null){
+        if(baseListItem.getListValue()==null){
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("字典项值不能为空");
             return  msgBean;
         }
-        if(StringUtils.isEmpty(baseListItem.getListname())){
+        if(StringUtils.isEmpty(baseListItem.getListName())){
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("字典项名称不能为空");
             return  msgBean;
         }
         try {
             baseListItem.setModifier(SessionUtil.getCurrentUserInfo());
-            baseListItem.setModifydate(new Date());
+            baseListItem.setModifyDate(new Date());
            msgBean= baseListItemService.editBaseListItem(baseListItem);
         } catch (Exception e) {
             msgBean.setCode(MsgBean.FAIL);

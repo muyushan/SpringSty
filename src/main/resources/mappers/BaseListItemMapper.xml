@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sane.pkg.dao.mappers.BaseListItemMapper" >
   <resultMap id="BaseResultMap" type="com.sane.pkg.beans.BaseListItem" >
-    <id column="ListID" property="listid" jdbcType="INTEGER" />
-    <result column="TypeID" property="typeid" jdbcType="SMALLINT" />
-    <result column="ListValue" property="listvalue" jdbcType="SMALLINT" />
-    <result column="ListName" property="listname" jdbcType="VARCHAR" />
-    <result column="ListSort" property="listsort" jdbcType="SMALLINT" />
+    <id column="ListID" property="listID" jdbcType="INTEGER" />
+    <result column="TypeID" property="typeID" jdbcType="SMALLINT" />
+    <result column="ListValue" property="listValue" jdbcType="VARCHAR" />
+    <result column="ListName" property="listName" jdbcType="VARCHAR" />
+    <result column="ListSort" property="listSort" jdbcType="SMALLINT" />
     <result column="Creator" property="creator" jdbcType="VARCHAR" />
-    <result column="CreatDate" property="creatdate" jdbcType="TIMESTAMP" />
+    <result column="CreatDate" property="creatDate" jdbcType="TIMESTAMP" />
     <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
-    <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+    <result column="ModifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -94,11 +94,11 @@
     select 
     <include refid="Base_Column_List" />
     from baselistitem
-    where ListID = #{listid,jdbcType=INTEGER}
+    where ListID = #{listID,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from baselistitem
-    where ListID = #{listid,jdbcType=INTEGER}
+    where ListID = #{listID,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.sane.pkg.beans.BaseListItemCriteria" >
     delete from baselistitem
@@ -107,71 +107,71 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sane.pkg.beans.BaseListItem" >
-    <selectKey resultType="java.lang.Integer" keyProperty="listid" order="AFTER" >
+    <selectKey resultType="java.lang.Integer" keyProperty="listID" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into baselistitem (TypeID, ListValue, ListName, 
       ListSort, Creator, CreatDate, 
       Modifier, ModifyDate)
-    values (#{typeid,jdbcType=SMALLINT}, #{listvalue,jdbcType=SMALLINT}, #{listname,jdbcType=VARCHAR}, 
-      #{listsort,jdbcType=SMALLINT}, #{creator,jdbcType=VARCHAR}, #{creatdate,jdbcType=TIMESTAMP}, 
-      #{modifier,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP})
+    values (#{typeID,jdbcType=SMALLINT}, #{listValue,jdbcType=VARCHAR}, #{listName,jdbcType=VARCHAR}, 
+      #{listSort,jdbcType=SMALLINT}, #{creator,jdbcType=VARCHAR}, #{creatDate,jdbcType=TIMESTAMP}, 
+      #{modifier,jdbcType=VARCHAR}, #{modifyDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.BaseListItem" >
-    <selectKey resultType="java.lang.Integer" keyProperty="listid" order="AFTER" >
+    <selectKey resultType="java.lang.Integer" keyProperty="listID" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into baselistitem
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="typeid != null" >
+      <if test="typeID != null" >
         TypeID,
       </if>
-      <if test="listvalue != null" >
+      <if test="listValue != null" >
         ListValue,
       </if>
-      <if test="listname != null" >
+      <if test="listName != null" >
         ListName,
       </if>
-      <if test="listsort != null" >
+      <if test="listSort != null" >
         ListSort,
       </if>
       <if test="creator != null" >
         Creator,
       </if>
-      <if test="creatdate != null" >
+      <if test="creatDate != null" >
         CreatDate,
       </if>
       <if test="modifier != null" >
         Modifier,
       </if>
-      <if test="modifydate != null" >
+      <if test="modifyDate != null" >
         ModifyDate,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="typeid != null" >
-        #{typeid,jdbcType=SMALLINT},
+      <if test="typeID != null" >
+        #{typeID,jdbcType=SMALLINT},
       </if>
-      <if test="listvalue != null" >
-        #{listvalue,jdbcType=SMALLINT},
+      <if test="listValue != null" >
+        #{listValue,jdbcType=VARCHAR},
       </if>
-      <if test="listname != null" >
-        #{listname,jdbcType=VARCHAR},
+      <if test="listName != null" >
+        #{listName,jdbcType=VARCHAR},
       </if>
-      <if test="listsort != null" >
-        #{listsort,jdbcType=SMALLINT},
+      <if test="listSort != null" >
+        #{listSort,jdbcType=SMALLINT},
       </if>
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="creatdate != null" >
-        #{creatdate,jdbcType=TIMESTAMP},
+      <if test="creatDate != null" >
+        #{creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="modifier != null" >
         #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="modifydate != null" >
-        #{modifydate,jdbcType=TIMESTAMP},
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -184,32 +184,32 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update baselistitem
     <set >
-      <if test="record.listid != null" >
-        ListID = #{record.listid,jdbcType=INTEGER},
+      <if test="record.listID != null" >
+        ListID = #{record.listID,jdbcType=INTEGER},
       </if>
-      <if test="record.typeid != null" >
-        TypeID = #{record.typeid,jdbcType=SMALLINT},
+      <if test="record.typeID != null" >
+        TypeID = #{record.typeID,jdbcType=SMALLINT},
       </if>
-      <if test="record.listvalue != null" >
-        ListValue = #{record.listvalue,jdbcType=SMALLINT},
+      <if test="record.listValue != null" >
+        ListValue = #{record.listValue,jdbcType=VARCHAR},
       </if>
-      <if test="record.listname != null" >
-        ListName = #{record.listname,jdbcType=VARCHAR},
+      <if test="record.listName != null" >
+        ListName = #{record.listName,jdbcType=VARCHAR},
       </if>
-      <if test="record.listsort != null" >
-        ListSort = #{record.listsort,jdbcType=SMALLINT},
+      <if test="record.listSort != null" >
+        ListSort = #{record.listSort,jdbcType=SMALLINT},
       </if>
       <if test="record.creator != null" >
         Creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.creatdate != null" >
-        CreatDate = #{record.creatdate,jdbcType=TIMESTAMP},
+      <if test="record.creatDate != null" >
+        CreatDate = #{record.creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifier != null" >
         Modifier = #{record.modifier,jdbcType=VARCHAR},
       </if>
-      <if test="record.modifydate != null" >
-        ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      <if test="record.modifyDate != null" >
+        ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -218,15 +218,15 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update baselistitem
-    set ListID = #{record.listid,jdbcType=INTEGER},
-      TypeID = #{record.typeid,jdbcType=SMALLINT},
-      ListValue = #{record.listvalue,jdbcType=SMALLINT},
-      ListName = #{record.listname,jdbcType=VARCHAR},
-      ListSort = #{record.listsort,jdbcType=SMALLINT},
+    set ListID = #{record.listID,jdbcType=INTEGER},
+      TypeID = #{record.typeID,jdbcType=SMALLINT},
+      ListValue = #{record.listValue,jdbcType=VARCHAR},
+      ListName = #{record.listName,jdbcType=VARCHAR},
+      ListSort = #{record.listSort,jdbcType=SMALLINT},
       Creator = #{record.creator,jdbcType=VARCHAR},
-      CreatDate = #{record.creatdate,jdbcType=TIMESTAMP},
+      CreatDate = #{record.creatDate,jdbcType=TIMESTAMP},
       Modifier = #{record.modifier,jdbcType=VARCHAR},
-      ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP}
+      ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -234,43 +234,43 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sane.pkg.beans.BaseListItem" >
     update baselistitem
     <set >
-      <if test="typeid != null" >
-        TypeID = #{typeid,jdbcType=SMALLINT},
+      <if test="typeID != null" >
+        TypeID = #{typeID,jdbcType=SMALLINT},
       </if>
-      <if test="listvalue != null" >
-        ListValue = #{listvalue,jdbcType=SMALLINT},
+      <if test="listValue != null" >
+        ListValue = #{listValue,jdbcType=VARCHAR},
       </if>
-      <if test="listname != null" >
-        ListName = #{listname,jdbcType=VARCHAR},
+      <if test="listName != null" >
+        ListName = #{listName,jdbcType=VARCHAR},
       </if>
-      <if test="listsort != null" >
-        ListSort = #{listsort,jdbcType=SMALLINT},
+      <if test="listSort != null" >
+        ListSort = #{listSort,jdbcType=SMALLINT},
       </if>
       <if test="creator != null" >
         Creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="creatdate != null" >
-        CreatDate = #{creatdate,jdbcType=TIMESTAMP},
+      <if test="creatDate != null" >
+        CreatDate = #{creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="modifier != null" >
         Modifier = #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="modifydate != null" >
-        ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      <if test="modifyDate != null" >
+        ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where ListID = #{listid,jdbcType=INTEGER}
+    where ListID = #{listID,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sane.pkg.beans.BaseListItem" >
     update baselistitem
-    set TypeID = #{typeid,jdbcType=SMALLINT},
-      ListValue = #{listvalue,jdbcType=SMALLINT},
-      ListName = #{listname,jdbcType=VARCHAR},
-      ListSort = #{listsort,jdbcType=SMALLINT},
+    set TypeID = #{typeID,jdbcType=SMALLINT},
+      ListValue = #{listValue,jdbcType=VARCHAR},
+      ListName = #{listName,jdbcType=VARCHAR},
+      ListSort = #{listSort,jdbcType=SMALLINT},
       Creator = #{creator,jdbcType=VARCHAR},
-      CreatDate = #{creatdate,jdbcType=TIMESTAMP},
+      CreatDate = #{creatDate,jdbcType=TIMESTAMP},
       Modifier = #{modifier,jdbcType=VARCHAR},
-      ModifyDate = #{modifydate,jdbcType=TIMESTAMP}
-    where ListID = #{listid,jdbcType=INTEGER}
+      ModifyDate = #{modifyDate,jdbcType=TIMESTAMP}
+    where ListID = #{listID,jdbcType=INTEGER}
   </update>
 </mapper>

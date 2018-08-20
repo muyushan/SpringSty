@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sane.pkg.dao.mappers.BaseListTypeMapper" >
   <resultMap id="BaseResultMap" type="com.sane.pkg.beans.BaseListType" >
-    <id column="TypeID" property="typeid" jdbcType="INTEGER" />
-    <result column="TypeName" property="typename" jdbcType="VARCHAR" />
+    <id column="TypeID" property="typeID" jdbcType="INTEGER" />
+    <result column="TypeValue" property="typeValue" jdbcType="VARCHAR" />
+    <result column="TypeName" property="typeName" jdbcType="VARCHAR" />
     <result column="Enaled" property="enaled" jdbcType="TINYINT" />
     <result column="Creator" property="creator" jdbcType="VARCHAR" />
-    <result column="CreatDate" property="creatdate" jdbcType="TIMESTAMP" />
+    <result column="CreatDate" property="creatDate" jdbcType="TIMESTAMP" />
     <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
-    <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
+    <result column="ModifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    TypeID, TypeName, Enaled, Creator, CreatDate, Modifier, ModifyDate
+    TypeID, TypeValue, TypeName, Enaled, Creator, CreatDate, Modifier, ModifyDate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.BaseListTypeCriteria" >
     select
@@ -92,11 +93,11 @@
     select 
     <include refid="Base_Column_List" />
     from baselisttype
-    where TypeID = #{typeid,jdbcType=INTEGER}
+    where TypeID = #{typeID,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from baselisttype
-    where TypeID = #{typeid,jdbcType=INTEGER}
+    where TypeID = #{typeID,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.sane.pkg.beans.BaseListTypeCriteria" >
     delete from baselisttype
@@ -105,23 +106,26 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sane.pkg.beans.BaseListType" >
-    <selectKey resultType="java.lang.Integer" keyProperty="typeid" order="AFTER" >
+    <selectKey resultType="java.lang.Integer" keyProperty="typeID" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into baselisttype (TypeName, Enaled, Creator, 
-      CreatDate, Modifier, ModifyDate
-      )
-    values (#{typename,jdbcType=VARCHAR}, #{enaled,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, 
-      #{creatdate,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}
-      )
+    insert into baselisttype (TypeValue, TypeName, Enaled, 
+      Creator, CreatDate, Modifier, 
+      ModifyDate)
+    values (#{typeValue,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{enaled,jdbcType=TINYINT}, 
+      #{creator,jdbcType=VARCHAR}, #{creatDate,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.BaseListType" >
-    <selectKey resultType="java.lang.Integer" keyProperty="typeid" order="AFTER" >
+    <selectKey resultType="java.lang.Integer" keyProperty="typeID" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into baselisttype
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="typename != null" >
+      <if test="typeValue != null" >
+        TypeValue,
+      </if>
+      <if test="typeName != null" >
         TypeName,
       </if>
       <if test="enaled != null" >
@@ -130,19 +134,22 @@
       <if test="creator != null" >
         Creator,
       </if>
-      <if test="creatdate != null" >
+      <if test="creatDate != null" >
         CreatDate,
       </if>
       <if test="modifier != null" >
         Modifier,
       </if>
-      <if test="modifydate != null" >
+      <if test="modifyDate != null" >
         ModifyDate,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="typename != null" >
-        #{typename,jdbcType=VARCHAR},
+      <if test="typeValue != null" >
+        #{typeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
       </if>
       <if test="enaled != null" >
         #{enaled,jdbcType=TINYINT},
@@ -150,14 +157,14 @@
       <if test="creator != null" >
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="creatdate != null" >
-        #{creatdate,jdbcType=TIMESTAMP},
+      <if test="creatDate != null" >
+        #{creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="modifier != null" >
         #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="modifydate != null" >
-        #{modifydate,jdbcType=TIMESTAMP},
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -170,11 +177,14 @@
   <update id="updateByExampleSelective" parameterType="map" >
     update baselisttype
     <set >
-      <if test="record.typeid != null" >
-        TypeID = #{record.typeid,jdbcType=INTEGER},
+      <if test="record.typeID != null" >
+        TypeID = #{record.typeID,jdbcType=INTEGER},
       </if>
-      <if test="record.typename != null" >
-        TypeName = #{record.typename,jdbcType=VARCHAR},
+      <if test="record.typeValue != null" >
+        TypeValue = #{record.typeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.typeName != null" >
+        TypeName = #{record.typeName,jdbcType=VARCHAR},
       </if>
       <if test="record.enaled != null" >
         Enaled = #{record.enaled,jdbcType=TINYINT},
@@ -182,14 +192,14 @@
       <if test="record.creator != null" >
         Creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.creatdate != null" >
-        CreatDate = #{record.creatdate,jdbcType=TIMESTAMP},
+      <if test="record.creatDate != null" >
+        CreatDate = #{record.creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.modifier != null" >
         Modifier = #{record.modifier,jdbcType=VARCHAR},
       </if>
-      <if test="record.modifydate != null" >
-        ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      <if test="record.modifyDate != null" >
+        ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -198,13 +208,14 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update baselisttype
-    set TypeID = #{record.typeid,jdbcType=INTEGER},
-      TypeName = #{record.typename,jdbcType=VARCHAR},
+    set TypeID = #{record.typeID,jdbcType=INTEGER},
+      TypeValue = #{record.typeValue,jdbcType=VARCHAR},
+      TypeName = #{record.typeName,jdbcType=VARCHAR},
       Enaled = #{record.enaled,jdbcType=TINYINT},
       Creator = #{record.creator,jdbcType=VARCHAR},
-      CreatDate = #{record.creatdate,jdbcType=TIMESTAMP},
+      CreatDate = #{record.creatDate,jdbcType=TIMESTAMP},
       Modifier = #{record.modifier,jdbcType=VARCHAR},
-      ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP}
+      ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -212,8 +223,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sane.pkg.beans.BaseListType" >
     update baselisttype
     <set >
-      <if test="typename != null" >
-        TypeName = #{typename,jdbcType=VARCHAR},
+      <if test="typeValue != null" >
+        TypeValue = #{typeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        TypeName = #{typeName,jdbcType=VARCHAR},
       </if>
       <if test="enaled != null" >
         Enaled = #{enaled,jdbcType=TINYINT},
@@ -221,26 +235,27 @@
       <if test="creator != null" >
         Creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="creatdate != null" >
-        CreatDate = #{creatdate,jdbcType=TIMESTAMP},
+      <if test="creatDate != null" >
+        CreatDate = #{creatDate,jdbcType=TIMESTAMP},
       </if>
       <if test="modifier != null" >
         Modifier = #{modifier,jdbcType=VARCHAR},
       </if>
-      <if test="modifydate != null" >
-        ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      <if test="modifyDate != null" >
+        ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where TypeID = #{typeid,jdbcType=INTEGER}
+    where TypeID = #{typeID,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sane.pkg.beans.BaseListType" >
     update baselisttype
-    set TypeName = #{typename,jdbcType=VARCHAR},
+    set TypeValue = #{typeValue,jdbcType=VARCHAR},
+      TypeName = #{typeName,jdbcType=VARCHAR},
       Enaled = #{enaled,jdbcType=TINYINT},
       Creator = #{creator,jdbcType=VARCHAR},
-      CreatDate = #{creatdate,jdbcType=TIMESTAMP},
+      CreatDate = #{creatDate,jdbcType=TIMESTAMP},
       Modifier = #{modifier,jdbcType=VARCHAR},
-      ModifyDate = #{modifydate,jdbcType=TIMESTAMP}
-    where TypeID = #{typeid,jdbcType=INTEGER}
+      ModifyDate = #{modifyDate,jdbcType=TIMESTAMP}
+    where TypeID = #{typeID,jdbcType=INTEGER}
   </update>
 </mapper>

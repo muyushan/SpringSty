@@ -3,34 +3,44 @@ package com.sane.pkg.beans;
 import java.util.Date;
 
 public class BaseListType {
-    private Integer typeid;
+    private Integer typeID;
 
-    private String typename;
+    private String typeValue;
+
+    private String typeName;
 
     private Byte enaled;
 
     private String creator;
 
-    private Date creatdate;
+    private Date creatDate;
 
     private String modifier;
 
-    private Date modifydate;
+    private Date modifyDate;
 
-    public Integer getTypeid() {
-        return typeid;
+    public Integer getTypeID() {
+        return typeID;
     }
 
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
+    public void setTypeID(Integer typeID) {
+        this.typeID = typeID;
     }
 
-    public String getTypename() {
-        return typename;
+    public String getTypeValue() {
+        return typeValue;
     }
 
-    public void setTypename(String typename) {
-        this.typename = typename == null ? null : typename.trim();
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue == null ? null : typeValue.trim();
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName == null ? null : typeName.trim();
     }
 
     public Byte getEnaled() {
@@ -49,12 +59,12 @@ public class BaseListType {
         this.creator = creator == null ? null : creator.trim();
     }
 
-    public Date getCreatdate() {
-        return creatdate;
+    public Date getCreatDate() {
+        return creatDate;
     }
 
-    public void setCreatdate(Date creatdate) {
-        this.creatdate = creatdate;
+    public void setCreatDate(Date creatDate) {
+        this.creatDate = creatDate;
     }
 
     public String getModifier() {
@@ -65,11 +75,11 @@ public class BaseListType {
         this.modifier = modifier == null ? null : modifier.trim();
     }
 
-    public Date getModifydate() {
-        return modifydate;
+    public Date getModifyDate() {
+        return modifyDate;
     }
 
-    public void setModifydate(Date modifydate) {
-        this.modifydate = modifydate;
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }
