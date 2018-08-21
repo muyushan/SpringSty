@@ -10,12 +10,14 @@
            uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+
     <link rel="stylesheet" href="<c:url value="/js/layui/css/layui.css"/>"/>
+    <link rel="stylesheet" href="<c:url value="/css/common.css"/>"/>
     <script type="text/javascript" src="<c:url value="/js/layui/layui.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/jquery-2.2.4.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/util.js"/>"></script>
-    <style type="text/css" > /*解决layui 表格复选框不垂直居中问题*/
-        [lay-skin=primary].layui-form-checkbox i {top:5px !important;}
+    <style type="text/css" >
+
     </style>
     <script>
         var webRoot="<c:out value="${WebRoot}"></c:out>";

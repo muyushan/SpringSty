@@ -287,16 +287,14 @@
 </head>
 <body>
 <div class="layui-form">
-    <div class="layui-inline">
-        <label class="layui-form-label">字典类型</label>
-        <div class="layui-input-inline" >
-            <select lay-filter="listTypeName"  id="listTypeName" placeholder="请选择要查询的字典类型名称" lay-search=""></select>
-        </div>
-        &nbsp;<button class="layui-btn" id="queryBtn">查询</button>
-    </div>
-</div>
-
-<hr class="layui-bg-gray">
+    <table class="laytable-query-table">
+        <tr>
+            <td>字典类型</td>
+            <td><select lay-filter="listTypeName"  id="listTypeName" placeholder="请选择要查询的字典类型名称" lay-search=""></select></td>
+            <td><button class="layui-btn" id="queryBtn">查询</button></td>
+        </tr>
+    </table>
+</div><hr class="layui-bg-gray">
 <div class="layui-btn-group">
     <button class="layui-btn" id="createNewItem"> <i class="layui-icon">&#xe654;</i>增加</button>
     <button class="layui-btn" id="editListItem"> <i class="layui-icon">&#xe642;</i>编辑</button>

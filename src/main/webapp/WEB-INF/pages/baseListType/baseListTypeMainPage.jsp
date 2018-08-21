@@ -220,15 +220,14 @@
 </head>
 <body>
 <div class="layui-form-item">
-    <div class="layui-inline">
-        <label class="layui-form-label">字典类型</label>
-        <div class="layui-input-inline" >
-            <input type="text" id="listTypeName" placeholder="请填入要查询的字典类型名称" style="width:200px; " class="layui-input">
-        </div>
-        &nbsp;<button class="layui-btn" id="queryBtn">查询</button>
-    </div>
+    <table class="laytable-query-table">
+        <tr>
+            <td>字典类型</td>
+            <td><input type="text" id="listTypeName" placeholder="请填入要查询的字典类型名称" style="width:200px; " class="layui-input"></td>
+            <td><button class="layui-btn" id="queryBtn">查询</button></td>
+        </tr>
+    </table>
 </div>
-
 <hr class="layui-bg-gray">
 <div class="layui-btn-group">
     <button class="layui-btn" id="createNewType"> <i class="layui-icon">&#xe654;</i>增加</button>

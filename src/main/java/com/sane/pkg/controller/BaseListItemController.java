@@ -50,6 +50,13 @@ public class BaseListItemController {
     public Map<String,Object> queryBaseListItem(BaseListTypeParam baseListTypeParam){
         PageInfo<BaseListItem> pageInfo=new PageInfo<BaseListItem>();
         pageInfo=baseListItemService.queryBaseListItem(baseListTypeParam);
+        if(baseListTypeParam.isShowAll()){
+            BaseListItem all=new BaseListItem();
+            all.setListName("全部");
+            all.setListID(-1);
+            all.setListValue("");
+            pageInfo.getList().add(0,all);
+        }
         Map<String,Object> result=new HashMap<String,Object>();
         result.put("code","0");
         result.put("msg","");

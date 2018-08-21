@@ -1,0 +1,6 @@
+.laytable-query-table td{
+    padding: 0px 5px 0px 5px;
+    font-size: 12px;
+}
+/*解决layui 表格复选框不垂直居中问题*/
+[lay-skin=primary].layui-form-checkbox i {top:5px !important;}
