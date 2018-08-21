@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sane.pkg.dao.mappers.ProductInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sane.pkg.beans.ProductInfo" >
+    <id column="ProductId" property="productId" jdbcType="INTEGER" />
+    <result column="ProductCode" property="productCode" jdbcType="VARCHAR" />
+    <result column="ProductName" property="productName" jdbcType="VARCHAR" />
+    <result column="ProductCategory" property="productCategory" jdbcType="INTEGER" />
+    <result column="Flavour" property="flavour" jdbcType="INTEGER" />
+    <result column="Unit" property="unit" jdbcType="INTEGER" />
+    <result column="PackageUnit" property="packageUnit" jdbcType="INTEGER" />
+    <result column="Weight" property="weight" jdbcType="REAL" />
+    <result column="Volume" property="volume" jdbcType="REAL" />
+    <result column="HasBarCode" property="hasBarCode" jdbcType="INTEGER" />
+    <result column="BarCode" property="barCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ProductId, ProductCode, ProductName, ProductCategory, Flavour, Unit, PackageUnit, 
+    Weight, Volume, HasBarCode, BarCode
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.ProductInfoCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from productinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from productinfo
+    where ProductId = #{productId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from productinfo
+    where ProductId = #{productId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.sane.pkg.beans.ProductInfoCriteria" >
+    delete from productinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.sane.pkg.beans.ProductInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="productId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into productinfo (ProductCode, ProductName, ProductCategory, 
+      Flavour, Unit, PackageUnit, 
+      Weight, Volume, HasBarCode, 
+      BarCode)
+    values (#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=INTEGER}, 
+      #{flavour,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, #{packageUnit,jdbcType=INTEGER}, 
+      #{weight,jdbcType=REAL}, #{volume,jdbcType=REAL}, #{hasBarCode,jdbcType=INTEGER}, 
+      #{barCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sane.pkg.beans.ProductInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="productId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into productinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productCode != null" >
+        ProductCode,
+      </if>
+      <if test="productName != null" >
+        ProductName,
+      </if>
+      <if test="productCategory != null" >
+        ProductCategory,
+      </if>
+      <if test="flavour != null" >
+        Flavour,
+      </if>
+      <if test="unit != null" >
+        Unit,
+      </if>
+      <if test="packageUnit != null" >
+        PackageUnit,
+      </if>
+      <if test="weight != null" >
+        Weight,
+      </if>
+      <if test="volume != null" >
+        Volume,
+      </if>
+      <if test="hasBarCode != null" >
+        HasBarCode,
+      </if>
+      <if test="barCode != null" >
+        BarCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategory != null" >
+        #{productCategory,jdbcType=INTEGER},
+      </if>
+      <if test="flavour != null" >
+        #{flavour,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="packageUnit != null" >
+        #{packageUnit,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=REAL},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=REAL},
+      </if>
+      <if test="hasBarCode != null" >
+        #{hasBarCode,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        #{barCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.sane.pkg.beans.ProductInfoCriteria" resultType="java.lang.Integer" >
+    select count(*) from productinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update productinfo
+    <set >
+      <if test="record.productId != null" >
+        ProductId = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productCode != null" >
+        ProductCode = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        ProductName = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCategory != null" >
+        ProductCategory = #{record.productCategory,jdbcType=INTEGER},
+      </if>
+      <if test="record.flavour != null" >
+        Flavour = #{record.flavour,jdbcType=INTEGER},
+      </if>
+      <if test="record.unit != null" >
+        Unit = #{record.unit,jdbcType=INTEGER},
+      </if>
+      <if test="record.packageUnit != null" >
+        PackageUnit = #{record.packageUnit,jdbcType=INTEGER},
+      </if>
+      <if test="record.weight != null" >
+        Weight = #{record.weight,jdbcType=REAL},
+      </if>
+      <if test="record.volume != null" >
+        Volume = #{record.volume,jdbcType=REAL},
+      </if>
+      <if test="record.hasBarCode != null" >
+        HasBarCode = #{record.hasBarCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.barCode != null" >
+        BarCode = #{record.barCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update productinfo
+    set ProductId = #{record.productId,jdbcType=INTEGER},
+      ProductCode = #{record.productCode,jdbcType=VARCHAR},
+      ProductName = #{record.productName,jdbcType=VARCHAR},
+      ProductCategory = #{record.productCategory,jdbcType=INTEGER},
+      Flavour = #{record.flavour,jdbcType=INTEGER},
+      Unit = #{record.unit,jdbcType=INTEGER},
+      PackageUnit = #{record.packageUnit,jdbcType=INTEGER},
+      Weight = #{record.weight,jdbcType=REAL},
+      Volume = #{record.volume,jdbcType=REAL},
+      HasBarCode = #{record.hasBarCode,jdbcType=INTEGER},
+      BarCode = #{record.barCode,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sane.pkg.beans.ProductInfo" >
+    update productinfo
+    <set >
+      <if test="productCode != null" >
+        ProductCode = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        ProductName = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCategory != null" >
+        ProductCategory = #{productCategory,jdbcType=INTEGER},
+      </if>
+      <if test="flavour != null" >
+        Flavour = #{flavour,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null" >
+        Unit = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="packageUnit != null" >
+        PackageUnit = #{packageUnit,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null" >
+        Weight = #{weight,jdbcType=REAL},
+      </if>
+      <if test="volume != null" >
+        Volume = #{volume,jdbcType=REAL},
+      </if>
+      <if test="hasBarCode != null" >
+        HasBarCode = #{hasBarCode,jdbcType=INTEGER},
+      </if>
+      <if test="barCode != null" >
+        BarCode = #{barCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ProductId = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sane.pkg.beans.ProductInfo" >
+    update productinfo
+    set ProductCode = #{productCode,jdbcType=VARCHAR},
+      ProductName = #{productName,jdbcType=VARCHAR},
+      ProductCategory = #{productCategory,jdbcType=INTEGER},
+      Flavour = #{flavour,jdbcType=INTEGER},
+      Unit = #{unit,jdbcType=INTEGER},
+      PackageUnit = #{packageUnit,jdbcType=INTEGER},
+      Weight = #{weight,jdbcType=REAL},
+      Volume = #{volume,jdbcType=REAL},
+      HasBarCode = #{hasBarCode,jdbcType=INTEGER},
+      BarCode = #{barCode,jdbcType=VARCHAR}
+    where ProductId = #{productId,jdbcType=INTEGER}
+  </update>
+</mapper>
