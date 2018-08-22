@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<c:url value="/css/common.css"/>"/>
     <script type="text/javascript" src="<c:url value="/js/layui/layui.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/jquery-2.2.4.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/Convert_Pinyin.js"/>"></script>
     <script type="text/javascript" src="<c:url value="/js/util.js"/>"></script>
     <style type="text/css" >
 

@@ -2,5 +2,28 @@
     padding: 0px 5px 0px 5px;
     font-size: 12px;
 }
+.laytable-dialog-table_2column{
+    width: 100%;
+}
+
+.laytable-dialog-table_2column td{
+    padding: 2px 5px 2px 5px;
+    font-size: 14px;
+}
+.laytable-dialog-table_2column td:nth-child(1){
+    text-align: right;
+}
+
+
+.laytable-dialog-table_4column{
+    width: 100%;
+}
+.laytable-dialog-table_4column td{
+    padding: 2px 5px 2px 5px;
+    font-size: 14px;
+}
+.laytable-dialog-table_4column td:nth-child(odd){
+    text-align: right;
+}
 /*解决layui 表格复选框不垂直居中问题*/
 [lay-skin=primary].layui-form-checkbox i {top:5px !important;}

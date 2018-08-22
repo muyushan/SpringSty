@@ -99,3 +99,24 @@ var url=webRoot+"downloadFile/"+fileName+"/down.do";
     form.appendTo('body').submit().remove();
 
 }
+
+function loadCommonBoxList(element){
+    var typeID=element.attr("typeId");
+    var form;
+    $.ajax({
+        type:'get',
+        url: webRoot+'baseListItem/queryBaseListItem.do?page=1&limit=1000&showAll=true&typeID='+typeID,
+        success:function(data){
+            var html='';
+            $.each(data.data,function(key,value){
+                html+="<option value='"+value.listID+"'listValue='"+value.listValue+"'>"+value.listName+"</option>";
+            })
+            element.html(html);
+            layui.use('form', function(){
+                form = layui.form;
+                form.render("select");
+            });
+
+        }
+    });
+}
