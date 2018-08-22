@@ -13,6 +13,8 @@
     <result column="Volume" property="volume" jdbcType="REAL" />
     <result column="HasBarCode" property="hasBarCode" jdbcType="INTEGER" />
     <result column="BarCode" property="barCode" jdbcType="VARCHAR" />
+    <result column="Specification" property="specification" jdbcType="INTEGER" />
+    <result column="PackageSpecification" property="packageSpecification" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ProductId, ProductCode, ProductName, ProductCategory, Flavour, Unit, PackageUnit, 
-    Weight, Volume, HasBarCode, BarCode
+    Weight, Volume, HasBarCode, BarCode, Specification, PackageSpecification
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.ProductInfoCriteria" >
     select
@@ -116,11 +118,13 @@
     insert into productinfo (ProductCode, ProductName, ProductCategory, 
       Flavour, Unit, PackageUnit, 
       Weight, Volume, HasBarCode, 
-      BarCode)
+      BarCode, Specification, PackageSpecification
+      )
     values (#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=INTEGER}, 
       #{flavour,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, #{packageUnit,jdbcType=INTEGER}, 
       #{weight,jdbcType=REAL}, #{volume,jdbcType=REAL}, #{hasBarCode,jdbcType=INTEGER}, 
-      #{barCode,jdbcType=VARCHAR})
+      #{barCode,jdbcType=VARCHAR}, #{specification,jdbcType=INTEGER}, #{packageSpecification,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.ProductInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="productId" order="AFTER" >
@@ -158,6 +162,12 @@
       <if test="barCode != null" >
         BarCode,
       </if>
+      <if test="specification != null" >
+        Specification,
+      </if>
+      <if test="packageSpecification != null" >
+        PackageSpecification,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="productCode != null" >
@@ -189,6 +199,12 @@
       </if>
       <if test="barCode != null" >
         #{barCode,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null" >
+        #{specification,jdbcType=INTEGER},
+      </if>
+      <if test="packageSpecification != null" >
+        #{packageSpecification,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -234,6 +250,12 @@
       <if test="record.barCode != null" >
         BarCode = #{record.barCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.specification != null" >
+        Specification = #{record.specification,jdbcType=INTEGER},
+      </if>
+      <if test="record.packageSpecification != null" >
+        PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -251,7 +273,9 @@
       Weight = #{record.weight,jdbcType=REAL},
       Volume = #{record.volume,jdbcType=REAL},
       HasBarCode = #{record.hasBarCode,jdbcType=INTEGER},
-      BarCode = #{record.barCode,jdbcType=VARCHAR}
+      BarCode = #{record.barCode,jdbcType=VARCHAR},
+      Specification = #{record.specification,jdbcType=INTEGER},
+      PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -289,6 +313,12 @@
       <if test="barCode != null" >
         BarCode = #{barCode,jdbcType=VARCHAR},
       </if>
+      <if test="specification != null" >
+        Specification = #{specification,jdbcType=INTEGER},
+      </if>
+      <if test="packageSpecification != null" >
+        PackageSpecification = #{packageSpecification,jdbcType=INTEGER},
+      </if>
     </set>
     where ProductId = #{productId,jdbcType=INTEGER}
   </update>
@@ -303,7 +333,9 @@
       Weight = #{weight,jdbcType=REAL},
       Volume = #{volume,jdbcType=REAL},
       HasBarCode = #{hasBarCode,jdbcType=INTEGER},
-      BarCode = #{barCode,jdbcType=VARCHAR}
+      BarCode = #{barCode,jdbcType=VARCHAR},
+      Specification = #{specification,jdbcType=INTEGER},
+      PackageSpecification = #{packageSpecification,jdbcType=INTEGER}
     where ProductId = #{productId,jdbcType=INTEGER}
   </update>
 </mapper>

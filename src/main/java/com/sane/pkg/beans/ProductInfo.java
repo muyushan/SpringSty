@@ -23,6 +23,10 @@ public class ProductInfo {
 
     private String barCode;
 
+    private Integer specification;
+
+    private Integer packageSpecification;
+
     public Integer getProductId() {
         return productId;
     }
@@ -109,5 +113,21 @@ public class ProductInfo {
 
     public void setBarCode(String barCode) {
         this.barCode = barCode == null ? null : barCode.trim();
+    }
+
+    public Integer getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(Integer specification) {
+        this.specification = specification;
+    }
+
+    public Integer getPackageSpecification() {
+        return packageSpecification;
+    }
+
+    public void setPackageSpecification(Integer packageSpecification) {
+        this.packageSpecification = packageSpecification;
     }
 }

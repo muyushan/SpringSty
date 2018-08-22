@@ -813,6 +813,126 @@ public class ProductInfoCriteria {
             addCriterion("BarCode not between", value1, value2, "barCode");
             return (Criteria) this;
         }
+
+        public Criteria andSpecificationIsNull() {
+            addCriterion("Specification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIsNotNull() {
+            addCriterion("Specification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationEqualTo(Integer value) {
+            addCriterion("Specification =", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotEqualTo(Integer value) {
+            addCriterion("Specification <>", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThan(Integer value) {
+            addCriterion("Specification >", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("Specification >=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThan(Integer value) {
+            addCriterion("Specification <", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThanOrEqualTo(Integer value) {
+            addCriterion("Specification <=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIn(List<Integer> values) {
+            addCriterion("Specification in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotIn(List<Integer> values) {
+            addCriterion("Specification not in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationBetween(Integer value1, Integer value2) {
+            addCriterion("Specification between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotBetween(Integer value1, Integer value2) {
+            addCriterion("Specification not between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIsNull() {
+            addCriterion("PackageSpecification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIsNotNull() {
+            addCriterion("PackageSpecification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationEqualTo(Integer value) {
+            addCriterion("PackageSpecification =", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotEqualTo(Integer value) {
+            addCriterion("PackageSpecification <>", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationGreaterThan(Integer value) {
+            addCriterion("PackageSpecification >", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("PackageSpecification >=", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationLessThan(Integer value) {
+            addCriterion("PackageSpecification <", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationLessThanOrEqualTo(Integer value) {
+            addCriterion("PackageSpecification <=", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIn(List<Integer> values) {
+            addCriterion("PackageSpecification in", values, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotIn(List<Integer> values) {
+            addCriterion("PackageSpecification not in", values, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationBetween(Integer value1, Integer value2) {
+            addCriterion("PackageSpecification between", value1, value2, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotBetween(Integer value1, Integer value2) {
+            addCriterion("PackageSpecification not between", value1, value2, "packageSpecification");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
