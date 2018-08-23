@@ -14,7 +14,6 @@
     <title>基础物料信息维护</title>
     <script>
         var table;
-
         $(document).ready(function() {
             layui.use('table', function(){
                 table = layui.table;
@@ -66,34 +65,31 @@
 //                        resetAddForm();
                     },
                     skin: 'layui-layer-molv',
-                    area: ['650px', '340px'],
+                    area: ['680px', '340px'],
                     title:'创建基础物料',
                     content: $('#createNewProductInfoContent')
                 });
             });
 
             $("#productName").blur(function(){
-
-
+                generateProductCode();
             });
-
             layui.use('form', function(){
                 var form = layui.form;
                 form.on('select(flavour)', function(data){
-                    alert(data.value); //得到select原始DOM对象
+                    generateProductCode();
                 });
                 form.on('select(specification)', function(data){
-                    alert(data.value); //得到select原始DOM对象
+                    generateProductCode();
                 });
                 form.on('select(packageSpecification)', function(data){
-                    alert(data.value); //得到select原始DOM对象
+                    generateProductCode();
                 });
             });
 
 
         });
         function generateProductCode(){
-
             var productName=$("#productName").val();
             var flavour=$("#flavour").val();
             var specification=$("#specification").val();
@@ -104,14 +100,62 @@
             }
 
             if(flavour!=-1){
-                productCode.concat(pinyin.getCamelChars(flavour));
+                var options=$("#flavour option:selected");
+                var obj=options.attr('data');
+                obj=JSON.parse(obj);
+                productCode=productCode.concat(obj.listValue)
             }
             if(specification!=-1){
-                productCode.concat(pinyin.getCamelChars(specification));
+                var options=$("#specification option:selected");
+                var obj=options.attr('data');
+                obj=JSON.parse(obj);
+                productCode=productCode.concat(obj.listValue);
             }
             if(packageSpecification!=-1){
-                productCode.concat(pinyin.getCamelChars(packageSpecification));
+                var options=$("#packageSpecification option:selected");
+                var obj=options.attr('data');
+                obj=JSON.parse(obj);
+                productCode=productCode.concat(obj.listValue);
             }
+            $("#productCode").val(productCode);
+        }
+
+        function save(){
+            var productCode=$("#productCode").val();
+            var productName=$("#productName").val();
+            var flavour=$("#flavour").val();
+            var specification=$("#specification").val();
+            var packageSpecification=$("#packageSpecification").val();
+            var unit=$("#unit").val();
+            var packageUnit=$("#packageUnit").val();
+            var volume=$("#volume").val();
+            var weight=$("#weight").val();
+
+            var  baseProduct={};
+            baseProduct.productCode=productCode;
+            baseProduct.productName=productName;
+            baseProduct.flavour=flavour;
+            baseProduct.specification=specification;
+            baseProduct.packageSpecification=packageSpecification;
+            baseProduct.unit=unit;
+            baseProduct.packageUnit=packageUnit;
+            baseProduct.volume=volume;
+            baseProduct.weight=weight;
+            var url="<c:url value="/baseProductInfo/add.do"/>";
+            $.post(url,baseProduct,function(data){
+                if(data.code=="200"){
+//                    resetAddForm();
+                    layer.closeAll();
+//                    search();
+                }else{
+                    layer.open({
+                        type: 0,
+                        title:'提示',
+                        content: data.message
+                    });
+                }
+
+            });
         }
     </script>
 </head>

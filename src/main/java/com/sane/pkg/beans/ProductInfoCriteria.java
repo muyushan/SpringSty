@@ -1,6 +1,7 @@
 package com.sane.pkg.beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProductInfoCriteria {
@@ -504,6 +505,126 @@ public class ProductInfoCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andSpecificationIsNull() {
+            addCriterion("Specification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIsNotNull() {
+            addCriterion("Specification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationEqualTo(Integer value) {
+            addCriterion("Specification =", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotEqualTo(Integer value) {
+            addCriterion("Specification <>", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThan(Integer value) {
+            addCriterion("Specification >", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("Specification >=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThan(Integer value) {
+            addCriterion("Specification <", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationLessThanOrEqualTo(Integer value) {
+            addCriterion("Specification <=", value, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationIn(List<Integer> values) {
+            addCriterion("Specification in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotIn(List<Integer> values) {
+            addCriterion("Specification not in", values, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationBetween(Integer value1, Integer value2) {
+            addCriterion("Specification between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecificationNotBetween(Integer value1, Integer value2) {
+            addCriterion("Specification not between", value1, value2, "specification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIsNull() {
+            addCriterion("PackageSpecification is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIsNotNull() {
+            addCriterion("PackageSpecification is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationEqualTo(Integer value) {
+            addCriterion("PackageSpecification =", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotEqualTo(Integer value) {
+            addCriterion("PackageSpecification <>", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationGreaterThan(Integer value) {
+            addCriterion("PackageSpecification >", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationGreaterThanOrEqualTo(Integer value) {
+            addCriterion("PackageSpecification >=", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationLessThan(Integer value) {
+            addCriterion("PackageSpecification <", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationLessThanOrEqualTo(Integer value) {
+            addCriterion("PackageSpecification <=", value, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationIn(List<Integer> values) {
+            addCriterion("PackageSpecification in", values, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotIn(List<Integer> values) {
+            addCriterion("PackageSpecification not in", values, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationBetween(Integer value1, Integer value2) {
+            addCriterion("PackageSpecification between", value1, value2, "packageSpecification");
+            return (Criteria) this;
+        }
+
+        public Criteria andPackageSpecificationNotBetween(Integer value1, Integer value2) {
+            addCriterion("PackageSpecification not between", value1, value2, "packageSpecification");
+            return (Criteria) this;
+        }
+
         public Criteria andPackageUnitIsNull() {
             addCriterion("PackageUnit is null");
             return (Criteria) this;
@@ -814,123 +935,263 @@ public class ProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationIsNull() {
-            addCriterion("Specification is null");
+        public Criteria andCreatorIsNull() {
+            addCriterion("Creator is null");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationIsNotNull() {
-            addCriterion("Specification is not null");
+        public Criteria andCreatorIsNotNull() {
+            addCriterion("Creator is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationEqualTo(Integer value) {
-            addCriterion("Specification =", value, "specification");
+        public Criteria andCreatorEqualTo(String value) {
+            addCriterion("Creator =", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationNotEqualTo(Integer value) {
-            addCriterion("Specification <>", value, "specification");
+        public Criteria andCreatorNotEqualTo(String value) {
+            addCriterion("Creator <>", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationGreaterThan(Integer value) {
-            addCriterion("Specification >", value, "specification");
+        public Criteria andCreatorGreaterThan(String value) {
+            addCriterion("Creator >", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("Specification >=", value, "specification");
+        public Criteria andCreatorGreaterThanOrEqualTo(String value) {
+            addCriterion("Creator >=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationLessThan(Integer value) {
-            addCriterion("Specification <", value, "specification");
+        public Criteria andCreatorLessThan(String value) {
+            addCriterion("Creator <", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationLessThanOrEqualTo(Integer value) {
-            addCriterion("Specification <=", value, "specification");
+        public Criteria andCreatorLessThanOrEqualTo(String value) {
+            addCriterion("Creator <=", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationIn(List<Integer> values) {
-            addCriterion("Specification in", values, "specification");
+        public Criteria andCreatorLike(String value) {
+            addCriterion("Creator like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationNotIn(List<Integer> values) {
-            addCriterion("Specification not in", values, "specification");
+        public Criteria andCreatorNotLike(String value) {
+            addCriterion("Creator not like", value, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationBetween(Integer value1, Integer value2) {
-            addCriterion("Specification between", value1, value2, "specification");
+        public Criteria andCreatorIn(List<String> values) {
+            addCriterion("Creator in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andSpecificationNotBetween(Integer value1, Integer value2) {
-            addCriterion("Specification not between", value1, value2, "specification");
+        public Criteria andCreatorNotIn(List<String> values) {
+            addCriterion("Creator not in", values, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationIsNull() {
-            addCriterion("PackageSpecification is null");
+        public Criteria andCreatorBetween(String value1, String value2) {
+            addCriterion("Creator between", value1, value2, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationIsNotNull() {
-            addCriterion("PackageSpecification is not null");
+        public Criteria andCreatorNotBetween(String value1, String value2) {
+            addCriterion("Creator not between", value1, value2, "creator");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationEqualTo(Integer value) {
-            addCriterion("PackageSpecification =", value, "packageSpecification");
+        public Criteria andCreateDateIsNull() {
+            addCriterion("CreateDate is null");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationNotEqualTo(Integer value) {
-            addCriterion("PackageSpecification <>", value, "packageSpecification");
+        public Criteria andCreateDateIsNotNull() {
+            addCriterion("CreateDate is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationGreaterThan(Integer value) {
-            addCriterion("PackageSpecification >", value, "packageSpecification");
+        public Criteria andCreateDateEqualTo(Date value) {
+            addCriterion("CreateDate =", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationGreaterThanOrEqualTo(Integer value) {
-            addCriterion("PackageSpecification >=", value, "packageSpecification");
+        public Criteria andCreateDateNotEqualTo(Date value) {
+            addCriterion("CreateDate <>", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationLessThan(Integer value) {
-            addCriterion("PackageSpecification <", value, "packageSpecification");
+        public Criteria andCreateDateGreaterThan(Date value) {
+            addCriterion("CreateDate >", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationLessThanOrEqualTo(Integer value) {
-            addCriterion("PackageSpecification <=", value, "packageSpecification");
+        public Criteria andCreateDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("CreateDate >=", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationIn(List<Integer> values) {
-            addCriterion("PackageSpecification in", values, "packageSpecification");
+        public Criteria andCreateDateLessThan(Date value) {
+            addCriterion("CreateDate <", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationNotIn(List<Integer> values) {
-            addCriterion("PackageSpecification not in", values, "packageSpecification");
+        public Criteria andCreateDateLessThanOrEqualTo(Date value) {
+            addCriterion("CreateDate <=", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationBetween(Integer value1, Integer value2) {
-            addCriterion("PackageSpecification between", value1, value2, "packageSpecification");
+        public Criteria andCreateDateIn(List<Date> values) {
+            addCriterion("CreateDate in", values, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andPackageSpecificationNotBetween(Integer value1, Integer value2) {
-            addCriterion("PackageSpecification not between", value1, value2, "packageSpecification");
+        public Criteria andCreateDateNotIn(List<Date> values) {
+            addCriterion("CreateDate not in", values, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateBetween(Date value1, Date value2) {
+            addCriterion("CreateDate between", value1, value2, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateDateNotBetween(Date value1, Date value2) {
+            addCriterion("CreateDate not between", value1, value2, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerIsNull() {
+            addCriterion("Modifyer is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerIsNotNull() {
+            addCriterion("Modifyer is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerEqualTo(String value) {
+            addCriterion("Modifyer =", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerNotEqualTo(String value) {
+            addCriterion("Modifyer <>", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerGreaterThan(String value) {
+            addCriterion("Modifyer >", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerGreaterThanOrEqualTo(String value) {
+            addCriterion("Modifyer >=", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerLessThan(String value) {
+            addCriterion("Modifyer <", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerLessThanOrEqualTo(String value) {
+            addCriterion("Modifyer <=", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerLike(String value) {
+            addCriterion("Modifyer like", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerNotLike(String value) {
+            addCriterion("Modifyer not like", value, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerIn(List<String> values) {
+            addCriterion("Modifyer in", values, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerNotIn(List<String> values) {
+            addCriterion("Modifyer not in", values, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerBetween(String value1, String value2) {
+            addCriterion("Modifyer between", value1, value2, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyerNotBetween(String value1, String value2) {
+            addCriterion("Modifyer not between", value1, value2, "modifyer");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateIsNull() {
+            addCriterion("ModifyDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateIsNotNull() {
+            addCriterion("ModifyDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateEqualTo(Date value) {
+            addCriterion("ModifyDate =", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateNotEqualTo(Date value) {
+            addCriterion("ModifyDate <>", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateGreaterThan(Date value) {
+            addCriterion("ModifyDate >", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("ModifyDate >=", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateLessThan(Date value) {
+            addCriterion("ModifyDate <", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateLessThanOrEqualTo(Date value) {
+            addCriterion("ModifyDate <=", value, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateIn(List<Date> values) {
+            addCriterion("ModifyDate in", values, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateNotIn(List<Date> values) {
+            addCriterion("ModifyDate not in", values, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateBetween(Date value1, Date value2) {
+            addCriterion("ModifyDate between", value1, value2, "modifyDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andModifyDateNotBetween(Date value1, Date value2) {
+            addCriterion("ModifyDate not between", value1, value2, "modifyDate");
             return (Criteria) this;
         }
     }

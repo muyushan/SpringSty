@@ -8,13 +8,17 @@
     <result column="ProductCategory" property="productCategory" jdbcType="INTEGER" />
     <result column="Flavour" property="flavour" jdbcType="INTEGER" />
     <result column="Unit" property="unit" jdbcType="INTEGER" />
+    <result column="Specification" property="specification" jdbcType="INTEGER" />
+    <result column="PackageSpecification" property="packageSpecification" jdbcType="INTEGER" />
     <result column="PackageUnit" property="packageUnit" jdbcType="INTEGER" />
     <result column="Weight" property="weight" jdbcType="REAL" />
     <result column="Volume" property="volume" jdbcType="REAL" />
     <result column="HasBarCode" property="hasBarCode" jdbcType="INTEGER" />
     <result column="BarCode" property="barCode" jdbcType="VARCHAR" />
-    <result column="Specification" property="specification" jdbcType="INTEGER" />
-    <result column="PackageSpecification" property="packageSpecification" jdbcType="INTEGER" />
+    <result column="Creator" property="creator" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="Modifyer" property="modifyer" jdbcType="VARCHAR" />
+    <result column="ModifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,8 +79,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ProductId, ProductCode, ProductName, ProductCategory, Flavour, Unit, PackageUnit, 
-    Weight, Volume, HasBarCode, BarCode, Specification, PackageSpecification
+    ProductId, ProductCode, ProductName, ProductCategory, Flavour, Unit, Specification, 
+    PackageSpecification, PackageUnit, Weight, Volume, HasBarCode, BarCode, Creator, 
+    CreateDate, Modifyer, ModifyDate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.ProductInfoCriteria" >
     select
@@ -116,15 +121,17 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into productinfo (ProductCode, ProductName, ProductCategory, 
-      Flavour, Unit, PackageUnit, 
-      Weight, Volume, HasBarCode, 
-      BarCode, Specification, PackageSpecification
-      )
+      Flavour, Unit, Specification, 
+      PackageSpecification, PackageUnit, Weight, 
+      Volume, HasBarCode, BarCode, 
+      Creator, CreateDate, Modifyer, 
+      ModifyDate)
     values (#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=INTEGER}, 
-      #{flavour,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, #{packageUnit,jdbcType=INTEGER}, 
-      #{weight,jdbcType=REAL}, #{volume,jdbcType=REAL}, #{hasBarCode,jdbcType=INTEGER}, 
-      #{barCode,jdbcType=VARCHAR}, #{specification,jdbcType=INTEGER}, #{packageSpecification,jdbcType=INTEGER}
-      )
+      #{flavour,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, #{specification,jdbcType=INTEGER}, 
+      #{packageSpecification,jdbcType=INTEGER}, #{packageUnit,jdbcType=INTEGER}, #{weight,jdbcType=REAL}, 
+      #{volume,jdbcType=REAL}, #{hasBarCode,jdbcType=INTEGER}, #{barCode,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{modifyer,jdbcType=VARCHAR}, 
+      #{modifyDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.ProductInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="productId" order="AFTER" >
@@ -147,6 +154,12 @@
       <if test="unit != null" >
         Unit,
       </if>
+      <if test="specification != null" >
+        Specification,
+      </if>
+      <if test="packageSpecification != null" >
+        PackageSpecification,
+      </if>
       <if test="packageUnit != null" >
         PackageUnit,
       </if>
@@ -162,11 +175,17 @@
       <if test="barCode != null" >
         BarCode,
       </if>
-      <if test="specification != null" >
-        Specification,
+      <if test="creator != null" >
+        Creator,
       </if>
-      <if test="packageSpecification != null" >
-        PackageSpecification,
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="modifyer != null" >
+        Modifyer,
+      </if>
+      <if test="modifyDate != null" >
+        ModifyDate,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -185,6 +204,12 @@
       <if test="unit != null" >
         #{unit,jdbcType=INTEGER},
       </if>
+      <if test="specification != null" >
+        #{specification,jdbcType=INTEGER},
+      </if>
+      <if test="packageSpecification != null" >
+        #{packageSpecification,jdbcType=INTEGER},
+      </if>
       <if test="packageUnit != null" >
         #{packageUnit,jdbcType=INTEGER},
       </if>
@@ -200,11 +225,17 @@
       <if test="barCode != null" >
         #{barCode,jdbcType=VARCHAR},
       </if>
-      <if test="specification != null" >
-        #{specification,jdbcType=INTEGER},
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="packageSpecification != null" >
-        #{packageSpecification,jdbcType=INTEGER},
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyer != null" >
+        #{modifyer,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null" >
+        #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -235,6 +266,12 @@
       <if test="record.unit != null" >
         Unit = #{record.unit,jdbcType=INTEGER},
       </if>
+      <if test="record.specification != null" >
+        Specification = #{record.specification,jdbcType=INTEGER},
+      </if>
+      <if test="record.packageSpecification != null" >
+        PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER},
+      </if>
       <if test="record.packageUnit != null" >
         PackageUnit = #{record.packageUnit,jdbcType=INTEGER},
       </if>
@@ -250,11 +287,17 @@
       <if test="record.barCode != null" >
         BarCode = #{record.barCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.specification != null" >
-        Specification = #{record.specification,jdbcType=INTEGER},
+      <if test="record.creator != null" >
+        Creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.packageSpecification != null" >
-        PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER},
+      <if test="record.createDate != null" >
+        CreateDate = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifyer != null" >
+        Modifyer = #{record.modifyer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyDate != null" >
+        ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -269,13 +312,17 @@
       ProductCategory = #{record.productCategory,jdbcType=INTEGER},
       Flavour = #{record.flavour,jdbcType=INTEGER},
       Unit = #{record.unit,jdbcType=INTEGER},
+      Specification = #{record.specification,jdbcType=INTEGER},
+      PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER},
       PackageUnit = #{record.packageUnit,jdbcType=INTEGER},
       Weight = #{record.weight,jdbcType=REAL},
       Volume = #{record.volume,jdbcType=REAL},
       HasBarCode = #{record.hasBarCode,jdbcType=INTEGER},
       BarCode = #{record.barCode,jdbcType=VARCHAR},
-      Specification = #{record.specification,jdbcType=INTEGER},
-      PackageSpecification = #{record.packageSpecification,jdbcType=INTEGER}
+      Creator = #{record.creator,jdbcType=VARCHAR},
+      CreateDate = #{record.createDate,jdbcType=TIMESTAMP},
+      Modifyer = #{record.modifyer,jdbcType=VARCHAR},
+      ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -298,6 +345,12 @@
       <if test="unit != null" >
         Unit = #{unit,jdbcType=INTEGER},
       </if>
+      <if test="specification != null" >
+        Specification = #{specification,jdbcType=INTEGER},
+      </if>
+      <if test="packageSpecification != null" >
+        PackageSpecification = #{packageSpecification,jdbcType=INTEGER},
+      </if>
       <if test="packageUnit != null" >
         PackageUnit = #{packageUnit,jdbcType=INTEGER},
       </if>
@@ -313,11 +366,17 @@
       <if test="barCode != null" >
         BarCode = #{barCode,jdbcType=VARCHAR},
       </if>
-      <if test="specification != null" >
-        Specification = #{specification,jdbcType=INTEGER},
+      <if test="creator != null" >
+        Creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="packageSpecification != null" >
-        PackageSpecification = #{packageSpecification,jdbcType=INTEGER},
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyer != null" >
+        Modifyer = #{modifyer,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDate != null" >
+        ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where ProductId = #{productId,jdbcType=INTEGER}
@@ -329,13 +388,17 @@
       ProductCategory = #{productCategory,jdbcType=INTEGER},
       Flavour = #{flavour,jdbcType=INTEGER},
       Unit = #{unit,jdbcType=INTEGER},
+      Specification = #{specification,jdbcType=INTEGER},
+      PackageSpecification = #{packageSpecification,jdbcType=INTEGER},
       PackageUnit = #{packageUnit,jdbcType=INTEGER},
       Weight = #{weight,jdbcType=REAL},
       Volume = #{volume,jdbcType=REAL},
       HasBarCode = #{hasBarCode,jdbcType=INTEGER},
       BarCode = #{barCode,jdbcType=VARCHAR},
-      Specification = #{specification,jdbcType=INTEGER},
-      PackageSpecification = #{packageSpecification,jdbcType=INTEGER}
+      Creator = #{creator,jdbcType=VARCHAR},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      Modifyer = #{modifyer,jdbcType=VARCHAR},
+      ModifyDate = #{modifyDate,jdbcType=TIMESTAMP}
     where ProductId = #{productId,jdbcType=INTEGER}
   </update>
 </mapper>

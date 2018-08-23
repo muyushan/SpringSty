@@ -109,7 +109,7 @@ function loadCommonBoxList(element){
         success:function(data){
             var html='';
             $.each(data.data,function(key,value){
-                html+="<option value='"+value.listID+"'listValue='"+value.listValue+"'>"+value.listName+"</option>";
+                html+="<option value='"+value.listID+"'data='"+JSON.stringify(value)+"'>"+value.listName+"</option>";
             })
             element.html(html);
             layui.use('form', function(){

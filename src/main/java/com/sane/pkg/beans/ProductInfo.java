@@ -1,5 +1,7 @@
 package com.sane.pkg.beans;
 
+import java.util.Date;
+
 public class ProductInfo {
     private Integer productId;
 
@@ -13,6 +15,10 @@ public class ProductInfo {
 
     private Integer unit;
 
+    private Integer specification;
+
+    private Integer packageSpecification;
+
     private Integer packageUnit;
 
     private Float weight;
@@ -23,9 +29,13 @@ public class ProductInfo {
 
     private String barCode;
 
-    private Integer specification;
+    private String creator;
 
-    private Integer packageSpecification;
+    private Date createDate;
+
+    private String modifyer;
+
+    private Date modifyDate;
 
     public Integer getProductId() {
         return productId;
@@ -75,6 +85,22 @@ public class ProductInfo {
         this.unit = unit;
     }
 
+    public Integer getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(Integer specification) {
+        this.specification = specification;
+    }
+
+    public Integer getPackageSpecification() {
+        return packageSpecification;
+    }
+
+    public void setPackageSpecification(Integer packageSpecification) {
+        this.packageSpecification = packageSpecification;
+    }
+
     public Integer getPackageUnit() {
         return packageUnit;
     }
@@ -115,19 +141,35 @@ public class ProductInfo {
         this.barCode = barCode == null ? null : barCode.trim();
     }
 
-    public Integer getSpecification() {
-        return specification;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setSpecification(Integer specification) {
-        this.specification = specification;
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
     }
 
-    public Integer getPackageSpecification() {
-        return packageSpecification;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setPackageSpecification(Integer packageSpecification) {
-        this.packageSpecification = packageSpecification;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getModifyer() {
+        return modifyer;
+    }
+
+    public void setModifyer(String modifyer) {
+        this.modifyer = modifyer == null ? null : modifyer.trim();
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }
