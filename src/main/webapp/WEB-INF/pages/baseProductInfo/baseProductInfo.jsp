@@ -50,6 +50,7 @@
             loadCommonBoxList($("#search_specification"));
             loadCommonBoxList($("#unit"));
             loadCommonBoxList($("#packageUnit"));
+            loadCommonBoxList($("#productCategory"));
 
             $("#createNewProductInfo").click(function(){
                 layer.open({
@@ -198,10 +199,11 @@
               </td>
           </tr>
           <tr>
-              <td>口味</td>
+              <td>物料类别</td>
               <td>
-                  <select lay-filter="flavour"  id="flavour" lay-search="" typeId="35"></select>
+                  <select lay-filter="productCategory"  id="productCategory" lay-search="" typeId="42"></select>
               </td>
+
               <td>规格</td>
               <td>
                   <select lay-filter="specification"  id="specification" lay-search="" typeId="36"></select>
@@ -211,6 +213,10 @@
               <td>包装规格</td>
               <td>
                   <select lay-filter="packageSpecification"  id="packageSpecification" lay-search="" typeId="38"></select>
+              </td>
+              <td>口味</td>
+              <td>
+                  <select lay-filter="flavour"  id="flavour" lay-search="" typeId="35"></select>
               </td>
           </tr>
           <tr>
