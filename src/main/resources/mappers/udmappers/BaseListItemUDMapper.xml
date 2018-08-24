@@ -27,8 +27,7 @@
     a.CreatDate,
     a.Modifier,
     a.ModifyDate
-  </sql>
-  <select id="queryBaseListItemByTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  </sql><select id="queryBaseListItemByTypeId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     SELECT
 
 
