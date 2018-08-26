@@ -1,8 +1,10 @@
 package com.sane.pkg.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BaseListItem {
+public class BaseListItem implements Serializable{
+    private static final long serialVersionUID = 5272436524920090884L;
     private Integer listID;
 
     private Short typeID;

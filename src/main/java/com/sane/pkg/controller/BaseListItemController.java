@@ -55,7 +55,10 @@ public class BaseListItemController {
             all.setListName("全部");
             all.setListID(-1);
             all.setListValue("");
-            pageInfo.getList().add(0,all);
+            if(pageInfo.getList().get(0).getListID()!=-1){
+                pageInfo.getList().add(0,all);
+            }
+
         }
         Map<String,Object> result=new HashMap<String,Object>();
         result.put("code","0");

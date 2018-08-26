@@ -12,6 +12,8 @@ import com.sane.pkg.service.BaseListItemService;
 import com.sane.pkg.service.BaseListTypeService;
 import com.sane.pkg.utils.CommonUtil;
 import com.sane.pkg.utils.SessionUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ public class BaseListItemServiceImpl implements BaseListItemService {
     private BaseListTypeMapper baseListTypeMapper;
     @Autowired
     private BaseListTypeService baseListTypeService;
+    private Log log= LogFactory.getLog(getClass());
     @Cacheable(value = "cacheSP",key = "#baseListTypeParam.typeID",condition="#baseListTypeParam.typeID!=null")
     @Override
     public PageInfo<BaseListItem> queryBaseListItem(BaseListTypeParam baseListTypeParam) {

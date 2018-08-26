@@ -14,8 +14,8 @@
             diskExpiryThreadIntervalSeconds="120"/>
 
     <cache name="cacheSP"
-           maxElementsInMemory="1000"
-           eternal="false"
+           maxElementsInMemory="2"
+           eternal="true"
            overflowToDisk="true"
            timeToIdleSeconds="10"
            timeToLiveSeconds="20"/>

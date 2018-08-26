@@ -21,22 +21,22 @@
                     elem: '#baseProductInfoTable',
                     id:'baseProductInfoTable',
                     method:'post',
-//                url:webRoot+"baseListItem/queryBaseListItem.do",
+                    url:webRoot+"baseProductInfo/query.do",
                     page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                     height:'full-180',
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
-                        {field: 'productCode',title: '物料编码', width:200},
+                        {field: 'productCode',title: '物料编码', width:250},
                         {field: 'productName',title: '物料名称', width:200},
-                        {field: 'flavour',title: '口味', width:200},
-                        {field: 'weight',title: '重量', width:200},
-                        {field: 'volume',title: '体积', width:200},
-                        {field: 'specification',title: '规格', width:100},
-                        {field: 'packageSpecification',title: '包装规格', width:100},
-                        {field: 'packageSpecification',title: '包装规格', width:100},
-                        {field: 'unit',title: '单位', width:100},
-                        {field: 'packageUnit',title: '包装单位', width:100}
+                        {field: 'productCategoryTxt',title: '物料类别', width:100},
+                        {field: 'flavourTxt',title: '口味', width:100},
+                        {field: 'specificationTxt',title: '规格', width:100},
+                        {field: 'packageSpecificationTxt',title: '包装规格', width:100},
+                        {field: 'unitTxt',title: '单位', width:100},
+                        {field: 'packageUnitTxt',title: '包装单位', width:100},
+                        {field: 'weight',title: '重量', width:80},
+                        {field: 'volume',title: '体积', width:80}
                     ]]
                 });
             });
@@ -51,6 +51,7 @@
             loadCommonBoxList($("#unit"));
             loadCommonBoxList($("#packageUnit"));
             loadCommonBoxList($("#productCategory"));
+            loadCommonBoxList($("#search_productCategory"));
 
             $("#createNewProductInfo").click(function(){
                 layer.open({
@@ -86,12 +87,39 @@
                 form.on('select(packageSpecification)', function(data){
                     generateProductCode();
                 });
+                form.on('select(productCategory)', function(data){
+                    generateProductCode();
+                });
             });
 
 
+            $("#queryBtn").click(function(){
+                search();
+            });
         });
+
+        function search(){
+            var  productCode=$("#search_productCode").val();
+            var  productName=$("#search_productName").val();
+            var  productCategory=$("#search_productCategory").val();
+            var  flavour=$("#search_flavour").val();
+            var  specification=$("#search_specification").val();
+            table.reload('baseProductInfoTable', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    productCode: productCode,
+                    productName:productName,
+                    productCategory:productCategory,
+                    flavour:flavour,
+                    specification:specification
+                }
+            });
+        }
         function generateProductCode(){
             var productName=$("#productName").val();
+            var productCategory=$("#productCategory").val();
             var flavour=$("#flavour").val();
             var specification=$("#specification").val();
             var packageSpecification=$("#packageSpecification").val();
@@ -100,11 +128,17 @@
                productCode=pinyin.getCamelChars(productName);
             }
 
+            if(productCategory!=-1){
+                var options=$("#productCategory option:selected");
+                var obj=options.attr('data');
+                obj=JSON.parse(obj);
+                productCode=productCode.concat(obj.listValue);
+            }
             if(flavour!=-1){
                 var options=$("#flavour option:selected");
                 var obj=options.attr('data');
                 obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue)
+                productCode=productCode.concat(obj.listValue);
             }
             if(specification!=-1){
                 var options=$("#specification option:selected");
@@ -127,21 +161,39 @@
             var flavour=$("#flavour").val();
             var specification=$("#specification").val();
             var packageSpecification=$("#packageSpecification").val();
+            var productCategory=$("#productCategory").val();
             var unit=$("#unit").val();
             var packageUnit=$("#packageUnit").val();
             var volume=$("#volume").val();
             var weight=$("#weight").val();
-
             var  baseProduct={};
             baseProduct.productCode=productCode;
             baseProduct.productName=productName;
-            baseProduct.flavour=flavour;
-            baseProduct.specification=specification;
-            baseProduct.packageSpecification=packageSpecification;
-            baseProduct.unit=unit;
-            baseProduct.packageUnit=packageUnit;
-            baseProduct.volume=volume;
-            baseProduct.weight=weight;
+            if(productCategory!="-1"){
+                baseProduct.productCategory=productCategory;
+            }
+            if(flavour!="-1"){
+                baseProduct.flavour=flavour;
+            }
+            if(specification!="-1"){
+                baseProduct.specification=specification;
+            }
+            if(packageSpecification!="-1"){
+                baseProduct.packageSpecification=packageSpecification;
+            }
+
+            if(unit!="-1"){
+                baseProduct.unit=unit;
+            }
+            if(packageUnit!="-1"){
+                baseProduct.packageUnit=packageUnit;
+            }
+            if(volume!=""){
+                baseProduct.volume=volume;
+            }
+            if(weight!=""){
+                baseProduct.weight=weight;
+            }
             var url="<c:url value="/baseProductInfo/add.do"/>";
             $.post(url,baseProduct,function(data){
                 if(data.code=="200"){
@@ -168,6 +220,9 @@
             <td><input type="text" id="search_productCode" style="width:150px; " class="layui-input"/></td>
             <td>物料名称</td>
             <td><input type="text" id="search_productName" style="width:150px; " class="layui-input"/></td>
+            <td>物料类别</td>
+            <td><select lay-filter="search_productCategory"  id="search_productCategory" lay-search="" typeId="42"></select>
+            </td>
             <td>口味</td>
             <td><select lay-filter="flavour"  id="search_flavour"  lay-search="" typeId="35"></select></td>
             <td>产品规格</td>

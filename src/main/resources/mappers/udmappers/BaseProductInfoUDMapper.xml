@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sane.pkg.dao.mappers.udmappers.BaseProductInfoUDMappper" >
+
+  <select id="queryProductInfoByParam" resultType="com.sane.pkg.beans.ProductInfoUD" parameterType="com.sane.pkg.beans.ProductInfoParam" >
+  SELECT
+  a.*,
+  b.ListName as ProductCategoryTxt,
+  c.ListName as FlavourTxt,
+  d.ListName as SpecificationTxt,
+  e.ListName as PackageSpecificationTxt,
+  f.ListName as UnitTxt,
+  g.ListName as PackageUnitTxt
+  FROM
+  test.productinfo a
+  LEFT JOIN
+  baselistitem b ON a.ProductCategory = b.ListID
+  left join baselistitem c on a.Flavour=c.ListID
+  left join baselistitem d on a.Specification =d.ListID
+  left join baselistitem e on a.PackageSpecification=e.ListID
+  left join baselistitem f on a.Unit=d.ListID
+  left join baselistitem g on a.PackageUnit=g.ListID
+<where>
+  <if test="productCode!=null and productCode!=''">
+    AND a.ProductCode LIKE concat(concat('%',#{productCode}),'%')
+  </if>
+  <if test="productName!=null and productName!=''">
+    AND a.ProductName LIKE concat(concat('%',#{productName}),'%')
+  </if>
+  <if test="productCategory!=null and productCategory!=-1">
+    AND a.ProductCategory=#{productCategory}
+  </if>
+  <if test="flavour!=null and flavour!=-1">
+    AND a.Flavour=#{flavour}
+  </if>
+  <if test="specification!=null and specification!=-1">
+    AND a.Specification=#{specification}
+  </if>
+  <if test="packageSpecification!=null and packageSpecification!=-1">
+    AND a.PackageSpecification=#{packageSpecification}
+  </if>
+  <if test="packageUnit!=null and packageUnit!=-1">
+    AND a.PackageUnit=#{packageUnit}
+  </if>
+</where>
+  </select>
+
+</mapper>
