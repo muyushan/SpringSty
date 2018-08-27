@@ -36,6 +36,19 @@ public class BaseProductInfoController {
         }
         return  msgBean;
     }
+
+    @ResponseBody
+    @RequestMapping("edit")
+    public MsgBean editBaseProductInfo(ProductInfo productInfo){
+        MsgBean msgBean=new MsgBean();
+        try {
+            msgBean=baseProductInfoService.updateBaseProductInfo(productInfo);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return  msgBean;
+    }
     @RequestMapping("query")
     @ResponseBody
     public Map<String,Object> quereyBaseProductInfo(ProductInfoParam productInfoParam){

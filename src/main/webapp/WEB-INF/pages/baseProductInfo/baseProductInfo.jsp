@@ -58,7 +58,7 @@
                     type: 1,
                     closeBtn:1,
                     btn: ['保存', '关闭'],
-                    yes:function(){save()},
+                    yes:function(){saveNewOrEdit()},
                     btn2:function(index, layero){
                         layer.close(index);
 //                        resetAddForm();
@@ -155,7 +155,7 @@
             $("#productCode").val(productCode);
         }
 
-        function save(){
+        function saveNewOrEdit(flag){
             var productCode=$("#productCode").val();
             var productName=$("#productName").val();
             var flavour=$("#flavour").val();
@@ -199,7 +199,7 @@
                 if(data.code=="200"){
 //                    resetAddForm();
                     layer.closeAll();
-//                    search();
+                    search();
                 }else{
                     layer.open({
                         type: 0,

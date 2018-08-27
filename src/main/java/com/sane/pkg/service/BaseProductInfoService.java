@@ -9,5 +9,6 @@ import com.sane.pkg.exceptions.BizException;
 
 public interface BaseProductInfoService {
     public MsgBean addBaseProductInfo(ProductInfo productInfo) throws BizException,Exception;
+    public MsgBean updateBaseProductInfo(ProductInfo productInfo) throws BizException,Exception;
     public PageInfo<ProductInfoUD> queryProductInfo(ProductInfoParam productInfoParam);
 }
