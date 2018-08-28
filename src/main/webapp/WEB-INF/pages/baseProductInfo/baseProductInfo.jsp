@@ -319,8 +319,8 @@
 <div class="layui-btn-group">
     <button class="layui-btn" id="createNewProductInfo"> <i class="layui-icon">&#xe654;</i>增加</button>
     <button class="layui-btn" id="editProductInfo"> <i class="layui-icon">&#xe642;</i>编辑</button>
-    <button class="layui-btn" id="deleteProductInfo"> <i class="layui-icon">&#xe640;</i>删除</button>
-    <button class="layui-btn" id="uploadProductInfo"> <i class="layui-icon layui-icon-upload"></i>批量上传</button>
+    <%--<button class="layui-btn" id="deleteProductInfo"> <i class="layui-icon">&#xe640;</i>删除</button>--%>
+    <%--<button class="layui-btn" id="uploadProductInfo"> <i class="layui-icon layui-icon-upload"></i>批量上传</button>--%>
 </div>
 <table id="baseProductInfoTable" lay-filter="baseProductInfoTable">
 </table>
