@@ -52,13 +52,13 @@
             loadCommonBoxList($("#packageUnit"));
             loadCommonBoxList($("#productCategory"));
             loadCommonBoxList($("#search_productCategory"));
-
+//
             $("#createNewProductInfo").click(function(){
                 layer.open({
                     type: 1,
                     closeBtn:1,
                     btn: ['保存', '关闭'],
-                    yes:function(){saveNewOrEdit()},
+                    yes:function(){saveNewOrEdit("add")},
                     btn2:function(index, layero){
                         layer.close(index);
 //                        resetAddForm();
@@ -71,6 +71,11 @@
                     title:'创建基础物料',
                     content: $('#createNewProductInfoContent')
                 });
+            });
+
+            $("#editProductInfo").click(function(){
+                showEditWindow();
+
             });
 
             $("#productName").blur(function(){
@@ -97,6 +102,54 @@
                 search();
             });
         });
+
+        function showEditWindow(){
+            var checkedRow=table.checkStatus('baseProductInfoTable');
+            if(checkedRow.data.length==0){
+                layer.msg('请选择一条要编辑的记录',{time:1000});
+                return;
+            }
+            if(checkedRow.data.length>1){
+                layer.msg('只能选择一条记录',{time:1000});
+                return;
+            }
+            $("#productId").val(checkedRow.data[0]["productId"]);
+            $("#productCode").val(checkedRow.data[0]["productCode"]);
+            $("#productName").val(checkedRow.data[0]["productName"]);
+            $("#productCategory").val(checkedRow.data[0]["productCategory"]);
+            $("#flavour").val(checkedRow.data[0]["flavour"]);
+            $("#specification").val(checkedRow.data[0]["specification"]);
+            $("#packageSpecification").val(checkedRow.data[0]["packageSpecification"]);
+            $("#productName").addClass("layui-disabled");
+            $("#productCategory").attr("disabled",true);
+            $("#flavour").attr("disabled",true);
+            $("#specification").attr("disabled",true);
+            $("#packageSpecification").attr("disabled",true);
+            $("#unit").val(checkedRow.data[0]["unit"]);
+            $("#packageUnit").val(checkedRow.data[0]["packageUnit"]);
+            $("#volume").val(checkedRow.data[0]["volume"]);
+            $("#weight").val(checkedRow.data[0]["weight"]);
+            var form = layui.form;
+            form.render();
+            $(".layui-input.layui-disabled").attr("disabled",true);//将下拉框的文本框禁止输入解决layUI问题
+            layer.open({
+                type: 1,
+                closeBtn:1,
+                btn: ['保存', '关闭'],
+                yes:function(){saveNewOrEdit("edit")},
+                btn2:function(index, layero){
+                    layer.close(index);
+//                        resetAddForm();
+                },
+                cancel: function(index, layero){
+//                        resetAddForm();
+                },
+                skin: 'layui-layer-molv',
+                area: ['680px', '340px'],
+                title:'修改基础物料',
+                content: $('#createNewProductInfoContent')
+            });
+        }
 
         function search(){
             var  productCode=$("#search_productCode").val();
@@ -167,6 +220,9 @@
             var volume=$("#volume").val();
             var weight=$("#weight").val();
             var  baseProduct={};
+            if(flag=="edit"){
+                baseProduct.productId=$("#productId").val();
+            }
             baseProduct.productCode=productCode;
             baseProduct.productName=productName;
             if(productCategory!="-1"){
@@ -194,7 +250,13 @@
             if(weight!=""){
                 baseProduct.weight=weight;
             }
-            var url="<c:url value="/baseProductInfo/add.do"/>";
+            var url="";
+            if(flag=="add"){
+                url="<c:url value="/baseProductInfo/add.do"/>";
+            }else if(flag=="edit"){
+
+                url="<c:url value="/baseProductInfo/edit.do"/>";
+            }
             $.post(url,baseProduct,function(data){
                 if(data.code=="200"){
 //                    resetAddForm();
@@ -244,6 +306,7 @@
 </body>
 <div id="createNewProductInfoContent" style="display:none; padding: 10px 10px;">
     <form class="layui-form" action="" lay-filter="addForm">
+        <input type="hidden" id="productId">
       <table class="laytable-dialog-table_4column" cellpadding="0" cellspacing="0">
           <tr>
               <td>物料编码</td>
