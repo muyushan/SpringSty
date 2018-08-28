@@ -18,7 +18,7 @@
   left join baselistitem c on a.Flavour=c.ListID
   left join baselistitem d on a.Specification =d.ListID
   left join baselistitem e on a.PackageSpecification=e.ListID
-  left join baselistitem f on a.Unit=d.ListID
+  left join baselistitem f on a.Unit=f.ListID
   left join baselistitem g on a.PackageUnit=g.ListID
 <where>
   <if test="productCode!=null and productCode!=''">

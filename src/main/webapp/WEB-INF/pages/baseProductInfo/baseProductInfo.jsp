@@ -52,7 +52,6 @@
             loadCommonBoxList($("#packageUnit"));
             loadCommonBoxList($("#productCategory"));
             loadCommonBoxList($("#search_productCategory"));
-//
             $("#createNewProductInfo").click(function(){
                 layer.open({
                     type: 1,
@@ -61,10 +60,10 @@
                     yes:function(){saveNewOrEdit("add")},
                     btn2:function(index, layero){
                         layer.close(index);
-//                        resetAddForm();
+                        resetAddForm();
                     },
                     cancel: function(index, layero){
-//                        resetAddForm();
+                        resetAddForm();
                     },
                     skin: 'layui-layer-molv',
                     area: ['680px', '340px'],
@@ -139,10 +138,10 @@
                 yes:function(){saveNewOrEdit("edit")},
                 btn2:function(index, layero){
                     layer.close(index);
-//                        resetAddForm();
+                        resetAddForm();
                 },
                 cancel: function(index, layero){
-//                        resetAddForm();
+                        resetAddForm();
                 },
                 skin: 'layui-layer-molv',
                 area: ['680px', '340px'],
@@ -259,7 +258,7 @@
             }
             $.post(url,baseProduct,function(data){
                 if(data.code=="200"){
-//                    resetAddForm();
+                    resetAddForm();
                     layer.closeAll();
                     search();
                 }else{
@@ -271,6 +270,28 @@
                 }
 
             });
+        }
+
+        function resetAddForm(){
+            $("#productCode").val("");
+            $("#productName").val("");
+            $("#productCategory").val("-1");
+            $("#specification").val("-1");
+            $("#packageSpecification").val("-1");
+            $("#flavour").val("-1");
+            $("#unit").val("-1");
+            $("#packageUnit").val("-1");
+            $("#volume").val("");
+            $("#weight").val("");
+            $("#productName").removeAttr("disabled");
+            $("#productName").removeClass("layui-disabled");
+            $("#productCategory").removeAttr("disabled");
+            $("#flavour").removeAttr("disabled");
+            $("#specification").removeAttr("disabled");
+            $("#packageSpecification").removeAttr("disabled");
+            var form = layui.form;
+            form.render();
+
         }
     </script>
 </head>
