@@ -47,7 +47,8 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">库存管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:operation.tabAdd('<c:url value="baseListType/showMainPage.do"/>','出入库管理')">出入库管理</a></dd>
+                        <dd><a href="javascript:operation.tabAdd('<c:url value="baseListType/showMainPage.do"/>','库存变更查询')">库存变更查询</a></dd>
+                        <dd><a href="javascript:operation.tabAdd('<c:url value="storageProduct/mainPage.do"/>','出入库管理')">出入库管理</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseProductInfo/baseProductInfoPage.do"/>','损耗登记')">损耗登记</a></dd>
                     </dl>
                 </li>
