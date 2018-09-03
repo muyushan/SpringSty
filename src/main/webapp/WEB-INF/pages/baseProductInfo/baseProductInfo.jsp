@@ -13,10 +13,8 @@
 <head>
     <title>基础物料信息维护</title>
     <script>
-        var table;
+        var table=layui.table;
         $(document).ready(function() {
-            layui.use('table', function(){
-                table = layui.table;
                 table.render({
                     elem: '#baseProductInfoTable',
                     id:'baseProductInfoTable',
@@ -39,7 +37,6 @@
                         {field: 'volume',title: '体积', width:80}
                     ]]
                 });
-            });
             /**
              * 加载下拉框
              */

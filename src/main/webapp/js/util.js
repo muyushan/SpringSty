@@ -112,11 +112,8 @@ function loadCommonBoxList(element){
                 html+="<option value='"+value.listID+"'data='"+JSON.stringify(value)+"'>"+value.listName+"</option>";
             })
             element.html(html);
-            layui.use('form', function(){
-                form = layui.form;
-                form.render("select");
-            });
-
+            form = layui.form;
+            form.render("select");
         }
     });
 }

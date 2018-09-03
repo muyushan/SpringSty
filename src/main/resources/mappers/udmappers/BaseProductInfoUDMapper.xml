@@ -27,6 +27,9 @@
   <if test="productName!=null and productName!=''">
     AND a.ProductName LIKE concat(concat('%',#{productName}),'%')
   </if>
+  <if test="keyWord!=null and keyWord!=''">
+    AND (a.ProductName LIKE concat(concat('%',#{keyWord}),'%') OR a.ProductCode LIKE concat(concat('%',#{keyWord}),'%'))
+  </if>
   <if test="productCategory!=null and productCategory!=-1">
     AND a.ProductCategory=#{productCategory}
   </if>

@@ -7,10 +7,12 @@
 <head>
     <script type="text/javascript" src="<c:url value="/js/ajaxfileupload.js"/>"></script>
     <script>
-        var table;
-        var form;
-        layui.use('table', function(){
-            table = layui.table;
+        var table=layui.table;
+        var form=layui.form;
+
+
+        $(document).ready(function(){
+
             table.render({
                 elem: '#listItemTable',
                 id:'listItemTable',
@@ -34,11 +36,6 @@
                     }}
                 ]]
             });
-        });
-        layui.use('form', function(){
-            form = layui.form;
-        });
-        $(document).ready(function(){
             $.ajax({
                 type:'get',
                 url: webRoot+'baseListType/queryBaseListType.do?page=1&limit=1000&showAll=true',

@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <style>
-        ul.layui-tab-title li:first-child i{
+        ul.layui-tab-title li:first-child i{*/
             display: none;
         }
     </style>
@@ -72,10 +72,8 @@
 </div>
 <script>
     //JavaScript代码区域
-    var element=null;
-    layui.use('element', function(){
-        element= layui.element;
-    });
+    var element= layui.element;
+    element.render();
 
     var operation = {
         tabAdd: function (url,title){

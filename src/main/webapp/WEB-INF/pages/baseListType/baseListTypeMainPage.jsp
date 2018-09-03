@@ -6,10 +6,11 @@
 
 <head>
     <script>
-        var table;
-        var form;
-        layui.use('table', function(){
-            table = layui.table;
+        var table=layui.table;
+        var form=layui.form;
+
+        $(document).ready(function(){
+
             table.render({
                 elem: '#listTypeTable',
                 id:'listTypeTable',
@@ -39,11 +40,6 @@
                     }}
                 ]]
             });
-        });
-        layui.use('form', function(){
-            form = layui.form;
-        });
-        $(document).ready(function(){
 
             $("#queryBtn").click(function(){
                 search();

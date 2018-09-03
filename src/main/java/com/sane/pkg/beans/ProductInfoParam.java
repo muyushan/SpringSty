@@ -4,6 +4,7 @@ public class ProductInfoParam extends ProductInfo {
     private int page;
     private int limit;
     private boolean needPager;
+    private String keyWord;
 
     public int getPage() {
         return page;
@@ -27,5 +28,13 @@ public class ProductInfoParam extends ProductInfo {
 
     public void setNeedPager(boolean needPager) {
         this.needPager = needPager;
+    }
+
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 }
