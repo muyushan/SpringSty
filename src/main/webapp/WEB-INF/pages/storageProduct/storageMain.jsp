@@ -56,6 +56,8 @@
             /**
              * 加载下拉框
              */
+            loadCommonBoxList($("#type"));
+
 //
             $("#createNewStrorageProduct").click(function(){
                 layer.open({
@@ -195,52 +197,30 @@
 
         function saveNewOrEdit(flag){
             var productCode=$("#productCode").val();
-            var productName=$("#productName").val();
-            var flavour=$("#flavour").val();
-            var specification=$("#specification").val();
-            var packageSpecification=$("#packageSpecification").val();
-            var productCategory=$("#productCategory").val();
-            var unit=$("#unit").val();
-            var packageUnit=$("#packageUnit").val();
-            var volume=$("#volume").val();
-            var weight=$("#weight").val();
-            var  baseProduct={};
+            var type=$("#type").val();
+            var quantity=$("#quantity").val();
+            var remark=$("#remark").val();
+            var  storageProduct={};
             if(flag=="edit"){
-                baseProduct.productId=$("#productId").val();
-            }
-            baseProduct.productCode=productCode;
-            baseProduct.productName=productName;
-            if(productCategory!="-1"){
-                baseProduct.productCategory=productCategory;
-            }
-            if(flavour!="-1"){
-                baseProduct.flavour=flavour;
-            }
-            if(specification!="-1"){
-                baseProduct.specification=specification;
-            }
-            if(packageSpecification!="-1"){
-                baseProduct.packageSpecification=packageSpecification;
-            }
+                storageProduct.storageProductId=$("#storageProductId").val();
+            }else{
+                baseProduct.productCode=productCode;
+                if(type!="-1"){
+                    baseProduct.type=type;
+                }else{
+                    layer.msg('必选选择一种库存类别',{time:1000});
+                    return;
+                }
 
-            if(unit!="-1"){
-                baseProduct.unit=unit;
             }
-            if(packageUnit!="-1"){
-                baseProduct.packageUnit=packageUnit;
-            }
-            if(volume!=""){
-                baseProduct.volume=volume;
-            }
-            if(weight!=""){
-                baseProduct.weight=weight;
-            }
+            baseProduct.quantity=quantity;
+            baseProduct.remark=remark;
             var url="";
             if(flag=="add"){
-                url="<c:url value="/baseProductInfo/add.do"/>";
+                url="<c:url value="/storageProduct/add.do"/>";
             }else if(flag=="edit"){
 
-                url="<c:url value="/baseProductInfo/edit.do"/>";
+                url="<c:url value="/storageProduct/edit.do"/>";
             }
             $.post(url,baseProduct,function(data){
                 if(data.code=="200"){
@@ -317,9 +297,13 @@
                 </td>
             </tr>
             <tr>
+                <td>库存类别</td>
+                <td><select lay-filter="type"  id="type" lay-search="" typeId="44"></select></td>
+            </tr>
+            <tr>
                 <td>备注说明</td>
                 <td>
-                    <textarea placeholder="请输入内容" class="layui-textarea"></textarea></input>
+                    <textarea placeholder="请输入内容" class="layui-textarea" id="remark" ></textarea></input>
                 </td>
             </tr>
         </table>

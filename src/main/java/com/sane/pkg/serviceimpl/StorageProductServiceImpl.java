@@ -1,6 +1,7 @@
 package com.sane.pkg.serviceimpl;
 
 import com.sane.pkg.beans.StorageProduct;
+import com.sane.pkg.beans.StorageProductCriteria;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.dao.mappers.StorageProductMapper;
 import com.sane.pkg.exceptions.BizException;
@@ -17,7 +18,10 @@ public class StorageProductServiceImpl implements StorageProductService {
    @Transactional(rollbackFor = {BizException.class,Exception.class})
     @Override
     public MsgBean addStorageProduct(StorageProduct storageProduct) throws BizException, Exception {
+       MsgBean msgBean=new MsgBean();
+       StorageProductCriteria storageProductCriteria=new StorageProductCriteria();
+//       StorageProductCriteria.Criteria
         storageProductMapper.insertSelective(storageProduct);
-       return null;
+       return msgBean;
     }
 }

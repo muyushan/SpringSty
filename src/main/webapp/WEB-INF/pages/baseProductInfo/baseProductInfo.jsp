@@ -40,7 +40,7 @@
             /**
              * 加载下拉框
              */
-            loadCommonBoxList($("#flavour"));
+
             loadCommonBoxList($("#search_flavour"));
             loadCommonBoxList($("#specification"));
             loadCommonBoxList($("#packageSpecification"));
