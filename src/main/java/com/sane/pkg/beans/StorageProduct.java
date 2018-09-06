@@ -9,7 +9,7 @@ public class StorageProduct {
 
     private Double quantity;
 
-    private Integer type;
+    private String type;
 
     public Integer getStorageProductId() {
         return storageProductId;
@@ -43,11 +43,11 @@ public class StorageProduct {
         this.quantity = quantity;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 }

@@ -6,7 +6,7 @@
     <result column="ProductCode" property="productCode" jdbcType="VARCHAR" />
     <result column="PlaceholderQuantity" property="placeholderQuantity" jdbcType="DOUBLE" />
     <result column="Quantity" property="quantity" jdbcType="DOUBLE" />
-    <result column="Type" property="type" jdbcType="INTEGER" />
+    <result column="Type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -109,7 +109,7 @@
     insert into StorageProduct (ProductCode, PlaceholderQuantity, 
       Quantity, Type)
     values (#{productCode,jdbcType=VARCHAR}, #{placeholderQuantity,jdbcType=DOUBLE}, 
-      #{quantity,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER})
+      #{quantity,jdbcType=DOUBLE}, #{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.StorageProduct" >
     <selectKey resultType="java.lang.Integer" keyProperty="storageProductId" order="AFTER" >
@@ -141,7 +141,7 @@
         #{quantity,jdbcType=DOUBLE},
       </if>
       <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -167,7 +167,7 @@
         Quantity = #{record.quantity,jdbcType=DOUBLE},
       </if>
       <if test="record.type != null" >
-        Type = #{record.type,jdbcType=INTEGER},
+        Type = #{record.type,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -180,7 +180,7 @@
       ProductCode = #{record.productCode,jdbcType=VARCHAR},
       PlaceholderQuantity = #{record.placeholderQuantity,jdbcType=DOUBLE},
       Quantity = #{record.quantity,jdbcType=DOUBLE},
-      Type = #{record.type,jdbcType=INTEGER}
+      Type = #{record.type,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -198,7 +198,7 @@
         Quantity = #{quantity,jdbcType=DOUBLE},
       </if>
       <if test="type != null" >
-        Type = #{type,jdbcType=INTEGER},
+        Type = #{type,jdbcType=VARCHAR},
       </if>
     </set>
     where StorageProductId = #{storageProductId,jdbcType=INTEGER}
@@ -208,7 +208,7 @@
     set ProductCode = #{productCode,jdbcType=VARCHAR},
       PlaceholderQuantity = #{placeholderQuantity,jdbcType=DOUBLE},
       Quantity = #{quantity,jdbcType=DOUBLE},
-      Type = #{type,jdbcType=INTEGER}
+      Type = #{type,jdbcType=VARCHAR}
     where StorageProductId = #{storageProductId,jdbcType=INTEGER}
   </update>
 </mapper>

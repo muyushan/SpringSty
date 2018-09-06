@@ -6,6 +6,7 @@ import com.sane.pkg.beans.StorageProductCriteria;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.dao.mappers.StorageProductMapper;
 import com.sane.pkg.exceptions.BizException;
+import com.sane.pkg.service.SeedSevice;
 import com.sane.pkg.service.StorageProductService;
 import com.sane.pkg.utils.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class StorageProductServiceImpl implements StorageProductService {
 
     @Autowired
     private StorageProductMapper storageProductMapper;
+    @Autowired
+    private SeedSevice seedSevice;
    @Transactional(rollbackFor = {BizException.class,Exception.class})
     @Override
     public MsgBean addStorageProduct(StorageProduct storageProduct) throws BizException, Exception {
@@ -40,7 +43,8 @@ public class StorageProductServiceImpl implements StorageProductService {
        storageInOutRecord.setFormerQuantity(0);
        storageInOutRecord.setQuantity(storageProduct.getQuantity().intValue());
        storageInOutRecord.setInOutType("IN");
-       storageInOutRecord.setInOutCode("");
+       storageInOutRecord.setInOutCode(seedSevice.getNewSeedValue("S",9));
+       storageInOutRecord.setInOutType(storageProduct.getType());
 
         storageProductMapper.insertSelective(storageProduct);
        return msgBean;

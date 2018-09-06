@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sane.pkg.dao.mappers.SeedTableMapper" >
+  <resultMap id="BaseResultMap" type="com.sane.pkg.beans.SeedTable" >
+    <id column="SeedMoudle" property="seedMoudle" jdbcType="VARCHAR" />
+    <result column="SeedValue" property="seedValue" jdbcType="BIGINT" />
+    <result column="SeedLetter" property="seedLetter" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    SeedMoudle, SeedValue, SeedLetter
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.SeedTableCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SeedTable
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitEnd}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SeedTable
+    where SeedMoudle = #{seedMoudle,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SeedTable
+    where SeedMoudle = #{seedMoudle,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.sane.pkg.beans.SeedTableCriteria" >
+    delete from SeedTable
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.sane.pkg.beans.SeedTable" >
+    insert into SeedTable (SeedMoudle, SeedValue, SeedLetter
+      )
+    values (#{seedMoudle,jdbcType=VARCHAR}, #{seedValue,jdbcType=BIGINT}, #{seedLetter,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sane.pkg.beans.SeedTable" >
+    insert into SeedTable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="seedMoudle != null" >
+        SeedMoudle,
+      </if>
+      <if test="seedValue != null" >
+        SeedValue,
+      </if>
+      <if test="seedLetter != null" >
+        SeedLetter,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="seedMoudle != null" >
+        #{seedMoudle,jdbcType=VARCHAR},
+      </if>
+      <if test="seedValue != null" >
+        #{seedValue,jdbcType=BIGINT},
+      </if>
+      <if test="seedLetter != null" >
+        #{seedLetter,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.sane.pkg.beans.SeedTableCriteria" resultType="java.lang.Integer" >
+    select count(*) from SeedTable
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update SeedTable
+    <set >
+      <if test="record.seedMoudle != null" >
+        SeedMoudle = #{record.seedMoudle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seedValue != null" >
+        SeedValue = #{record.seedValue,jdbcType=BIGINT},
+      </if>
+      <if test="record.seedLetter != null" >
+        SeedLetter = #{record.seedLetter,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update SeedTable
+    set SeedMoudle = #{record.seedMoudle,jdbcType=VARCHAR},
+      SeedValue = #{record.seedValue,jdbcType=BIGINT},
+      SeedLetter = #{record.seedLetter,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sane.pkg.beans.SeedTable" >
+    update SeedTable
+    <set >
+      <if test="seedValue != null" >
+        SeedValue = #{seedValue,jdbcType=BIGINT},
+      </if>
+      <if test="seedLetter != null" >
+        SeedLetter = #{seedLetter,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SeedMoudle = #{seedMoudle,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sane.pkg.beans.SeedTable" >
+    update SeedTable
+    set SeedValue = #{seedValue,jdbcType=BIGINT},
+      SeedLetter = #{seedLetter,jdbcType=VARCHAR}
+    where SeedMoudle = #{seedMoudle,jdbcType=VARCHAR}
+  </update>
+</mapper>
