@@ -1,6 +1,7 @@
 package com.sane.pkg.controller;
 
 import com.sane.pkg.beans.StorageProduct;
+import com.sane.pkg.beans.StorageProductUD;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.StorageProductService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -21,7 +22,7 @@ public class StorageProductController {
 
     @RequestMapping("add")
     @ResponseBody
-    public MsgBean addStorageProduct(StorageProduct storageProduct){
+    public MsgBean addStorageProduct(StorageProductUD storageProduct){
 
         MsgBean msgBean=new MsgBean();
         try {

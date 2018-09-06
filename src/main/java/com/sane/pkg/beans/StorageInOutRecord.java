@@ -13,6 +13,8 @@ public class StorageInOutRecord {
 
     private Integer formerQuantity;
 
+    private String storageType;
+
     private String inOutType;
 
     private Date createDate;
@@ -59,6 +61,14 @@ public class StorageInOutRecord {
 
     public void setFormerQuantity(Integer formerQuantity) {
         this.formerQuantity = formerQuantity;
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType == null ? null : storageType.trim();
     }
 
     public String getInOutType() {
