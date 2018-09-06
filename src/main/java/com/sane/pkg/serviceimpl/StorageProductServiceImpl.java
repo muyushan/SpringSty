@@ -61,6 +61,7 @@ public class StorageProductServiceImpl implements StorageProductService {
        if(count==0){
            throw  new BizException("库存操作记录插入失败，请重试");
        }
+       msgBean.setCode(MsgBean.SUCCESS);
        return msgBean;
     }
 }
