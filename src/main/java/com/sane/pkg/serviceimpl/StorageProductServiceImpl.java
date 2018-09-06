@@ -18,6 +18,7 @@ import java.util.Date;
 @Service
 public class StorageProductServiceImpl implements StorageProductService {
 
+    private  static  int CODE_LENGTH=8;
     @Autowired
     private StorageProductMapper storageProductMapper;
     @Autowired
@@ -42,8 +43,7 @@ public class StorageProductServiceImpl implements StorageProductService {
        storageInOutRecord.setCreator(SessionUtil.getCurrentUserInfo());
        storageInOutRecord.setFormerQuantity(0);
        storageInOutRecord.setQuantity(storageProduct.getQuantity().intValue());
-       storageInOutRecord.setInOutType("IN");
-       storageInOutRecord.setInOutCode(seedSevice.getNewSeedValue("S",9));
+       storageInOutRecord.setInOutCode(seedSevice.getNewSeedValue("S",CODE_LENGTH));
        storageInOutRecord.setInOutType(storageProduct.getType());
 
         storageProductMapper.insertSelective(storageProduct);

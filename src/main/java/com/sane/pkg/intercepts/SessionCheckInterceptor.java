@@ -1,20 +1,16 @@
 package com.sane.pkg.intercepts;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.exceptions.SessionTimeOutException;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.logging.Logger;
 
 public class SessionCheckInterceptor extends HandlerInterceptorAdapter {
    private Log logger = LogFactory.getLog(getClass());
