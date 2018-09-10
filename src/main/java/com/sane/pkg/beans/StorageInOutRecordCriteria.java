@@ -445,6 +445,76 @@ public class StorageInOutRecordCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andStorageTypeIsNull() {
+            addCriterion("StorageType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeIsNotNull() {
+            addCriterion("StorageType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeEqualTo(String value) {
+            addCriterion("StorageType =", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeNotEqualTo(String value) {
+            addCriterion("StorageType <>", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeGreaterThan(String value) {
+            addCriterion("StorageType >", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("StorageType >=", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeLessThan(String value) {
+            addCriterion("StorageType <", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeLessThanOrEqualTo(String value) {
+            addCriterion("StorageType <=", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeLike(String value) {
+            addCriterion("StorageType like", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeNotLike(String value) {
+            addCriterion("StorageType not like", value, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeIn(List<String> values) {
+            addCriterion("StorageType in", values, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeNotIn(List<String> values) {
+            addCriterion("StorageType not in", values, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeBetween(String value1, String value2) {
+            addCriterion("StorageType between", value1, value2, "storageType");
+            return (Criteria) this;
+        }
+
+        public Criteria andStorageTypeNotBetween(String value1, String value2) {
+            addCriterion("StorageType not between", value1, value2, "storageType");
+            return (Criteria) this;
+        }
+
         public Criteria andInOutTypeIsNull() {
             addCriterion("InOutType is null");
             return (Criteria) this;

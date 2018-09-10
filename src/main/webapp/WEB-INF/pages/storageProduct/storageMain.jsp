@@ -65,7 +65,7 @@
                     closeBtn:1,
                     btn: ['保存', '关闭'],
                     yes:function(){saveNewOrEdit("add")},
-                    btn2:function(index, layero){
+                    btn2:function(index, layer){
                         layer.close(index);
 //                        resetAddForm();
                     },
@@ -197,24 +197,27 @@
 
         function saveNewOrEdit(flag){
             var productCode=$("#productCode").val();
-            var type=$("#type").val();
+            var options=$("#type option:selected");
+            var obj=options.attr('data');
+            obj=JSON.parse(obj);
+            var type=obj.listValue;
             var quantity=$("#quantity").val();
             var remark=$("#remark").val();
             var  storageProduct={};
             if(flag=="edit"){
                 storageProduct.storageProductId=$("#storageProductId").val();
             }else{
-                baseProduct.productCode=productCode;
-                if(type!="-1"){
-                    baseProduct.type=type;
+                storageProduct.productCode=productCode;
+                if(type!=""){
+                    storageProduct.type=type;
                 }else{
                     layer.msg('必选选择一种库存类别',{time:1000});
                     return;
                 }
 
             }
-            baseProduct.quantity=quantity;
-            baseProduct.remark=remark;
+            storageProduct.quantity=quantity;
+            storageProduct.remark=remark;
             var url="";
             if(flag=="add"){
                 url="<c:url value="/storageProduct/add.do"/>";
@@ -222,11 +225,11 @@
 
                 url="<c:url value="/storageProduct/edit.do"/>";
             }
-            $.post(url,baseProduct,function(data){
+            $.post(url,storageProduct,function(data){
                 if(data.code=="200"){
-                    resetAddForm();
+//                    resetAddForm();
                     layer.closeAll();
-                    search();
+//                    search();
                 }else{
                     layer.open({
                         type: 0,
