@@ -56,7 +56,6 @@
                         {field: 'productInfoUD',title: '包装规格', width:200,templet: '<span>{{d.productInfoUD.packageSpecificationTxt}}</span>' },
                         {field: 'productInfoUD',title: '单位', width:200,templet: '<span>{{d.productInfoUD.unitTxt}}</span>' },
                         {field: 'productInfoUD',title: '包装单位', width:200,templet: '<span>{{d.productInfoUD.packageUnitTxt}}</span>' }
-
                     ]]
                 });
 
