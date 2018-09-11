@@ -36,20 +36,27 @@
                 }
             });
 
-                table.render({
+            table.render({
                     elem: '#storageProductTable',
                     id:'storageProductTable',
                     method:'post',
-//                    url:webRoot+"baseProductInfo/query.do",
+                    url:webRoot+"storageProduct/query.do",
                     page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                     height:'full-180',
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
                         {field: 'productCode',title: '物料编码', width:250},
-                        {field: 'productName',title: '物料名称', width:200},
+                        {field: 'productInfoUD',title: '物料名称', width:200,templet: '<span>{{d.productInfoUD.productName}}</span>' },
                         {field:'quantity',title:'库存量',width:80},
-                        {field:'type',title:'库存类型',width:120}
+                        {field:'typeTxt',title:'库存类型',width:120},
+                        {field: 'productInfoUD',title: '产品类别', width:200,templet: '<span>{{d.productInfoUD.productCategoryTxt}}</span>' },
+                        {field: 'productInfoUD',title: '口味', width:200,templet: '<span>{{d.productInfoUD.flavourTxt}}</span>' },
+                        {field: 'productInfoUD',title: '规格', width:200,templet: '<span>{{d.productInfoUD.specificationTxt}}</span>' },
+                        {field: 'productInfoUD',title: '包装规格', width:200,templet: '<span>{{d.productInfoUD.packageSpecificationTxt}}</span>' },
+                        {field: 'productInfoUD',title: '单位', width:200,templet: '<span>{{d.productInfoUD.unitTxt}}</span>' },
+                        {field: 'productInfoUD',title: '包装单位', width:200,templet: '<span>{{d.productInfoUD.packageUnitTxt}}</span>' }
+
                     ]]
                 });
 
@@ -57,8 +64,6 @@
              * 加载下拉框
              */
             loadCommonBoxList($("#type"));
-
-//
             $("#createNewStrorageProduct").click(function(){
                 layer.open({
                     type: 1,
@@ -102,29 +107,10 @@
 //
 //            });
 
-//            $("#productName").blur(function(){
-//                generateProductCode();
-//            });
-//            layui.use('form', function(){
-//                var form = layui.form;
-//                form.on('select(flavour)', function(data){
-//                    generateProductCode();
-//                });
-//                form.on('select(specification)', function(data){
-//                    generateProductCode();
-//                });
-//                form.on('select(packageSpecification)', function(data){
-//                    generateProductCode();
-//                });
-//                form.on('select(productCategory)', function(data){
-//                    generateProductCode();
-//                });
-//            });
 
-
-//            $("#queryBtn").click(function(){
-//                search();
-//            });
+            $("#queryBtn").click(function(){
+                search();
+            });
         });
 
         function showEditWindow(){
@@ -176,20 +162,12 @@
 
         function search(){
             var  productCode=$("#search_productCode").val();
-            var  productName=$("#search_productName").val();
-            var  productCategory=$("#search_productCategory").val();
-            var  flavour=$("#search_flavour").val();
-            var  specification=$("#search_specification").val();
             table.reload('storageProductTable', {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
                 ,where: {
                     productCode: productCode,
-                    productName:productName,
-                    productCategory:productCategory,
-                    flavour:flavour,
-                    specification:specification
                 }
             });
         }

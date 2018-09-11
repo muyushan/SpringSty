@@ -1,12 +1,12 @@
 package com.sane.pkg.serviceimpl;
 
-import com.sane.pkg.beans.StorageInOutRecord;
-import com.sane.pkg.beans.StorageProduct;
-import com.sane.pkg.beans.StorageProductCriteria;
-import com.sane.pkg.beans.StorageProductUD;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.dao.mappers.StorageInOutRecordMapper;
 import com.sane.pkg.dao.mappers.StorageProductMapper;
+import com.sane.pkg.dao.mappers.udmappers.StorageProductUDMapper;
 import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.SeedSevice;
 import com.sane.pkg.service.StorageProductService;
@@ -27,6 +27,8 @@ public class StorageProductServiceImpl implements StorageProductService {
     private StorageInOutRecordMapper storageInOutRecordMapper;
     @Autowired
     private SeedSevice seedSevice;
+    @Autowired
+    private StorageProductUDMapper storageProductUDMapper;
    @Transactional(rollbackFor = {BizException.class,Exception.class})
     @Override
     public MsgBean addStorageProduct(StorageProductUD storageProduct) throws BizException, Exception {
@@ -63,5 +65,12 @@ public class StorageProductServiceImpl implements StorageProductService {
        }
        msgBean.setCode(MsgBean.SUCCESS);
        return msgBean;
+    }
+
+    @Override
+    public PageInfo<StorageProductUD> query(ProductInfoParam productInfoParam) {
+        PageHelper.startPage(productInfoParam.getPage(),productInfoParam.getLimit());
+       PageInfo<StorageProductUD> pageInfo=new PageInfo<StorageProductUD>(storageProductUDMapper.queryStorageProductByProductCode(productInfoParam.getProductCode()));
+        return pageInfo;
     }
 }
