@@ -46,4 +46,7 @@ JOIN baselistitem i ON a.Type=i.ListValue
 </where>
   </select>
 
+    <update id="adjustStorageProductQuantity">
+        UPDATE StorageProduct SET Quantity=Quantity+#{quantity} where StorageProductId=#{storageProductId}
+    </update>
 </mapper>

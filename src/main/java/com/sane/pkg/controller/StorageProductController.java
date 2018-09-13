@@ -50,4 +50,18 @@ public class StorageProductController {
         }
         return msgBean;
     }
+
+    @RequestMapping("adjustQuantity")
+    @ResponseBody
+    public MsgBean adjustStorageProductQuantity(StorageProductUD storageProductUD) {
+        MsgBean msgBean=null;
+        try {
+            msgBean = storageProductService.adjustStorageProductQuantity(storageProductUD);
+        } catch (Exception ex) {
+            msgBean=new MsgBean();
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(ex));
+        }
+        return  msgBean;
+    }
 }

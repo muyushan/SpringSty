@@ -11,6 +11,7 @@ import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.SeedSevice;
 import com.sane.pkg.service.StorageProductService;
 import com.sane.pkg.utils.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,5 +73,56 @@ public class StorageProductServiceImpl implements StorageProductService {
         PageHelper.startPage(productInfoParam.getPage(),productInfoParam.getLimit());
        PageInfo<StorageProductUD> pageInfo=new PageInfo<StorageProductUD>(storageProductUDMapper.queryStorageProductByProductCode(productInfoParam.getProductCode()));
         return pageInfo;
+    }
+
+    @Transactional(rollbackFor ={ BizException.class,Exception.class})
+    @Override
+    public MsgBean adjustStorageProductQuantity(StorageProductUD storageProductUD) throws BizException, Exception {
+       MsgBean msgBean=new MsgBean();
+       if(storageProductUD.getStorageProductId()==null){
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage("调整库存的记录ID为空无法进行调整操作");
+           return  msgBean;
+       }
+      StorageProduct storageProduct= storageProductMapper.selectByPrimaryKey(storageProductUD.getStorageProductId());
+       if(storageProduct==null){
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage("调整库存的查询不到对应的库存信息无法调整");
+           return  msgBean;
+       }
+       if(StringUtils.isEmpty(storageProductUD.getChangeType())){
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage("调整类型不能为空");
+           return  msgBean;
+       }
+       if(StringUtils.isEmpty(storageProductUD.getRemark())){
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage("库存调整的备注说明不能为空");
+           return  msgBean;
+       }
+       Double changeQuantyty=storageProductUD.getQuantity();
+       if(storageProductUD.getChangeType().toUpperCase().equals("OUT")){
+           if(storageProductUD.getQuantity()>storageProduct.getQuantity()){
+               msgBean.setCode(MsgBean.FAIL);
+               msgBean.setMessage("当前库存数量为："+storageProduct.getQuantity()+"不能满足调减"+storageProductUD.getQuantity());
+               return  msgBean;
+           }
+           changeQuantyty=0-storageProductUD.getQuantity();
+       }
+
+       int count=storageProductUDMapper.adjustStorageProductQuantity(storageProduct.getStorageProductId(),changeQuantyty);
+       StorageInOutRecord storageInOutRecord=new StorageInOutRecord();
+       storageInOutRecord.setInOutType(storageProductUD.getChangeType());
+       storageInOutRecord.setCreateDate(new Date());
+       storageInOutRecord.setCreator(SessionUtil.getCurrentUserInfo());
+       storageInOutRecord.setFormerQuantity(storageProduct.getQuantity().intValue());
+       storageInOutRecord.setInOutCode(seedSevice.getNewSeedValue("S",CODE_LENGTH));
+       storageInOutRecord.setProductCode(storageProduct.getProductCode());
+       storageInOutRecord.setQuantity(storageProductUD.getQuantity().intValue());
+       storageInOutRecord.setStorageType(storageProduct.getType());
+       storageInOutRecord.setRemark("库存调整:"+storageProductUD.getRemark());
+       storageInOutRecordMapper.insertSelective(storageInOutRecord);
+       msgBean.setCode(MsgBean.SUCCESS);
+       return msgBean;
     }
 }

@@ -49,19 +49,18 @@
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
-                        {field: 'productCode',title: '物料编码', width:250},
+                        {field: 'productCode',title: '物料编码', width:230},
                         {field: 'productInfoUD',title: '物料名称', width:200,templet: '<span>{{d.productInfoUD.productName}}</span>' },
                         {field:'quantity',title:'库存量',width:80},
-                        {field:'typeTxt',title:'库存类型',width:120},
-                        {field: 'productInfoUD',title: '产品类别', width:200,templet: '<span>{{d.productInfoUD.productCategoryTxt}}</span>' },
-                        {field: 'productInfoUD',title: '口味', width:200,templet: '<span>{{d.productInfoUD.flavourTxt}}</span>' },
-                        {field: 'productInfoUD',title: '规格', width:200,templet: '<span>{{d.productInfoUD.specificationTxt}}</span>' },
-                        {field: 'productInfoUD',title: '包装规格', width:200,templet: '<span>{{d.productInfoUD.packageSpecificationTxt}}</span>' },
-                        {field: 'productInfoUD',title: '单位', width:200,templet: '<span>{{d.productInfoUD.unitTxt}}</span>' },
-                        {field: 'productInfoUD',title: '包装单位', width:200,templet: '<span>{{d.productInfoUD.packageUnitTxt}}</span>' }
+                        {field:'typeTxt',title:'库存类型',width:80},
+                        {field: 'productInfoUD',title: '产品类别', width:80,templet: '<span>{{d.productInfoUD.productCategoryTxt}}</span>' },
+                        {field: 'productInfoUD',title: '口味', width:80,templet: '<span>{{d.productInfoUD.flavourTxt}}</span>' },
+                        {field: 'productInfoUD',title: '规格', width:80,templet: '<span>{{d.productInfoUD.specificationTxt}}</span>' },
+                        {field: 'productInfoUD',title: '包装规格', width:80,templet: '<span>{{d.productInfoUD.packageSpecificationTxt}}</span>' },
+                        {field: 'productInfoUD',title: '单位', width:80,templet: '<span>{{d.productInfoUD.unitTxt}}</span>' },
+                        {field: 'productInfoUD',title: '包装单位', width:80,templet: '<span>{{d.productInfoUD.packageUnitTxt}}</span>' }
                     ]]
                 });
-
             /**
              * 加载下拉框
              */
@@ -71,7 +70,7 @@
                     type: 1,
                     closeBtn:1,
                     btn: ['保存', '关闭'],
-                    yes:function(){saveNewOrEdit("add")},
+                    yes:function(){saveNew()},
                     btn2:function(index, layero){
                         layer.close(index);
                         resetAddForm();
@@ -109,9 +108,7 @@
 
             $("#adjustStorageProduct").click(function(){
                 showEditWindow();
-
             });
-
 
             $("#queryBtn").click(function(){
                 search();
@@ -128,23 +125,29 @@
                 layer.msg('只能选择一条记录',{time:1000});
                 return;
             }
-//            $("#storageProductId").val(checkedRow.data[0]["storageProductId"]);
-//            $("#productName").val(checkedRow.data[0]["productName"]);
-//            $("#type").val(checkedRow.data[0]["type"]);
-
+            $("#storageProductId").val(checkedRow.data[0]["storageProductId"]);
+            $("#editProductName").val(checkedRow.data[0]["productInfoUD"]["productName"]);
+            $("#editProductCategory").val(checkedRow.data[0]["productInfoUD"]["productCategoryTxt"]);
+            $("#editFlavour").val(checkedRow.data[0]["productInfoUD"]["flavourTxt"]);
+            $("#editSpecification").val(checkedRow.data[0]["productInfoUD"]["specificationTxt"]);
+            $("#editPackageSpecification").val(checkedRow.data[0]["productInfoUD"]["packageSpecificationTxt"]);
+            $("#editUnit").val(checkedRow.data[0]["productInfoUD"]["unitTxt"]);
+            $("#editPackageUnit").val(checkedRow.data[0]["productInfoUD"]["packageUnitTxt"]);
+            $("#editType").val(checkedRow.data[0]["typeTxt"]);
+            $("#editQuantity").attr("placeholder","当前库存量"+checkedRow.data[0]["quantity"]);
             form.render();
-//            $(".layui-input.layui-disabled").attr("disabled",true);//将下拉框的文本框禁止输入解决layUI问题
+            $(".layui-input.layui-disabled").attr("disabled",true);//将文本框禁止输入解决layUI问题
             layer.open({
                 type: 1,
                 closeBtn:1,
                 btn: ['保存', '关闭'],
-                yes:function(){saveNewOrEdit("edit")},
+                yes:function(){saveEdit()},
                 btn2:function(index, layero){
                     layer.close(index);
-                    resetAddForm();
+//                    resetAddForm();
                 },
                 cancel: function(index, layer){
-                    resetAddForm();
+//                    resetAddForm();
                 },
                 skin: 'layui-layer-molv',
                 area: ['600px', '430px'],
@@ -165,8 +168,7 @@
             });
         }
 
-
-        function saveNewOrEdit(flag){
+        function saveNew(){
             var productCode=$("#productCode").val();
             var options=$("#type option:selected");
             var obj=options.attr('data');
@@ -210,6 +212,14 @@
                 }
 
             });
+        }
+
+        function saveEdit(){
+
+            var storageProductId=$("#storageProductId").val();
+            var changeType=$("#changeType").val();
+            var quantity= $("#editQuantity").val();
+            var
         }
 
         function resetAddForm(){
@@ -272,39 +282,41 @@
         </table>
     </form>
 </div>
-
 <div id="editStorageProductContent" style="display:none; padding: 10px 10px;">
-    <form class="layui-form" action="" lay-filter="addForm">
+    <form class="layui-form" action="" lay-filter="editForm">
         <input type="hidden" id="storageProductId">
         <table class="laytable-dialog-table_4column" cellpadding="0" cellspacing="0">
             <tr>
                 <td>物料</td>
-                <td><input  class="layui-input"   type="text"   id="editProductName"></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editProductName"></input></td>
                 <td>库存类别</td>
-                <td><input  class="layui-input"   type="text"   id="editType"></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editType"></input></td>
             </tr>
             <tr>
                 <td>物料类别</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editProductCategory"></input></td>
                 <td>口味</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editFlavour"></input></td>
             </tr>
             <tr>
                 <td>规格</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editSpecification"></input></td>
                 <td>包装规格</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editPackageSpecification"></input></td>
             </tr>
             <tr>
                 <td>单位</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editUnit"></input></td>
                 <td>包装单位</td>
-                <td><input  class="layui-input"   type="text"   id=""></input></td>
+                <td><input  class="layui-input layui-disabled"   type="text"   id="editPackageUnit"></input></td>
             </tr>
             <tr>
                 <td>调整类型</td>
                 <td>
-                    <input  class="layui-input"  type="number" placeholder="必填项"  id=""    autocomplete="off"></input>
+                    <select id="changeType" lay-filter="aihao">
+                        <option value="IN" selected>调增</option>
+                        <option value="OUT" >调减</option>
+                    </select>
                 </td>
                 <td>调整数量</td>
                 <td>
@@ -312,12 +324,11 @@
                 </td>
             </tr>
             <tr>
-
             </tr>
             <tr>
                 <td>备注说明</td>
                 <td colspan="3">
-                    <textarea placeholder="请输入内容" class="layui-textarea" id="editRemark" ></textarea></input>
+                    <textarea placeholder="请输入库存调整说明" class="layui-textarea" id="editRemark" ></textarea></input>
                 </td>
             </tr>
         </table>

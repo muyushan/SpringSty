@@ -12,4 +12,8 @@ public interface StorageProductService {
     public MsgBean addStorageProduct(StorageProductUD storageProduct) throws BizException,Exception;
 
     public PageInfo<StorageProductUD> query(ProductInfoParam productInfoParam);
+
+    public  MsgBean adjustStorageProductQuantity(StorageProductUD storageProductUD) throws BizException,Exception;
+
+
 }

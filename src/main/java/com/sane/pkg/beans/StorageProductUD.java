@@ -3,6 +3,7 @@ package com.sane.pkg.beans;
 public class StorageProductUD extends StorageProduct {
     private  String remark;
     private  String typeTxt;
+    private  String changeType;
 
     public String getRemark() {
         return remark;
@@ -28,5 +29,13 @@ public class StorageProductUD extends StorageProduct {
 
     public void setTypeTxt(String typeTxt) {
         this.typeTxt = typeTxt;
+    }
+
+    public String getChangeType() {
+        return changeType;
+    }
+
+    public void setChangeType(String changeType) {
+        this.changeType = changeType;
     }
 }
