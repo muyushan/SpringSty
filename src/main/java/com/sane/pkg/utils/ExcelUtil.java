@@ -1,8 +1,11 @@
 package com.sane.pkg.utils;
 
 
+import com.sane.pkg.beans.commons.ExcelExportField;
 import com.sane.pkg.beans.commons.ExcelField;
 import com.sane.pkg.exceptions.BizException;
+import com.sun.org.apache.xpath.internal.operations.String;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -11,17 +14,20 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public  class ExcelUtil {
     private  static Log logger= LogFactory.getLog(ExcelUtil.class);
@@ -44,6 +50,35 @@ public  class ExcelUtil {
 
     }
 
+    public  static <T>void  exportExcel(String fileName, List<T> dataList, HttpServletResponse response){
+
+
+        try {
+            OutputStream os = response.getOutputStream();
+            ExportExcel exportExcel = new ExportExcel();
+            HSSFWorkbook workbook;
+            workbook= null;//待补充
+            response.reset();// 清空输出流
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            if(StringUtils.isEmpty(fileName)){
+                fileName = sdf.format(new Date());
+            }
+
+            fileName= URLEncoder.encode(fileName,"UTF-8");
+            response.setHeader("Content-disposition","attachment;filename="+fileName+".xls");
+            // 生成提示信息，
+            response.setContentType("application/vnd.ms-excel");
+            workbook.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            logger.info(ExceptionUtils.getMessage(e));
+        }
+
+    }
+    /**
+     * 读取解析Excel文件所用的方法
+     * */
     private static <T> List<T> resolveDate(Class<T> claz, List<T> returnList, Workbook workbook) throws InstantiationException, IllegalAccessException {
         Sheet sheet=workbook.getSheetAt(0);
         Row titleRow=sheet.getRow(0);
@@ -117,7 +152,6 @@ public  class ExcelUtil {
         }
         return returnList;
     }
-
     private static Workbook resolveWorkBook(InputStream inputStream,MultipartFile file) throws IOException{
 
         Workbook wb=null;
@@ -129,7 +163,6 @@ public  class ExcelUtil {
         }
         return wb;
     }
-
     private static Workbook resolveWorkBook(InputStream inputStream,File file) throws IOException{
 
         Workbook wb=null;
@@ -140,7 +173,6 @@ public  class ExcelUtil {
         }
         return wb;
     }
-
     private static  void validateExcelFile(MultipartFile file) throws Exception{
         if(file==null){
             throw new BizException("文件不存在");
@@ -150,8 +182,6 @@ public  class ExcelUtil {
             throw new BizException("文件不是Excel");
         }
     }
-
-
     private  static  void validateExcelFile(File file) throws Exception{
 
         if(!file.exists()){
@@ -162,4 +192,21 @@ public  class ExcelUtil {
         }
 
     }
+
+    /**
+     * 导出Excel文件所用的方法
+     */
+
+    private  static <T>HSSFWorkbook generateWorkbook(List<T> dataList,Class<T> claz){
+        Field[]fields=claz.getDeclaredFields();
+        Map<String,ExcelExportField> excelFieldMap=new HashMap<String, ExcelExportField>();
+        List<java.lang.String> titleList=new ArrayList<java.lang.String>();
+        for(Field field:fields){
+            ExcelExportField excelExportField=field.getAnnotation(ExcelExportField.class);
+            if(excelExportField!=null){
+                titleList.add(excelExportField.displayName());
+            }
+
+    }
+
 }

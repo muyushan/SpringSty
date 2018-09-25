@@ -7,15 +7,13 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ExcelField {
+public @interface ExcelExportField {
 
-    String displayName() default "";
+    String displayName();
 
     enum  FieldType{INT,DOUBLE,STRING,DATETIME,SHORT};
 
     FieldType fieldType() default FieldType.STRING;
-
-    boolean isRequired() default true;
 
     String formatPatten() default "yyyy-MM-dd HH:mm:ss";
 
