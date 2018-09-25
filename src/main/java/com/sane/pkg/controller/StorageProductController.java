@@ -1,10 +1,7 @@
 package com.sane.pkg.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.sane.pkg.beans.ProductInfoParam;
-import com.sane.pkg.beans.ProductInfoUD;
-import com.sane.pkg.beans.StorageProduct;
-import com.sane.pkg.beans.StorageProductUD;
+import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.service.StorageProductService;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -63,5 +61,31 @@ public class StorageProductController {
             msgBean.setMessage(ExceptionUtils.getMessage(ex));
         }
         return  msgBean;
+    }
+
+    @RequestMapping("toChangeLogPage")
+    public  String toChangeLogPage(){
+        return  "storageProduct/changeLog";
+    }
+    @ResponseBody
+    @RequestMapping("queryChageLog")
+    public  Map<String,Object> queryChangeLog(ProductInfoParam productInfoParam){
+        Map<String,Object> resultMap=new HashMap<String,Object>();
+        productInfoParam.setNeedPager(true);
+        PageInfo<StorageInOutRecordUD> pageInfo=storageProductService.queryChangeLog(productInfoParam);
+        resultMap.put("code","0");
+        resultMap.put("msg","");
+        resultMap.put("count",pageInfo.getTotal());
+        resultMap.put("data",pageInfo.getList());
+        return  resultMap;
+    }
+
+    public  void  exportChangeLog(List<Integer> idList){
+
+        ProductInfoParam productInfoParam=new ProductInfoParam();
+        productInfoParam.setNeedPager(false);
+        productInfoParam.setIdList(idList);
+        PageInfo<StorageInOutRecordUD> pageInfo=storageProductService.queryChangeLog(productInfoParam);
+
     }
 }

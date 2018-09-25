@@ -50,15 +50,18 @@
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
                         {field: 'productCode',title: '物料编码', width:230},
-                        {field: 'productInfoUD',title: '物料名称', width:200,templet: '<span>{{d.productInfoUD.productName}}</span>' },
+                        {field: '',title: '物料名称',  width:100,
+                            templet: function(d) {
+                                return  d.productInfoUD.productName;
+                            }},
                         {field:'quantity',title:'库存量',width:80},
-                        {field:'typeTxt',title:'库存类型',width:80},
-                        {field: 'productInfoUD',title: '产品类别', width:80,templet: '<span>{{d.productInfoUD.productCategoryTxt}}</span>' },
-                        {field: 'productInfoUD',title: '口味', width:80,templet: '<span>{{d.productInfoUD.flavourTxt}}</span>' },
-                        {field: 'productInfoUD',title: '规格', width:80,templet: '<span>{{d.productInfoUD.specificationTxt}}</span>' },
-                        {field: 'productInfoUD',title: '包装规格', width:80,templet: '<span>{{d.productInfoUD.packageSpecificationTxt}}</span>' },
-                        {field: 'productInfoUD',title: '单位', width:80,templet: '<span>{{d.productInfoUD.unitTxt}}</span>' },
-                        {field: 'productInfoUD',title: '包装单位', width:80,templet: '<span>{{d.productInfoUD.packageUnitTxt}}</span>' }
+                        {field:'typeTxt',title:'库存类型',width:90},
+                        {field: '',title: '产品类别', width:90,templet: function(d){return d.productInfoUD.productCategoryTxt}},
+                        {field: '',title: '口味', width:80,templet:function(d){return d.productInfoUD.flavourTxt}},
+                        {field: '',title: '规格', width:90,templet: function(d){return d.productInfoUD.specificationTxt}},
+                        {field: '',title: '包装规格', width:90,templet:function(d){return d.productInfoUD.packageSpecificationTxt}},
+                        {field: '',title: '单位', width:60,templet: function(d){return d.productInfoUD.unitTxt}},
+                        {field: '',title: '包装单位', width:90,templet: function(d){return d.productInfoUD.packageUnitTxt}}
                     ]]
                 });
             /**
@@ -144,10 +147,10 @@
                 yes:function(){saveEdit()},
                 btn2:function(index, layero){
                     layer.close(index);
-//                    resetAddForm();
+                    resetEditForm();
                 },
                 cancel: function(index, layer){
-//                    resetAddForm();
+                    resetEditForm();
                 },
                 skin: 'layui-layer-molv',
                 area: ['600px', '430px'],
@@ -191,13 +194,7 @@
             }
             storageProduct.quantity=quantity;
             storageProduct.remark=remark;
-            var url="";
-            if(flag=="add"){
-                url="<c:url value="/storageProduct/add.do"/>";
-            }else if(flag=="edit"){
-
-                url="<c:url value="/storageProduct/edit.do"/>";
-            }
+            var  url="<c:url value="/storageProduct/add.do"/>";
             $.post(url,storageProduct,function(data){
                 if(data.code=="200"){
                     resetAddForm();
@@ -210,16 +207,34 @@
                         content: data.message
                     });
                 }
-
             });
         }
 
         function saveEdit(){
-
             var storageProductId=$("#storageProductId").val();
             var changeType=$("#changeType").val();
             var quantity= $("#editQuantity").val();
-            var
+            var  remark=$("#editRemark").val();
+            var change={};
+            change.storageProductId=storageProductId;
+            change.quantity=quantity;
+            change.changeType=changeType;
+            change.remark=remark;
+
+            var  url="<c:url value="/storageProduct/adjustQuantity.do"/>";
+            $.post(url,change,function(data){
+                if(data.code=="200"){
+                    resetEditForm();
+                    layer.closeAll();
+                    search();
+                }else{
+                    layer.open({
+                        type: 0,
+                        title:'提示',
+                        content: data.message
+                    });
+                }
+            });
         }
 
         function resetAddForm(){
@@ -229,7 +244,12 @@
             $("#remark").val("");
             $("#type").val("-1");
             form.render();
-
+        }
+        function resetEditForm(){
+            $("#storageProductId").val("");
+            $("#changeType").val(-1);
+            $("#editQuantity").val("");
+            $("#editRemark").val("");
         }
     </script>
 </head>

@@ -49,4 +49,50 @@ JOIN baselistitem i ON a.Type=i.ListValue
     <update id="adjustStorageProductQuantity">
         UPDATE StorageProduct SET Quantity=Quantity+#{quantity} where StorageProductId=#{storageProductId}
     </update>
+
+  <select id="queryStorageInOutRecode" parameterType="com.sane.pkg.beans.ProductInfoParam" resultType="com.sane.pkg.beans.StorageInOutRecordUD">
+     SELECT
+	a.*, b.ProductName,
+	b.Flavour,
+  c.ListName as FlavourTxt,
+	b.ProductCategory,
+  d.ListName as ProductCategoryTxt,
+	b.Specification,
+  e.ListName AS SpecificationTxt,
+	b.PackageSpecification,
+  f.ListName AS PackageSpecificationTxt,
+	b.Unit,
+  g.ListName as UnitTxt,
+	b.PackageUnit,
+  h.ListName AS PackageUnitTxt,
+  i.ListName AS StorageTypeTxt
+FROM
+	StorageInOutRecord a
+JOIN productinfo b ON a.ProductCode = b.ProductCode
+LEFT JOIN baselistitem c on b.Flavour=c.ListID
+LEFT JOIN baselistitem d on b.ProductCategory=d.ListID
+LEFT JOIN baselistitem e ON b.Specification=e.ListID
+LEFT JOIN baselistitem f ON b.PackageSpecification=f.ListID
+LEFT JOIN baselistitem g ON b.Unit=g.ListID
+LEFT JOIN baselistitem h ON b.PackageUnit=h.ListID
+LEFT JOIN baselistitem i ON a.StorageType=i.ListValue
+<where>
+    <if test="productCode!=null and productCode!=''">
+        AND  a.ProductCode=#{productCode}
+    </if>
+    <if test="beginDate!=null and beginDate!='' ">
+        AND a.CreateDate>= #{beginDate}
+    </if>
+    <if test="endDate!=null and endDate!='' ">
+    AND a.CreateDate &lt;= #{endDate}
+    </if>
+    <if test="idList!=null and idList.size()>0">
+        a.InOutId in
+        <foreach collection="idList" item="id" open="(" close=")" separator="," >
+            #{id}
+        </foreach>
+    </if>
+</where>
+ORDER  BY a.ProductCode,a.CreateDate
+  </select>
 </mapper>

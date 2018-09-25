@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class StorageProductServiceImpl implements StorageProductService {
@@ -100,6 +102,11 @@ public class StorageProductServiceImpl implements StorageProductService {
            msgBean.setMessage("库存调整的备注说明不能为空");
            return  msgBean;
        }
+       if(storageProductUD.getQuantity()==null){
+           msgBean.setCode(MsgBean.FAIL);
+           msgBean.setMessage("请输入要调整的数量值");
+           return  msgBean;
+       }
        Double changeQuantyty=storageProductUD.getQuantity();
        if(storageProductUD.getChangeType().toUpperCase().equals("OUT")){
            if(storageProductUD.getQuantity()>storageProduct.getQuantity()){
@@ -124,5 +131,15 @@ public class StorageProductServiceImpl implements StorageProductService {
        storageInOutRecordMapper.insertSelective(storageInOutRecord);
        msgBean.setCode(MsgBean.SUCCESS);
        return msgBean;
+    }
+
+    @Override
+    public PageInfo<StorageInOutRecordUD>queryChangeLog(ProductInfoParam productInfoParam) {
+       if(productInfoParam.isNeedPager()){
+           PageHelper.startPage(productInfoParam.getPage(),productInfoParam.getLimit());
+       }
+
+        PageInfo<StorageInOutRecordUD> pageInfo= new PageInfo<StorageInOutRecordUD>(storageProductUDMapper.queryStorageInOutRecode(productInfoParam));
+        return pageInfo;
     }
 }

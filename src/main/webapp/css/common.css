@@ -1,7 +1,11 @@
+.laytable-query-table{
+    width: 100%;
+}
 .laytable-query-table td{
     padding: 0px 5px 0px 5px;
     font-size: 12px;
 }
+
 .laytable-dialog-table_2column{
     width: 100%;
 }
