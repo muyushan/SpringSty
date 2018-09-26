@@ -5,15 +5,12 @@ import com.sane.pkg.beans.commons.ExcelExportField;
 import com.sane.pkg.beans.commons.ExcelField;
 import com.sane.pkg.exceptions.BizException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,14 +47,13 @@ public  class ExcelUtil {
 
     }
 
-    public  static <T>void  exportExcel(String fileName, List<T> dataList, HttpServletResponse response){
+    public  static <T>void  exportExcel(String fileName, List<T> dataList, Class claz,HttpServletResponse response){
 
 
         try {
             OutputStream os = response.getOutputStream();
-            ExportExcel exportExcel = new ExportExcel();
             HSSFWorkbook workbook;
-            workbook= null;//待补充
+            workbook= generateWorkbook(dataList,claz);
             response.reset();// 清空输出流
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             if(StringUtils.isEmpty(fileName)){
@@ -215,10 +211,50 @@ public  class ExcelUtil {
         Sheet sheet = wb.createSheet();
         sheet.setDefaultRowHeight((short) 25);
         Row titleRow = sheet.createRow(0);
-        titleRow.set
-        for (T instant:dataList){
+        for(int i=0;i<titleList.size();i++){
+           Cell cell=titleRow.createCell(i);
+           cell.setCellValue(titleList.get(i));
+        }
 
-            instant.
+        for (int i=0;i<dataList.size();i++){
+            Row dataRow = sheet.createRow(i+1);
+            T instant=dataList.get(i);
+            int cellIndex=0;
+            for (Field field : fields) {
+                ExcelExportField excelExportField = field.getAnnotation(ExcelExportField.class);
+                if (excelExportField != null) {
+                    field.setAccessible(true);
+                    Cell cell=null;
+                    switch (excelExportField.fieldType()){
+                        case STRING:
+                            String stringValue=field.get(instant).toString();
+                            cell= dataRow.createCell(cellIndex,CellType.STRING);
+                            cell.setCellValue(stringValue);
+                            break;
+                        case DOUBLE:
+                           double doubleValue=Double.parseDouble(field.get(instant).toString());
+                            cell= dataRow.createCell(cellIndex,CellType.NUMERIC);
+                            cell.setCellValue(doubleValue);
+                            break;
+                        case INT:
+                            int intValue=Integer.parseInt(field.get(instant).toString());
+                            cell= dataRow.createCell(cellIndex,CellType.NUMERIC);
+                            cell.setCellValue(intValue);
+                            break;
+                        case SHORT:
+                            Short shortValue=field.getShort(instant);
+                            cell= dataRow.createCell(cellIndex,CellType.STRING);
+                            cell.setCellValue(shortValue);
+                            break;
+                        case DATETIME:
+                            Date date=(Date) field.get(instant);
+                            cell= dataRow.createCell(cellIndex,CellType.STRING);
+                            cell.setCellValue(DateFormatUtils.format(date,excelExportField.formatPatten()));
+                            break;
+                    }
+                    cellIndex++;
+                }
+            }
         }
         return  wb;
     }

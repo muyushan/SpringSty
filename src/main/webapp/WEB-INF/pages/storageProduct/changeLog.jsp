@@ -123,22 +123,18 @@
             for(i in checkedRow.data ){
                 idArray.push(checkedRow.data[i]["inOutID"]);
             }
-            $.post(webRoot+"storageProduct/exportChangeLog.do",{idList:idList},function(data){
-                if(data.code=="200"){
-                    layer.msg('删除成功',{time:1000});
-                    search();
-                }else{
-                    layer.alert(data.message, {icon: 1});
-                }
 
-
+            window.location=webRoot+"storageProduct/exportChangeLog.do?idList[]="+idArray.join();
+//            $.ajax({
+//                url : webRoot+"storageProduct/exportChangeLog.do",
+//                type:"POST",
+//                dataType:"json",
+//                contentType:"application/json",
+//                data:JSON.stringify(idArray),
+//                success:function(data){
+//                }
+//            });﻿
         }
-
-
-
-
-
-
     </script>
 </head>
 <body>

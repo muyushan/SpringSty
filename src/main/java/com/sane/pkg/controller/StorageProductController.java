@@ -3,16 +3,20 @@ package com.sane.pkg.controller;
 import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
+import com.sane.pkg.beans.excelexport.StorageInOutRecordExportExcel;
 import com.sane.pkg.service.StorageProductService;
-import com.sane.pkg.utils.ExportExcel;
-import com.sun.deploy.net.HttpResponse;
+import com.sane.pkg.utils.ExcelUtil;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,17 +87,18 @@ public class StorageProductController {
         return  resultMap;
     }
 
-    public  void  exportChangeLog(List<Integer> idList, HttpServletResponse response){
-
+    @RequestMapping("exportChangeLog")
+    public  void  exportChangeLog(@RequestParam(value = "idList[]") List<Integer> idList, HttpServletResponse response){
         ProductInfoParam productInfoParam=new ProductInfoParam();
         productInfoParam.setNeedPager(false);
         productInfoParam.setIdList(idList);
         PageInfo<StorageInOutRecordUD> pageInfo=storageProductService.queryChangeLog(productInfoParam);
-       String[] title={
-
-
-       };
-        ExportExcel.exportData(pageInfo.getList(),title,"Â∫ìÂ≠òÂèòÊõ¥ËÆ∞ÂΩï",response);
-
+        List<StorageInOutRecordExportExcel> exportExcels=new ArrayList<StorageInOutRecordExportExcel>();
+        for(StorageInOutRecordUD ud:pageInfo.getList()){
+            StorageInOutRecordExportExcel exportExcel=new StorageInOutRecordExportExcel();
+            BeanUtils.copyProperties(ud,exportExcel);
+            exportExcels.add(exportExcel);
+        }
+        ExcelUtil.exportExcel("ø‚¥Ê±‰∏¸º«¬º",exportExcels,StorageInOutRecordExportExcel.class,response);
     }
 }
