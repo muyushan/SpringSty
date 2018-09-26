@@ -197,16 +197,30 @@ public  class ExcelUtil {
      * 导出Excel文件所用的方法
      */
 
-    private  static <T>HSSFWorkbook generateWorkbook(List<T> dataList,Class<T> claz){
-        Field[]fields=claz.getDeclaredFields();
-        Map<String,ExcelExportField> excelFieldMap=new HashMap<String, ExcelExportField>();
-        List<java.lang.String> titleList=new ArrayList<java.lang.String>();
-        for(Field field:fields){
-            ExcelExportField excelExportField=field.getAnnotation(ExcelExportField.class);
-            if(excelExportField!=null){
+    private  static <T>HSSFWorkbook generateWorkbook(List<T> dataList,Class<T> claz) throws Exception{
+        HSSFWorkbook wb=new HSSFWorkbook();
+        Field[] fields = claz.getDeclaredFields();
+        Map<String, ExcelExportField> excelFieldMap = new HashMap<String, ExcelExportField>();
+        List<String> titleList = new ArrayList<String>();
+        for (Field field : fields) {
+            ExcelExportField excelExportField = field.getAnnotation(ExcelExportField.class);
+            if (excelExportField != null) {
+                if(titleList.contains(excelExportField.displayName())){
+                    throw new Exception("Excel导处类:"+claz.getSimpleName()+"存在重复的列名称:"+excelExportField.displayName());
+                }
                 titleList.add(excelExportField.displayName());
             }
+        }
 
+        Sheet sheet = wb.createSheet();
+        sheet.setDefaultRowHeight((short) 25);
+        Row titleRow = sheet.createRow(0);
+        titleRow.set
+        for (T instant:dataList){
+
+            instant.
+        }
+        return  wb;
     }
 
 }
