@@ -8,7 +8,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.StringUtils;
@@ -196,7 +197,6 @@ public  class ExcelUtil {
     private  static <T>HSSFWorkbook generateWorkbook(List<T> dataList,Class<T> claz) throws Exception{
         HSSFWorkbook wb=new HSSFWorkbook();
         Field[] fields = claz.getDeclaredFields();
-        Map<String, ExcelExportField> excelFieldMap = new HashMap<String, ExcelExportField>();
         List<String> titleList = new ArrayList<String>();
         for (Field field : fields) {
             ExcelExportField excelExportField = field.getAnnotation(ExcelExportField.class);
@@ -208,23 +208,40 @@ public  class ExcelUtil {
             }
         }
 
-        Sheet sheet = wb.createSheet();
-        sheet.setDefaultRowHeight((short) 25);
+        HSSFSheet sheet = wb.createSheet("Sheet1");
+        sheet.setDefaultRowHeightInPoints((short) 20);
+        sheet.setDefaultColumnWidth(10);
         Row titleRow = sheet.createRow(0);
+        titleRow.setHeightInPoints((short) 30);
+        HSSFCellStyle style = wb.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setFillForegroundColor(HSSFColor.YELLOW.index);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setTopBorderColor(HSSFColor.BLUE.index);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setRightBorderColor(HSSFColor.BLUE.index);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBottomBorderColor(HSSFColor.BLUE.index);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setLeftBorderColor(HSSFColor.BLUE.index);
         for(int i=0;i<titleList.size();i++){
            Cell cell=titleRow.createCell(i);
-           cell.setCellValue(titleList.get(i));
+           cell.setCellValue(new HSSFRichTextString(titleList.get(i)));
+           cell.setCellStyle(style);
         }
 
         for (int i=0;i<dataList.size();i++){
-            Row dataRow = sheet.createRow(i+1);
+            HSSFRow dataRow = sheet.createRow(i+1);
+            dataRow.setHeightInPoints(20);
             T instant=dataList.get(i);
             int cellIndex=0;
             for (Field field : fields) {
                 ExcelExportField excelExportField = field.getAnnotation(ExcelExportField.class);
                 if (excelExportField != null) {
                     field.setAccessible(true);
-                    Cell cell=null;
+                    HSSFCell cell=null;
                     switch (excelExportField.fieldType()){
                         case STRING:
                             String stringValue=field.get(instant).toString();

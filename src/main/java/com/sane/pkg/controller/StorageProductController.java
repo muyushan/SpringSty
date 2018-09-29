@@ -97,8 +97,13 @@ public class StorageProductController {
         for(StorageInOutRecordUD ud:pageInfo.getList()){
             StorageInOutRecordExportExcel exportExcel=new StorageInOutRecordExportExcel();
             BeanUtils.copyProperties(ud,exportExcel);
+            if(exportExcel.getInOutType().equals("IN")){
+                exportExcel.setInOutType("ÂÖ•Â∫ì");
+            }else if(exportExcel.getInOutType().equals("OUT")){
+                exportExcel.setInOutType("Âá∫Â∫ì");
+            }
             exportExcels.add(exportExcel);
         }
-        ExcelUtil.exportExcel("ø‚¥Ê±‰∏¸º«¬º",exportExcels,StorageInOutRecordExportExcel.class,response);
+        ExcelUtil.exportExcel("Â∫ìÂ≠òÂèòÊõ¥ËÆ∞ÂΩï",exportExcels,StorageInOutRecordExportExcel.class,response);
     }
 }
