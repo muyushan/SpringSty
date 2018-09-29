@@ -78,7 +78,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from customerinfo
+    from CustomerInfo
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,15 +92,15 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from customerinfo
+    from CustomerInfo
     where CustomerId = #{customerId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from customerinfo
+    delete from CustomerInfo
     where CustomerId = #{customerId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.sane.pkg.beans.CustomerInfoCriteria" >
-    delete from customerinfo
+    delete from CustomerInfo
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -109,7 +109,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="customerId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into customerinfo (CustomerCode, CustomerName, CustomerZipCode, 
+    insert into CustomerInfo (CustomerCode, CustomerName, CustomerZipCode, 
       CustomerPhone, CustomerEmail, CustomerAddress
       )
     values (#{customerCode,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, #{customerZipCode,jdbcType=VARCHAR}, 
@@ -120,7 +120,7 @@
     <selectKey resultType="java.lang.Integer" keyProperty="customerId" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into customerinfo
+    insert into CustomerInfo
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="customerCode != null" >
         CustomerCode,
@@ -163,13 +163,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.sane.pkg.beans.CustomerInfoCriteria" resultType="java.lang.Integer" >
-    select count(*) from customerinfo
+    select count(*) from CustomerInfo
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update customerinfo
+    update CustomerInfo
     <set >
       <if test="record.customerId != null" >
         CustomerId = #{record.customerId,jdbcType=INTEGER},
@@ -198,7 +198,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update customerinfo
+    update CustomerInfo
     set CustomerId = #{record.customerId,jdbcType=INTEGER},
       CustomerCode = #{record.customerCode,jdbcType=VARCHAR},
       CustomerName = #{record.customerName,jdbcType=VARCHAR},
@@ -211,7 +211,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.sane.pkg.beans.CustomerInfo" >
-    update customerinfo
+    update CustomerInfo
     <set >
       <if test="customerCode != null" >
         CustomerCode = #{customerCode,jdbcType=VARCHAR},
@@ -235,7 +235,7 @@
     where CustomerId = #{customerId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sane.pkg.beans.CustomerInfo" >
-    update customerinfo
+    update CustomerInfo
     set CustomerCode = #{customerCode,jdbcType=VARCHAR},
       CustomerName = #{customerName,jdbcType=VARCHAR},
       CustomerZipCode = #{customerZipCode,jdbcType=VARCHAR},
