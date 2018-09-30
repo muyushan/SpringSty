@@ -155,86 +155,41 @@
                 }
             });
         }
-        function generateProductCode(){
-            var productName=$("#productName").val();
-            var productCategory=$("#productCategory").val();
-            var flavour=$("#flavour").val();
-            var specification=$("#specification").val();
-            var packageSpecification=$("#packageSpecification").val();
-            var productCode="";
-            if(productName!=""){
-               productCode=pinyin.getCamelChars(productName);
-            }
 
-            if(productCategory!=-1){
-                var options=$("#productCategory option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(flavour!=-1){
-                var options=$("#flavour option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(specification!=-1){
-                var options=$("#specification option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(packageSpecification!=-1){
-                var options=$("#packageSpecification option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            $("#productCode").val(productCode);
-        }
 
         function saveNewOrEdit(flag){
-            var productCode=$("#productCode").val();
-            var productName=$("#productName").val();
-            var flavour=$("#flavour").val();
-            var specification=$("#specification").val();
-            var packageSpecification=$("#packageSpecification").val();
-            var productCategory=$("#productCategory").val();
-            var unit=$("#unit").val();
-            var packageUnit=$("#packageUnit").val();
-            var volume=$("#volume").val();
-            var weight=$("#weight").val();
-            var  baseProduct={};
-            if(flag=="edit"){
-                baseProduct.productId=$("#productId").val();
+            var customerName=$("#customerName").val();
+            var phoneNumber=$("#phoneNumber").val();
+            var zipCode=$("#zipCode").val();
+            var emailAddress=$("#emailAddress").val();
+            var address=$("#address").val();
+
+            if(customerName==""){
+                layer.msg('请输联系人名称',{time:1000});
+                return;
             }
-            baseProduct.productCode=productCode;
-            baseProduct.productName=productName;
-            if(productCategory!="-1"){
-                baseProduct.productCategory=productCategory;
-            }
-            if(flavour!="-1"){
-                baseProduct.flavour=flavour;
-            }
-            if(specification!="-1"){
-                baseProduct.specification=specification;
-            }
-            if(packageSpecification!="-1"){
-                baseProduct.packageSpecification=packageSpecification;
+            var mobile = /^1[3|5|8|7]\d{9}$/ , phone = /^0\d{2,3}-\d{7,8}(-\d{1,6})?$/;
+            if(!(mobile.test(phoneNumber) || phone.test(phoneNumber))){
+                layer.msg('请输入正确的联系电话',{time:1000});
+                return;
             }
 
-            if(unit!="-1"){
-                baseProduct.unit=unit;
+            var  customerInfo={};
+            if(flag=="edit"){
+                customerInfo.customerId=$("#customerId").val();
             }
-            if(packageUnit!="-1"){
-                baseProduct.packageUnit=packageUnit;
+            customerInfo.productCode=productCode;
+            customerInfo.productName=productName;
+            if(zipCode!=""){
+                customerInfo.customerZipCode=zipCode;
             }
-            if(volume!=""){
-                baseProduct.volume=volume;
+            if(emailAddress!=""){
+                customerInfo.customerEmail=emailAddress;
             }
-            if(weight!=""){
-                baseProduct.weight=weight;
-            }
+           if(address!=""){
+               customerInfo.customerAddress=address;
+           }
+
             var url="";
             if(flag=="add"){
                 url="<c:url value="/baseProductInfo/add.do"/>";
