@@ -92,8 +92,6 @@
                     generateProductCode();
                 });
             });
-
-
             $("#queryBtn").click(function(){
                 search();
             });
