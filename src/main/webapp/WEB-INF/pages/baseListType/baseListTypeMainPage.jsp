@@ -11,6 +11,7 @@
 
         $(document).ready(function(){
 
+            form.render();
             table.render({
                 elem: '#listTypeTable',
                 id:'listTypeTable',

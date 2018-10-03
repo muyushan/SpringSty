@@ -93,11 +93,7 @@ public class BaseListItemController {
             return  msgBean;
         }
 
-        if(baseListItem.getListValue()==null){
-            msgBean.setCode(MsgBean.FAIL);
-            msgBean.setMessage("字典项值不能为空");
-            return  msgBean;
-        }
+
         if(StringUtils.isEmpty(baseListItem.getListName())){
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage("字典项名称不能为空");
