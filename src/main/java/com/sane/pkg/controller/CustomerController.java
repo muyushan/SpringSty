@@ -6,6 +6,7 @@ import com.sane.pkg.beans.CustomerInfoParam;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.CustomerService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,14 @@ public class CustomerController {
     @RequestMapping("query")
     public Map<String,Object> queryCustomerInfo(CustomerInfoParam customerInfo){
         Map<String,Object> resultMap=new HashMap<String, Object>();
+        if(StringUtils.isNotEmpty(customerInfo.getKeyword())){
+            try {
+                String s=new String(customerInfo.getKeyword().getBytes("ISO-8859-1"),"UTF-8");
+           customerInfo.setCustomerName(s);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
         PageInfo<CustomerInfo> customerInfoPageInfo=customerService.quereyCustomInfo(customerInfo);
         resultMap.put("code","0");
         resultMap.put("msg","");

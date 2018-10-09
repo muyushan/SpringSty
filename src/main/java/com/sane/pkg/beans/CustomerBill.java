@@ -25,6 +25,8 @@ public class CustomerBill {
 
     private String modifyer;
 
+    private String remark;
+
     public Integer getStorageProductBillId() {
         return storageProductBillId;
     }
@@ -111,5 +113,13 @@ public class CustomerBill {
 
     public void setModifyer(String modifyer) {
         this.modifyer = modifyer == null ? null : modifyer.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 }

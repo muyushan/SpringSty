@@ -13,6 +13,7 @@
     <result column="Creator" property="creator" jdbcType="VARCHAR" />
     <result column="ModifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
     <result column="Modifyer" property="modifyer" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     StorageProductBillId, StorageProductBillCode, Quantity, TotalPrice, CustomerCode, 
-    BillStatus, OutQuantity, CreateDate, Creator, ModifyDate, Modifyer
+    BillStatus, OutQuantity, CreateDate, Creator, ModifyDate, Modifyer, Remark
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.CustomerBillCriteria" >
     select
@@ -116,11 +117,13 @@
     insert into CustomerBill (StorageProductBillCode, Quantity, 
       TotalPrice, CustomerCode, BillStatus, 
       OutQuantity, CreateDate, Creator, 
-      ModifyDate, Modifyer)
+      ModifyDate, Modifyer, Remark
+      )
     values (#{storageProductBillCode,jdbcType=VARCHAR}, #{quantity,jdbcType=DOUBLE}, 
       #{totalPrice,jdbcType=DOUBLE}, #{customerCode,jdbcType=VARCHAR}, #{billStatus,jdbcType=VARCHAR}, 
       #{outQuantity,jdbcType=DOUBLE}, #{createDate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
-      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyer,jdbcType=VARCHAR})
+      #{modifyDate,jdbcType=TIMESTAMP}, #{modifyer,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.CustomerBill" >
     <selectKey resultType="java.lang.Integer" keyProperty="storageProductBillId" order="AFTER" >
@@ -158,6 +161,9 @@
       <if test="modifyer != null" >
         Modifyer,
       </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="storageProductBillCode != null" >
@@ -189,6 +195,9 @@
       </if>
       <if test="modifyer != null" >
         #{modifyer,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -234,6 +243,9 @@
       <if test="record.modifyer != null" >
         Modifyer = #{record.modifyer,jdbcType=VARCHAR},
       </if>
+      <if test="record.remark != null" >
+        Remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -251,7 +263,8 @@
       CreateDate = #{record.createDate,jdbcType=TIMESTAMP},
       Creator = #{record.creator,jdbcType=VARCHAR},
       ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
-      Modifyer = #{record.modifyer,jdbcType=VARCHAR}
+      Modifyer = #{record.modifyer,jdbcType=VARCHAR},
+      Remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -289,6 +302,9 @@
       <if test="modifyer != null" >
         Modifyer = #{modifyer,jdbcType=VARCHAR},
       </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
     </set>
     where StorageProductBillId = #{storageProductBillId,jdbcType=INTEGER}
   </update>
@@ -303,7 +319,8 @@
       CreateDate = #{createDate,jdbcType=TIMESTAMP},
       Creator = #{creator,jdbcType=VARCHAR},
       ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
-      Modifyer = #{modifyer,jdbcType=VARCHAR}
+      Modifyer = #{modifyer,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=VARCHAR}
     where StorageProductBillId = #{storageProductBillId,jdbcType=INTEGER}
   </update>
 </mapper>
