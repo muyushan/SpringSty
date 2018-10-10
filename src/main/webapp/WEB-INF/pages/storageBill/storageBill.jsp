@@ -18,27 +18,6 @@
         var form=layui.form;
 
         $(document).ready(function() {
-            tableSelect.render({
-                elem: '#search_productName',	//定义输入框input对象
-                searchKey: 'keyWord',	//搜索输入框的name值 默认keyword
-                searchPlaceholder: '关键词搜索',	//搜索输入框的提示文字 默认关键词搜索
-                table: {
-                    url:webRoot+"baseProductInfo/query.do",
-                    cols: [[
-                        {type:'checkbox'},
-                        {field: 'productName',title: '物料名称', width:200},
-                        {field: 'productCategoryTxt',title: '物料类别', width:80},
-                        {field: 'flavourTxt',title: '口味', width:80},
-                        {field: 'specificationTxt',title: '规格', width:80},
-                        {field: 'packageSpecificationTxt',title: '包装规格', width:80}
-                    ]]
-                },
-                done: function (elem, data) {
-                    elem.val(data.data[0]["productName"]);
-                    $("#search_productCode").val(data.data[0]["productCode"]);
-                }
-            });
-
             table.render({
                     elem: '#storageProductTable',
                     id:'storageProductTable',
@@ -67,11 +46,12 @@
             /**
              * 加载下拉框
              */
-            loadCommonBoxList($("#type"));
+//            loadCommonBoxList($("#type"));
             $("#createNewSaleBill").click(function(){
                 layer.open({
                     type: 1,
                     closeBtn:1,
+                    scrollbar:true,
                     btn: ['保存', '关闭'],
                     yes:function(){saveNew()},
                     btn2:function(index, layero){
@@ -82,11 +62,34 @@
                         resetAddForm();
                     },
                     skin: 'layui-layer-molv',
-                    area: ['600px', '400px'],
-                    title:'新料入库',
+                    area: ['700px', '400px'],
+                    title:'创建销售出库单',
                     content: $('#createNewSaleBillContent')
                 });
 
+                tableSelect.render({
+                    elem: '#productName1',	//定义输入框input对象
+                    searchKey: 'keyWord',	//搜索输入框的name值 默认keyword
+                    searchPlaceholder: '关键词搜索',	//搜索输入框的提示文字 默认关键词搜索
+                    table: {
+                        url:webRoot+"baseProductInfo/query.do",
+                        cols: [[
+                            {type:'checkbox'},
+                            {field: 'productName',title: '物料名称', width:200},
+                            {field: 'productCategoryTxt',title: '物料类别', width:80},
+                            {field: 'flavourTxt',title: '口味', width:80},
+                            {field: 'specificationTxt',title: '规格', width:80},
+                            {field: 'packageSpecificationTxt',title: '包装规格', width:80}
+                        ]]
+                    },
+                    done: function (elem, data) {
+                        elem.val(data.data[0]["productName"]);
+                        $("#selectedProductCode").val(data.data[0]["productCode"]);
+                        $("#selectedProductName").val(data.data[0]["productName"]);
+                        $("#selectedFlavourTxt").val(data.data[0]["flavourTxt"]);
+                        $("#selectedSpecificationTxt").val(data.data[0]["specificationTxt"]);
+                    }
+                });
                 tableSelect.render({
                     elem: '#customerName',	//定义输入框input对象
                     searchKey: 'keyword',	//搜索输入框的name值 默认keyword
@@ -96,12 +99,35 @@
                         cols: [[
                             {type:'checkbox'},
                             {field: 'customerName',title: '客户名称', width:150},
-                            {field: 'customerPhone',title: '联系电话', width:100}
+                            {field: 'customerPhone',title: '联系电话', width:200}
                         ]]
                     },
                     done: function (elem, data) {
                         elem.val(data.data[0]["customerName"]);
-                        $("#customerCode").val(data.data[0]["customerCode"]);
+                        $("#selectedCustomerCode").val(data.data[0]["customerCode"]);
+                    }
+                });
+
+                $("#quantity1").keydown(function(event){
+                    if(event.keyCode==13){
+                        var quantity=$("#quantity1").val();
+                        if(!isNaN(quantity)&& parseInt(quantity)>0){
+                            var productCode=$("#selectedProductCode").val();
+                            if($("span#"+productCode).length>0){
+                                layer.msg('该物料产品已经存在，不能重复选择',{time:1000});
+                                return;
+                            };
+                            var productName=$("#selectedProductName").val();
+                            var flavourTxt=$("#selectedFlavourTxt").val();
+                            var specificationTxt=$("#selectedSpecificationTxt").val();
+                            var sumText="";
+                            if(productCode!=""){
+                                sumText=productName+","+flavourTxt+","+specificationTxt+","+quantity;
+                            var sp="<span class=\"layui-badge layui-badge-cursor\" id='"+productCode+"'quantity='"+quantity+"'ondblclick ='removeSelected(this)'>"+sumText+"</span>";
+                            $("#selectedBox").append(sp);
+                            }
+                        }
+
                     }
                 });
             });
@@ -115,6 +141,9 @@
             });
         });
 
+        function removeSelected(cur){
+            $(cur).remove();
+        }
         function showEditWindow(){
             var checkedRow=table.checkStatus('storageProductTable');
             if(checkedRow.data.length==0){
@@ -169,34 +198,35 @@
         }
 
         function saveNew(){
-            var productCode=$("#productCode").val();
-            var options=$("#type option:selected");
-            var obj=options.attr('data');
-            obj=JSON.parse(obj);
-            var type=obj.listValue;
-            var quantity=$("#quantity").val();
-            var remark=$("#remark").val();
-            var  storageProduct={};
-            if(flag=="edit"){
-                storageProduct.storageProductId=$("#storageProductId").val();
-            }else{
-                storageProduct.productCode=productCode;
-                if(type!=""){
-                    storageProduct.type=type;
-                }else{
-                    layer.msg('必选选择一种库存类别',{time:1000});
-                    return;
-                }
+            var  customerBill={};
+            var detailArr=new Array();
+            var customerCode=$("#selectedCustomerCode").val();
 
+            if(customerCode==""){
+                layer.msg('请选择一个客户',{time:1000});
+                return;
             }
-            storageProduct.quantity=quantity;
-            storageProduct.remark=remark;
-            var  url="<c:url value="/storageProduct/add.do"/>";
-            $.post(url,storageProduct,function(data){
+            var remark=$("#remark").val();
+            customerBill.customerCode=customerCode;
+            customerBill.remark=remark;
+            var arr=$("span.layui-badge-cursor");
+            if(arr.length==0){
+                layer.msg('请至少选择一个物料',{time:1000});
+                return;
+            }
+            $("span.layui-badge-cursor").each(function(){
+                var detail={};
+                detail.productCode=$(this).attr("id");
+                detail.quantity=$(this).attr("quantity");
+                detailArr.push(detail);
+
+            });
+            var  url="<c:url value="/storagebill/addStorageBill.do"/>";
+            $.post(url,{customerBill:customerBill,customerBillDetailList:detailArr},function(data){
                 if(data.code=="200"){
-                    resetAddForm();
+//                    resetAddForm();
                     layer.closeAll();
-                    search();
+//                    search();
                 }else{
                     layer.open({
                         type: 0,
@@ -266,48 +296,45 @@
 <!--分隔条-->
 <hr class="layui-bg-gray">
 <div class="layui-btn-group">
-    <button class="layui-btn" id="createNewSaleBill"> <i class="layui-icon">&#xe654;</i>新建销售单</button>
-    <button class="layui-btn" id="editSaleBill"> <i class="layui-icon">&#xe654;</i>新建销售单</button>
-    <button class="layui-btn" id="auditSaleBill"> <i class="layui-icon">&#xe642;</i>销售单审核</button>
-    <button class="layui-btn" id="antiAuditSaleBill"> <i class="layui-icon">&#xe642;</i>销售单反审核</button>
+    <button class="layui-btn" id="createNewSaleBill"> <i class="layui-icon">&#xe654;</i>新建</button>
+    <button class="layui-btn" id="editSaleBill"> <i class="layui-icon">&#xe642;</i>修改</button>
+    <button class="layui-btn" id="auditSaleBill"> <i class="layui-icon">&#x1005;</i>审核</button>
+    <button class="layui-btn" id="antiAuditSaleBill"> <i class="layui-icon">&#x1006;</i>反审核</button>
 </div>
 <table id="storageProductTable" lay-filter="storageProductTable">
 </table>
 </body>
 <div id="createNewSaleBillContent" style="display:none; padding: 10px 10px;">
     <form class="layui-form" action="" lay-filter="addForm">
-        <input type="hidden" id="customerCode">
+        <input type="hidden" id="selectedCustomerCode">
         <table class="laytable-dialog-table_2column" cellpadding="0" cellspacing="0">
             <tr>
-                <td >客户</td>
-                <td><input  class="layui-input"  lay-filter="customerName" type="text" placeholder="点击选择客户" name="customerName" id="customerName"></input></td>
+                <td style="width: 40px;">客户</td>
+                <td><input  class="layui-input"  lay-filter="customerName" autocomplete="off" type="text" placeholder="点击选择客户" name="customerName" id="customerName"></input></td>
             </tr>
             <tr>
-                <td colspan="2">
-                    <table class="layui-table" lay-even="" lay-skin="nob">
-                        <colgroup>
-                            <col width="300">
-                            <col width="80">
-                            <col>
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th>产品</th>
-                            <th>数量</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>点击选择产品</td>
-                            <td>5</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <td colspan="2" style="padding-left: 40px;">
+                    <input id="selectedProductCode" type="hidden"></input>
+                    <input id="selectedProductName" type="hidden"></input>
+                    <input id="selectedFlavourTxt" type="hidden"></input>
+                    <input id="selectedSpecificationTxt" type="hidden"></input>
+                    <input type="text" class="layui-input" autocomplete="off" style="width: 380px; display: inline;" placeholder="点击选择物料" id="productName1">
+                    &nbsp;&nbsp;<input type="number" class="layui-input" id="quantity1" style="width: 180px; display: inline;" placeholder="输入数量，回车确认"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="height: 100px;padding-left: 40px;">
+                    <fieldset class="layui-elem-field">
+                        <legend>已选择物料及数量，双击可移除</legend>
+                        <div class="layui-field-box" id="selectedBox">
+
+                        </div>
+                    </fieldset>
+
 
                 </td>
             </tr>
             <tr>
-                <td style="text-align: left;">备注说明</td>
+                <td style="width: 40px;">备注说明</td>
                 <td>
                     <textarea placeholder="请输入内容" class="layui-textarea" id="remark" ></textarea></input>
                 </td>

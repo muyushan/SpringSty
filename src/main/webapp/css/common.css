@@ -29,5 +29,14 @@
 .laytable-dialog-table_4column> td:nth-child(odd){
     text-align: right;
 }
+.layui-badge-cursor{
+    cursor: hand;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+.layui-elem-field>legend{
+    font-size: 14px;
+    font-weight: bold;
+}
 /*解决layui 表格复选框不垂直居中问题*/
 [lay-skin=primary].layui-form-checkbox i {top:5px !important;}
