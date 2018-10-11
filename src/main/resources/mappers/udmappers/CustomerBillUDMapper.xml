@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sane.pkg.dao.mappers.udmappers.CustomerBillUDMapper">
+
+    <select id="queryCustomerBillList"
+            resultType="com.sane.pkg.beans.CustomerBillUD"
+            parameterType="com.sane.pkg.beans.CustomerBillParam">
+
+          SELECT
+            a.*, b.CustomerName,
+            b.CustomerPhone,
+            b.CustomerAddress,
+        (a.Quantity-a.OutQuantity)AS ResidualQuantity,
+        c.ListName AS BillStatusTxt
+
+        FROM
+            CustomerBill a
+        JOIN CustomerInfo b ON a.CustomerCode = b.CustomerCode
+        JOIN baselistitem c on a.BillStatus=c.ListValue
+        <where>
+          <if test="customerCode!=null and customerCode!=''">
+            AND a.CustomerCode=#{customerCode}
+          </if>
+          <if test="beginDate!=null">
+            AND a.CreateDate>=#{beginDate}
+          </if>
+          <if test="endDate!=null">
+            AND a.CreateDate &lt;= #{endDate}
+          </if>
+        </where>
+          order by a.CreateDate desc
+
+  </select>
+
+    <select id="queryCustomerBillDetail" resultType="com.sane.pkg.beans.CustomerBillDetailUD" parameterType="java.lang.String">
+        SELECT
+	a.*, b.ProductName,
+	c.ListName AS FlavourTxt,
+	d.ListName AS SpecificationTxt,
+	e.ListName AS packageSpecificationTxt,
+  f.ListName AS UnitTxt,
+  g.ListName AS PackageUnitTxt
+FROM
+	CustomerBillDetail a
+JOIN productinfo b ON a.ProductCode = b.ProductCode
+JOIN baselistitem c ON b.Flavour = c.ListID
+JOIN baselistitem d ON b.Specification = d.ListID
+JOIN baselistitem e ON b.PackageSpecification = e.ListID
+JOIN baselistitem f ON b.Unit = f.ListID
+JOIN baselistitem g ON b.PackageUnit = g.ListID
+ <where>
+     <if test="billCode!=null and billCode!=''">
+         AND a.StorageProductBillCode=#{billCode}
+     </if>
+ </where>
+    </select>
+
+</mapper>

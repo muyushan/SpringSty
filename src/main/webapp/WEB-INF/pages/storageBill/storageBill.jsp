@@ -19,28 +19,32 @@
 
         $(document).ready(function() {
             table.render({
-                    elem: '#storageProductTable',
-                    id:'storageProductTable',
+                    elem: '#storageBillTable',
+                    id:'storageBillTable',
                     method:'post',
-                    url:webRoot+"storageProduct/query.do",
+                    url:webRoot+"storagebill/queryStorageBill.do",
                     page:{limits:[10,20,50,100],prev:"上一页",next:"下一页"},
                     height:'full-180',
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
-                        {field: 'productName',title: '单据号', width:100},
-                        {field: 'productCategoryTxt',title: '单据状态', width:80},
-                        {field: 'productCategoryTxt',title: '订单商品总量', width:80},
-                        {field: 'productCategoryTxt',title: '已出库数量', width:80},
-                        {field: 'productCategoryTxt',title: '未出库数量', width:80},
-                        {field: 'specificationTxt',title: '客户', width:80},
-                        {field: 'specificationTxt',title: '备注', width:80},
-                        {field: 'flavourTxt',title: '创建时间', width:80},
-                        {field: 'flavourTxt',title: '创建人', width:80},
-                        {field: 'flavourTxt',title: '修改时间', width:80},
-                        {field: 'flavourTxt',title: '修改人', width:80},
-                        {field: 'flavourTxt',title: '查看详情', width:80},
-                        {field: '',title: '包装单位', width:90,templet: function(d){return d.productInfoUD.packageUnitTxt}}
+                        {field: 'storageProductBillCode',title: '单据号', width:150,templet:function(record){
+                            return "<a href=javascript:showBillDetail('"+record.storageProductBillCode+"') class=\"layui-table-link\">"+record.storageProductBillCode+"</a>"
+                        }},
+                        {field: 'billStatusTxt',title: '单据状态', width:100},
+                        {field: 'quantity',title: '订单总量', width:100},
+                        {field: 'outQuantity',title: '已出库数量', width:100},
+                        {field: 'residualQuantity',title: '待出库数量', width:100},
+                        {field: 'customerName',title: '客户', width:100},
+                        {field: 'remark',title: '备注', width:150},
+                        {field: 'createDate',title: '创建时间', width:180,templet:function(record){
+                            return formatDateTime(record.createDate);
+                        }},
+                        {field: 'creator',title: '创建人', width:100},
+                        {field: 'modifyDate',title: '修改时间', width:180,templet:function(record){
+                            return formatDateTime(record.modifyDate);
+                        }},
+                        {field: 'modifyer',title: '修改人', width:100}
                     ]]
                 });
             /**
@@ -144,8 +148,14 @@
         function removeSelected(cur){
             $(cur).remove();
         }
+        function showBillDetail(billCode){
+            var  url=webRoot+"storagebill/queryStorageBillDetail.do?billCode="+billCode;
+            $.post(url,{},function(data){
+
+            });
+        }
         function showEditWindow(){
-            var checkedRow=table.checkStatus('storageProductTable');
+            var checkedRow=table.checkStatus('storageBillTable');
             if(checkedRow.data.length==0){
                 layer.msg('请选择一条要编辑的记录',{time:1000});
                 return;
@@ -187,7 +197,7 @@
 
         function search(){
             var  productCode=$("#search_productCode").val();
-            table.reload('storageProductTable', {
+            table.reload('storageBillTable', {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 }
@@ -197,42 +207,51 @@
             });
         }
 
-        function saveNew(){
-            var  customerBill={};
-            var detailArr=new Array();
-            var customerCode=$("#selectedCustomerCode").val();
+        function saveNew() {
+            var customerBill = {};
+            var detailArr = new Array();
+            var customerCode = $("#selectedCustomerCode").val();
 
-            if(customerCode==""){
-                layer.msg('请选择一个客户',{time:1000});
+            if (customerCode == "") {
+                layer.msg('请选择一个客户', {time: 1000});
                 return;
             }
-            var remark=$("#remark").val();
-            customerBill.customerCode=customerCode;
-            customerBill.remark=remark;
-            var arr=$("span.layui-badge-cursor");
-            if(arr.length==0){
-                layer.msg('请至少选择一个物料',{time:1000});
+            var remark = $("#remark").val();
+            customerBill.customerCode = customerCode;
+            customerBill.remark = remark;
+            var arr = $("span.layui-badge-cursor");
+            if (arr.length == 0) {
+                layer.msg('请至少选择一个物料', {time: 1000});
                 return;
             }
-            $("span.layui-badge-cursor").each(function(){
-                var detail={};
-                detail.productCode=$(this).attr("id");
-                detail.quantity=$(this).attr("quantity");
+            $("span.layui-badge-cursor").each(function () {
+                var detail = {};
+                detail.productCode = $(this).attr("id");
+                detail.quantity = $(this).attr("quantity");
                 detailArr.push(detail);
 
             });
-            var  url="<c:url value="/storagebill/addStorageBill.do"/>";
-            $.post(url,{customerBill:customerBill,customerBillDetailList:detailArr},function(data){
-                if(data.code=="200"){
+            var url = "<c:url value="/storagebill/addStorageBill.do"/>";
+
+            var obj = {customerBill: customerBill, customerBillDetailList: detailArr};
+            $.ajax({
+                url: url,
+                type: "post",
+                data: JSON.stringify(obj),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    if (data.code == "200") {
 //                    resetAddForm();
-                    layer.closeAll();
+                        layer.closeAll();
 //                    search();
-                }else{
-                    layer.open({
-                        type: 0,
-                        title:'提示',
-                        content: data.message
-                    });
+                    } else {
+                        layer.open({
+                            type: 0,
+                            title: '提示',
+                            content: data.message
+                        });
+                    }
                 }
             });
         }
@@ -301,7 +320,7 @@
     <button class="layui-btn" id="auditSaleBill"> <i class="layui-icon">&#x1005;</i>审核</button>
     <button class="layui-btn" id="antiAuditSaleBill"> <i class="layui-icon">&#x1006;</i>反审核</button>
 </div>
-<table id="storageProductTable" lay-filter="storageProductTable">
+<table id="storageBillTable" lay-filter="storageBillTable">
 </table>
 </body>
 <div id="createNewSaleBillContent" style="display:none; padding: 10px 10px;">

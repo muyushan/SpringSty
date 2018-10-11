@@ -6,5 +6,5 @@ import com.sane.pkg.beans.ProductInfoUD;
 import java.util.List;
 
 public interface BaseProductInfoUDMappper {
-    public List<ProductInfoUD>queryProductInfoByParam(ProductInfo productInfo);
+    public List<ProductInfoUD> queryProductInfoByParam(ProductInfo productInfo);
 }
