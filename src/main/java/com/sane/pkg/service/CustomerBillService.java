@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CustomerBillService {
     public MsgBean createCustomerBill(CustomerBill customerBill, List<CustomerBillDetail> customerBillDetailList)throws Exception;
+    public MsgBean editCustomerBill(CustomerBill customerBill, List<CustomerBillDetail> customerBillDetailList) throws  Exception;
     public PageInfo<CustomerBillUD> selectCustomBill(CustomerBillParam customerBill);
     public  PageInfo<CustomerBillDetailUD> queryCustomerDetailByBillCode(String billCode);
 }

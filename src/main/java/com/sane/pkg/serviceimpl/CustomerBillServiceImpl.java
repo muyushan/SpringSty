@@ -73,4 +73,11 @@ public class CustomerBillServiceImpl implements CustomerBillService {
 
        return customerBillDetailUDPageInfo;
     }
+
+    @Override
+    public MsgBean editCustomerBill(CustomerBill customerBill, List<CustomerBillDetail> customerBillDetailList) throws Exception {
+
+
+        return null;
+    }
 }
