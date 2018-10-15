@@ -66,6 +66,7 @@
                     },
                     skin: 'layui-layer-molv',
                     area: ['380px', '220px'],
+                    offset:'10px',
                     title:'创建字典类型',
                     content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 });
@@ -174,6 +175,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['380px', '220px'],
+                offset:'10px',
                 title:'编辑字典类型',
                 content: $('#createType') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });

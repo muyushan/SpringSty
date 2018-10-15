@@ -61,6 +61,30 @@
             $("#queryBtn").click(function(){
                 search();
             });
+            $("#auditSaleBill").click(function(){
+                var checkedRow=table.checkStatus('storageBillTable');
+                if(checkedRow.data.length==0){
+                    layer.msg('请选择要编辑的记录',{time:1000});
+                    return;
+                }
+
+                var codeList=new Array();
+                for(var i in checkedRow.data){
+                    codeList.push(checkedRow.data[i]["storageProductBillCode"]);
+                }
+                $.get(webRoot+"storagebill/auditSaleBill.do?billCodeList[]="+codeList.join(),function(returnData){
+
+                    if(returnData.code=="200"){
+                        layer.msg('审核完成',{time:1000});
+
+                    }else{
+                        layer.open({
+                            title: '审核失败'
+                            ,content: returnData.message
+                        });
+                    }
+                });
+            });
         });
 
         function showCreateNewWindow(flag){

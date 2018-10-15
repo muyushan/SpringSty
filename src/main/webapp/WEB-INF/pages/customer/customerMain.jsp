@@ -49,6 +49,7 @@
                     },
                     skin: 'layui-layer-molv',
                     area: ['680px', '300px'],
+                    offset:'10px',
                     title:'新增客户信息',
                     content: $('#createNewCustomerInfoContent')
                 });
@@ -97,6 +98,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['680px', '340px'],
+                offset:'10px',
                 title:'修改客户信息',
                 content: $('#createNewCustomerInfoContent')
             });

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface StorageProductUDMapper {
     public List<StorageProductUD> queryStorageProductByProductCode(@Param("productCode") String productCode);
-    public  int adjustStorageProductQuantity(@Param("storageProductId") Integer storageProductId,@Param("quantity") Double quantity);
+    public  int adjustStorageProductQuantity(@Param("storageProductId") Integer storageProductId,@Param("quantity") Double quantity,@Param("placeHolderQuantity")Double placeHolderQuantity);
     public  List<StorageInOutRecordUD> queryStorageInOutRecode(ProductInfoParam productInfoParam);
 }

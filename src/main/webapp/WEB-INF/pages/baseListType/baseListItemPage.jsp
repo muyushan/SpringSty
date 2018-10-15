@@ -77,6 +77,7 @@
                     },
                     skin: 'layui-layer-molv',
                     area: ['380px', '400px'],
+                    offset:'10px',
                     title:'创建字典项',
                     content: $('#createItem')
                 });
@@ -191,6 +192,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['380px', '400px'],
+                offset:'10px',
                 title:'编辑字典项',
                 content: $('#createItem')
             });
@@ -241,6 +243,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['380px', '200px'],
+                offset:'10px',
                 title:'上传字典项',
                 content: $('#uploadDialog')
             });

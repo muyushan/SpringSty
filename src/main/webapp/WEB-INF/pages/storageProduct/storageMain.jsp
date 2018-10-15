@@ -83,6 +83,7 @@
                     },
                     skin: 'layui-layer-molv',
                     area: ['400px', '340px'],
+                    offset:'10px',
                     title:'新料入库',
                     content: $('#createNewStorageProductContent')
                 });
@@ -154,6 +155,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['600px', '430px'],
+                offset:'10px',
                 title:'库存调整',
                 content: $('#editStorageProductContent')
             });
@@ -180,18 +182,19 @@
             var quantity=$("#quantity").val();
             var remark=$("#remark").val();
             var  storageProduct={};
-            if(flag=="edit"){
-                storageProduct.storageProductId=$("#storageProductId").val();
+            storageProduct.productCode=productCode;
+            if(type!=""){
+                storageProduct.type=type;
             }else{
-                storageProduct.productCode=productCode;
-                if(type!=""){
-                    storageProduct.type=type;
-                }else{
-                    layer.msg('必选选择一种库存类别',{time:1000});
-                    return;
-                }
-
+                layer.msg('必选选择一种库存类别',{time:1000});
+                return;
             }
+//            if(flag=="edit"){
+//                storageProduct.storageProductId=$("#storageProductId").val();
+//            }else{
+//
+//
+//            }
             storageProduct.quantity=quantity;
             storageProduct.remark=remark;
             var  url="<c:url value="/storageProduct/add.do"/>";
@@ -247,7 +250,7 @@
         }
         function resetEditForm(){
             $("#storageProductId").val("");
-            $("#changeType").val(-1);
+            $("#changeType").val("IN");
             $("#editQuantity").val("");
             $("#editRemark").val("");
         }
@@ -281,7 +284,7 @@
         <table class="laytable-dialog-table_2column" cellpadding="0" cellspacing="0">
             <tr>
                 <td>物料</td>
-                <td><input  class="layui-input"  lay-filter="productName" type="text" placeholder="点击选择物料" name="productName" id="productName"></input></td>
+                <td><input  class="layui-input"  lay-filter="productName" type="text" placeholder="点击选择物料"  name="productName" autocomplete="off" id="productName"></input></td>
             </tr>
             <tr>
                 <td>入库数量</td>
@@ -333,7 +336,7 @@
             <tr>
                 <td>调整类型</td>
                 <td>
-                    <select id="changeType" lay-filter="aihao">
+                    <select id="changeType" lay-filter="changeType">
                         <option value="IN" selected>调增</option>
                         <option value="OUT" >调减</option>
                     </select>

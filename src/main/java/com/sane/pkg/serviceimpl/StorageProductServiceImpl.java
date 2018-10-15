@@ -117,7 +117,7 @@ public class StorageProductServiceImpl implements StorageProductService {
            changeQuantyty=0-storageProductUD.getQuantity();
        }
 
-       int count=storageProductUDMapper.adjustStorageProductQuantity(storageProduct.getStorageProductId(),changeQuantyty);
+       int count=storageProductUDMapper.adjustStorageProductQuantity(storageProduct.getStorageProductId(),changeQuantyty,null);
        StorageInOutRecord storageInOutRecord=new StorageInOutRecord();
        storageInOutRecord.setInOutType(storageProductUD.getChangeType());
        storageInOutRecord.setCreateDate(new Date());

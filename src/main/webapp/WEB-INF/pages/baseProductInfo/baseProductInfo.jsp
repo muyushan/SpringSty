@@ -64,6 +64,7 @@
                     },
                     skin: 'layui-layer-molv',
                     area: ['680px', '340px'],
+                    offset:'10px',
                     title:'创建基础物料',
                     content: $('#createNewProductInfoContent')
                 });
@@ -140,6 +141,7 @@
                 },
                 skin: 'layui-layer-molv',
                 area: ['680px', '340px'],
+                offset:'10px',
                 title:'修改基础物料',
                 content: $('#createNewProductInfoContent')
             });

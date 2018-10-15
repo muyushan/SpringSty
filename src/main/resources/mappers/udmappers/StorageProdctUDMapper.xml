@@ -47,7 +47,14 @@ JOIN baselistitem i ON a.Type=i.ListValue
   </select>
 
     <update id="adjustStorageProductQuantity">
-        UPDATE StorageProduct SET Quantity=Quantity+#{quantity} where StorageProductId=#{storageProductId}
+        UPDATE StorageProduct SET
+        <if test="quantity!=null">
+            Quantity=Quantity+#{quantity}
+        </if>
+        <if test="placeHolderQuantity!=null">
+            ,PlaceHolderQuantity=PlaceHolderQuantity+#{placeHolderQuantity}
+        </if>
+        where StorageProductId=#{storageProductId}
     </update>
 
   <select id="queryStorageInOutRecode" parameterType="com.sane.pkg.beans.ProductInfoParam" resultType="com.sane.pkg.beans.StorageInOutRecordUD">

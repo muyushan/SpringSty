@@ -3,6 +3,7 @@ package com.sane.pkg.controller;
 import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
+import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.CustomerBillService;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import java.util.Map;
 @RequestMapping("storagebill")
 @Controller
 public class StorageBillController {
+    public   static String BILLSTATUS_AJAA="AJAA";
     @Autowired
     private CustomerBillService customerBillService;
 
@@ -37,7 +39,7 @@ public class StorageBillController {
         CustomerBill customerBill = param.getCustomerBill();
         List<CustomerBillDetail> customerBillDetailList = param.getCustomerBillDetailList();
         if(StringUtils.isEmpty(customerBill.getStorageProductBillCode())){
-            customerBill.setBillStatus("AJAA");
+            customerBill.setBillStatus(BILLSTATUS_AJAA);
             try {
                 msgBean = customerBillService.createCustomerBill(customerBill, customerBillDetailList);
             } catch (Exception e) {
@@ -46,7 +48,12 @@ public class StorageBillController {
                 msgBean.setCode(MsgBean.FAIL);
             }
         }else {
-
+            try {
+                msgBean=customerBillService.editCustomerBill(customerBill,customerBillDetailList);
+            } catch (Exception e) {
+                msgBean.setCode(MsgBean.FAIL);
+                msgBean.setMessage(ExceptionUtils.getMessage(e));
+            }
         }
         return msgBean;
     }
@@ -65,7 +72,7 @@ public class StorageBillController {
 
     @ResponseBody
     @RequestMapping("queryStorageBillDetail")
-    private Map<String, Object> queryStorageBillDetail(String billCode) {
+    public Map<String, Object> queryStorageBillDetail(String billCode) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         PageInfo<CustomerBillDetailUD> pageInfo = customerBillService.queryCustomerDetailByBillCode(billCode);
         resultMap.put("code", "0");
@@ -73,6 +80,20 @@ public class StorageBillController {
         resultMap.put("count", pageInfo.getTotal());
         resultMap.put("data", pageInfo.getList());
         return resultMap;
+    }
+
+    @RequestMapping("auditSaleBill")
+    @ResponseBody
+    public MsgBean auditSaleBill(@RequestParam("billCodeList[]") List<String> billCodeList){
+//该方法改造成审核方法
+        MsgBean msgBean=new MsgBean();
+        try {
+         msgBean=   customerBillService.auditCustomerBill(billCodeList);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return  msgBean;
     }
 }
 
