@@ -47,13 +47,15 @@ JOIN baselistitem i ON a.Type=i.ListValue
   </select>
 
     <update id="adjustStorageProductQuantity">
-        UPDATE StorageProduct SET
-        <if test="quantity!=null">
-            Quantity=Quantity+#{quantity}
-        </if>
-        <if test="placeHolderQuantity!=null">
-            ,PlaceHolderQuantity=PlaceHolderQuantity+#{placeHolderQuantity}
-        </if>
+        UPDATE StorageProduct
+        <set>
+            <if test="quantity!=null">
+                Quantity=Quantity+#{quantity},
+            </if>
+            <if test="placeHolderQuantity!=null">
+                PlaceHolderQuantity=PlaceHolderQuantity+#{placeHolderQuantity},
+            </if>
+        </set>
         where StorageProductId=#{storageProductId}
     </update>
 

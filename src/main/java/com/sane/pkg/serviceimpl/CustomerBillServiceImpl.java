@@ -25,6 +25,7 @@ import java.util.List;
 
 @Service
 public class CustomerBillServiceImpl implements CustomerBillService {
+    private  static  String STORAGE_TYPE_AIAA="AIAA";
     @Autowired
     private CustomerBillMapper customerBillMapper;
     @Autowired
@@ -108,7 +109,7 @@ public class CustomerBillServiceImpl implements CustomerBillService {
             return msgBean;
         } else {
             CustomerBill srcCustomerBill = customerBillList.get(0);
-            if (!srcCustomerBill.getBillStatus().equals("AJAA")) {
+            if (!srcCustomerBill.getBillStatus().equals(StorageBillController.BILLSTATUS_AJAA)) {
                 msgBean.setCode(MsgBean.FAIL);
                 msgBean.setMessage("要更新的出库单状态已经发生改变。不允许继续修改，请确认");
                 return msgBean;
@@ -163,7 +164,7 @@ public class CustomerBillServiceImpl implements CustomerBillService {
         for (String billCode : billCodeList) {
             CustomerBill customerBill = queryCustomerBillByCode(billCode);
             if (!customerBill.getBillStatus().equals(StorageBillController.BILLSTATUS_AJAA)) {
-                throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "当前状态已经不是新建待审核状态了，不能继续审核");
+                throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "当前状态不是新建待审核状态了，不能继续审核");
             }
             List<CustomerBillDetail> detailList = null;
             CustomerBillDetailCriteria customerBillDetailCriteria = new CustomerBillDetailCriteria();
@@ -181,7 +182,7 @@ public class CustomerBillServiceImpl implements CustomerBillService {
                 StorageProductCriteria storageProductCriteria = new StorageProductCriteria();
                 StorageProductCriteria.Criteria storageProductCriteriaSql = storageProductCriteria.createCriteria();
                 storageProductCriteriaSql.andProductCodeEqualTo(detail.getProductCode());
-                storageProductCriteriaSql.andTypeEqualTo("AIAA");
+                storageProductCriteriaSql.andTypeEqualTo(CustomerBillServiceImpl.STORAGE_TYPE_AIAA);
                 storageProductCriteriaSql.andQuantityGreaterThan(Double.parseDouble("0"));
                 List<StorageProduct> storageProductList = storageProductMapper.selectByExample(storageProductCriteria);
                 if (CollectionUtils.isEmpty(storageProductList)) {
@@ -209,13 +210,12 @@ public class CustomerBillServiceImpl implements CustomerBillService {
                 }
 
             }
-
             CustomerBillCriteria customerBillCriteria = new CustomerBillCriteria();
             CustomerBillCriteria.Criteria customerBillCriteriaSql = customerBillCriteria.createCriteria();
             customerBillCriteriaSql.andStorageProductBillCodeEqualTo(customerBill.getStorageProductBillCode());
             customerBillCriteriaSql.andBillStatusEqualTo(StorageBillController.BILLSTATUS_AJAA);
             CustomerBill customerBillUpdate = new CustomerBill();
-            customerBillUpdate.setBillStatus("AJAB");
+            customerBillUpdate.setBillStatus(StorageBillController.BILLSTATUS_AJAB);
             customerBillUpdate.setModifyer(SessionUtil.getCurrentUserInfo());
             customerBillUpdate.setModifyDate(new Date());
 
@@ -225,6 +225,145 @@ public class CustomerBillServiceImpl implements CustomerBillService {
             }
 
 
+        }
+        msgBean.setCode(MsgBean.SUCCESS);
+        return msgBean;
+    }
+
+    @Override
+    public MsgBean antiAuditSaleBill(List<String> billCodeList) throws BizException, Exception {
+
+        MsgBean msgBean = new MsgBean();
+        for (String billCode : billCodeList) {
+            CustomerBill customerBill = queryCustomerBillByCode(billCode);
+            if (!customerBill.getBillStatus().equals(StorageBillController.BILLSTATUS_AJAB)) {
+                throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "当前状态不是已审核状态了，不能继续审核");
+            }
+            List<CustomerBillDetail> detailList = null;
+            CustomerBillDetailCriteria customerBillDetailCriteria = new CustomerBillDetailCriteria();
+            CustomerBillDetailCriteria.Criteria customerBillDetailSql = customerBillDetailCriteria.createCriteria();
+            customerBillDetailSql.andStorageProductBillCodeEqualTo(billCode);
+            detailList = customerBillDetailMapper.selectByExample(customerBillDetailCriteria);
+            if (CollectionUtils.isEmpty(detailList)) {
+                throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "没有发现出库单详情，请确认。");
+            }
+            for (CustomerBillDetail detail : detailList) {
+                ProductInfoParam productInfo=new ProductInfoParam();
+                productInfo.setProductCode(detail.getProductCode());
+                List<ProductInfoUD> productInfoUDList=baseProductInfoUDMappper.queryProductInfoByParam(productInfo);
+                ProductInfoUD productInfoUD=productInfoUDList.get(0);
+                StorageProductCriteria storageProductCriteria = new StorageProductCriteria();
+                StorageProductCriteria.Criteria storageProductCriteriaSql = storageProductCriteria.createCriteria();
+                storageProductCriteriaSql.andProductCodeEqualTo(detail.getProductCode());
+                storageProductCriteriaSql.andTypeEqualTo(CustomerBillServiceImpl.STORAGE_TYPE_AIAA);
+                List<StorageProduct> storageProductList = storageProductMapper.selectByExample(storageProductCriteria);
+                if (CollectionUtils.isEmpty(storageProductList)) {
+                    throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "所需要的物料：[" + productInfoUD.getProductName()+","+productInfoUD.getFlavourTxt()+","+productInfoUD.getProductCategoryTxt() + "]没有对应的库存信息，无法反审核。");
+                }
+                StorageProduct storageProduct = storageProductList.get(0);
+                if (storageProduct.getPlaceholderQuantity() >= detail.getQuantity()) {
+                    int count = storageProductUDMapper.adjustStorageProductQuantity(storageProduct.getStorageProductId(), detail.getQuantity(), -detail.getQuantity());
+                    if (count != 1) {
+                        throw new BizException("反审核出库单失败，更新库存失败");
+                    }
+                    StorageInOutRecord storageInOutRecord = new StorageInOutRecord();
+                    storageInOutRecord.setInOutType("IN");
+                    storageInOutRecord.setCreateDate(new Date());
+                    storageInOutRecord.setCreator(SessionUtil.getCurrentUserInfo());
+                    storageInOutRecord.setFormerQuantity(storageProduct.getQuantity().intValue());
+                    storageInOutRecord.setInOutCode(seedService.getNewSeedValue("S", 9));
+                    storageInOutRecord.setProductCode(storageProduct.getProductCode());
+                    storageInOutRecord.setQuantity(detail.getQuantity().intValue());
+                    storageInOutRecord.setStorageType(storageProduct.getType());
+                    storageInOutRecord.setRemark("反审核恢复库存占用:" + customerBill.getStorageProductBillCode());
+                    storageInOutRecordMapper.insertSelective(storageInOutRecord);
+                } else {
+                    throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "所需要的物料：[" + productInfoUD.getProductName()+","+productInfoUD.getFlavourTxt()+","+productInfoUD.getProductCategoryTxt() + "]占用库存不满足出库单的要求。");
+                }
+
+            }
+            CustomerBillCriteria customerBillCriteria = new CustomerBillCriteria();
+            CustomerBillCriteria.Criteria customerBillCriteriaSql = customerBillCriteria.createCriteria();
+            customerBillCriteriaSql.andStorageProductBillCodeEqualTo(customerBill.getStorageProductBillCode());
+            customerBillCriteriaSql.andBillStatusEqualTo(StorageBillController.BILLSTATUS_AJAB);
+            CustomerBill customerBillUpdate = new CustomerBill();
+            customerBillUpdate.setBillStatus(StorageBillController.BILLSTATUS_AJAA);
+            customerBillUpdate.setModifyer(SessionUtil.getCurrentUserInfo());
+            customerBillUpdate.setModifyDate(new Date());
+
+            int count = customerBillMapper.updateByExampleSelective(customerBillUpdate, customerBillCriteria);
+            if (count != 1) {
+                throw new BizException(customerBill.getStorageProductBillCode() + "出库单反审核失败。");
+            }
+        }
+        msgBean.setCode(MsgBean.SUCCESS);
+        return msgBean;
+    }
+
+    @Override
+    public MsgBean customerBillConfirm(List<String> billCodeList) throws BizException, Exception {
+        MsgBean msgBean = new MsgBean();
+        for(String billCode:billCodeList){
+           CustomerBill customerBill=queryCustomerBillByCode(billCode);
+           if(!customerBill.getBillStatus().equals(StorageBillController.BILLSTATUS_AJAB)){
+               throw new BizException("出库单："+billCode+"的当前状态不是已审核状态，不能操作出库确认");
+           }
+            List<CustomerBillDetail> detailList = null;
+            CustomerBillDetailCriteria customerBillDetailCriteria = new CustomerBillDetailCriteria();
+            CustomerBillDetailCriteria.Criteria customerBillDetailSql = customerBillDetailCriteria.createCriteria();
+            customerBillDetailSql.andStorageProductBillCodeEqualTo(billCode);
+            detailList = customerBillDetailMapper.selectByExample(customerBillDetailCriteria);
+            for (CustomerBillDetail detail : detailList) {
+                detail.setOutQuantity(detail.getQuantity());
+                customerBillDetailMapper.updateByPrimaryKey(detail);
+                ProductInfoParam productInfo=new ProductInfoParam();
+                productInfo.setProductCode(detail.getProductCode());
+                List<ProductInfoUD> productInfoUDList=baseProductInfoUDMappper.queryProductInfoByParam(productInfo);
+                ProductInfoUD productInfoUD=productInfoUDList.get(0);
+                StorageProductCriteria storageProductCriteria = new StorageProductCriteria();
+                StorageProductCriteria.Criteria storageProductCriteriaSql = storageProductCriteria.createCriteria();
+                storageProductCriteriaSql.andProductCodeEqualTo(detail.getProductCode());
+                storageProductCriteriaSql.andTypeEqualTo(CustomerBillServiceImpl.STORAGE_TYPE_AIAA);
+                List<StorageProduct> storageProductList = storageProductMapper.selectByExample(storageProductCriteria);
+
+                StorageProduct storageProduct = storageProductList.get(0);
+                if (storageProduct.getPlaceholderQuantity() >= detail.getQuantity()) {
+                    int count = storageProductUDMapper.adjustStorageProductQuantity(storageProduct.getStorageProductId(), null, -detail.getQuantity());
+                    if (count != 1) {
+                        throw new BizException("出库扣减库存占用失败");
+                    }
+                    StorageInOutRecord storageInOutRecord = new StorageInOutRecord();
+                    storageInOutRecord.setInOutType("OUT");
+                    storageInOutRecord.setCreateDate(new Date());
+                    storageInOutRecord.setCreator(SessionUtil.getCurrentUserInfo());
+                    storageInOutRecord.setFormerQuantity(storageProduct.getQuantity().intValue());
+                    storageInOutRecord.setInOutCode(seedService.getNewSeedValue("S", 9));
+                    storageInOutRecord.setProductCode(storageProduct.getProductCode());
+                    storageInOutRecord.setQuantity(detail.getQuantity().intValue());
+                    storageInOutRecord.setStorageType(storageProduct.getType());
+                    storageInOutRecord.setRemark("出库扣减占用:" + customerBill.getStorageProductBillCode());
+                    storageInOutRecordMapper.insertSelective(storageInOutRecord);
+                } else {
+                    throw new BizException("出库单：" + customerBill.getStorageProductBillCode() + "所需要的物料：[" + productInfoUD.getProductName()+","+productInfoUD.getFlavourTxt()+","+productInfoUD.getProductCategoryTxt() + "]占用库存不满足出库单的要求。");
+                }
+
+            }
+            CustomerBillCriteria customerBillCriteria = new CustomerBillCriteria();
+            CustomerBillCriteria.Criteria customerBillCriteriaSql = customerBillCriteria.createCriteria();
+            customerBillCriteriaSql.andStorageProductBillCodeEqualTo(customerBill.getStorageProductBillCode());
+            customerBillCriteriaSql.andBillStatusEqualTo(StorageBillController.BILLSTATUS_AJAB);
+            customerBillCriteriaSql.andStorageProductBillIdEqualTo(customerBill.getStorageProductBillId());
+            CustomerBill customerBillUpdate = new CustomerBill();
+            customerBillUpdate.setStorageProductBillId(customerBill.getStorageProductBillId());
+            customerBillUpdate.setBillStatus(StorageBillController.BILLSTATUS_AJAD);
+            customerBillUpdate.setModifyer(SessionUtil.getCurrentUserInfo());
+            customerBillUpdate.setModifyDate(new Date());
+            customerBillUpdate.setOutQuantity(customerBill.getQuantity());
+
+            int count = customerBillMapper.updateByExampleSelective(customerBillUpdate, customerBillCriteria);
+            if (count != 1) {
+                throw new BizException(customerBill.getStorageProductBillCode() + "出库确认失败。");
+            }
         }
         msgBean.setCode(MsgBean.SUCCESS);
         return msgBean;

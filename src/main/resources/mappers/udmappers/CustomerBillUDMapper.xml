@@ -7,7 +7,7 @@
             parameterType="com.sane.pkg.beans.CustomerBillParam">
 
           SELECT
-            a.*, b.CustomerName,
+        DISTINCT a.*, b.CustomerName,
             b.CustomerPhone,
             b.CustomerAddress,
         (a.Quantity-a.OutQuantity)AS ResidualQuantity,
@@ -15,12 +15,19 @@
 
         FROM
             CustomerBill a
-        JOIN CustomerInfo b ON a.CustomerCode = b.CustomerCode
-        JOIN baselistitem c on a.BillStatus=c.ListValue
+        LEFT JOIN CustomerInfo b ON a.CustomerCode = b.CustomerCode
+        LEFT JOIN baselistitem c on a.BillStatus=c.ListValue
+        LEFT JOIN CustomerBillDetail d ON a.StorageProductBillCode=d.StorageProductBillCode
         <where>
           <if test="customerCode!=null and customerCode!=''">
             AND a.CustomerCode=#{customerCode}
           </if>
+            <if test="productCode!=null and productCode!=''">
+                AND d.ProductCode=#{productCode}
+            </if>
+            <if test="storageProductBillCode!=null and storageProductBillCode!=''">
+                AND a.StorageProductBillCode=#{storageProductBillCode}
+            </if>
           <if test="beginDate!=null">
             AND a.CreateDate>=#{beginDate}
           </if>
@@ -29,7 +36,6 @@
           </if>
         </where>
           order by a.CreateDate desc
-
   </select>
 
     <select id="queryCustomerBillDetail" resultType="com.sane.pkg.beans.CustomerBillDetailUD" parameterType="java.lang.String">

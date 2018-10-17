@@ -55,6 +55,7 @@
                                 return  d.productInfoUD.productName;
                             }},
                         {field:'quantity',title:'库存量',width:80},
+                        {field:'placeholderQuantity',title:'占用量',width:80},
                         {field:'typeTxt',title:'库存类型',width:90},
                         {field: '',title: '产品类别', width:90,templet: function(d){return d.productInfoUD.productCategoryTxt}},
                         {field: '',title: '口味', width:80,templet:function(d){return d.productInfoUD.flavourTxt}},

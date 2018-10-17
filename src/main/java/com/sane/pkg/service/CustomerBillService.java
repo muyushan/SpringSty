@@ -14,4 +14,6 @@ public interface CustomerBillService {
     public  PageInfo<CustomerBillDetailUD> queryCustomerDetailByBillCode(String billCode);
     public CustomerBill queryCustomerBillByCode(String billCode) throws BizException;
     public MsgBean auditCustomerBill(List<String> billCodeList) throws BizException,Exception;
+    public MsgBean antiAuditSaleBill(List<String> billCodeList) throws BizException,Exception;
+    public MsgBean customerBillConfirm(List<String> billCodeList) throws BizException,Exception;
 }

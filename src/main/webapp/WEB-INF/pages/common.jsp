@@ -34,6 +34,13 @@
                 }
             }
         });
+        function showLoading() {
+            layer.msg('数据处理中...', {
+                icon: 16,
+                time: 0,
+                shade:[0.3,'#393D49']
+            });
+        }
     </script>
 </head>
 <body>

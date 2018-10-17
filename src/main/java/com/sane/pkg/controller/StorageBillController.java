@@ -24,6 +24,8 @@ import java.util.Map;
 @Controller
 public class StorageBillController {
     public   static String BILLSTATUS_AJAA="AJAA";
+    public   static String BILLSTATUS_AJAB="AJAB";
+    public   static String BILLSTATUS_AJAD="AJAD";
     @Autowired
     private CustomerBillService customerBillService;
 
@@ -85,10 +87,50 @@ public class StorageBillController {
     @RequestMapping("auditSaleBill")
     @ResponseBody
     public MsgBean auditSaleBill(@RequestParam("billCodeList[]") List<String> billCodeList){
-//该方法改造成审核方法
+
         MsgBean msgBean=new MsgBean();
         try {
          msgBean=   customerBillService.auditCustomerBill(billCodeList);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return  msgBean;
+    }
+    @RequestMapping("antiAuditSaleBill")
+    @ResponseBody
+    public MsgBean antiAuditSaleBill(@RequestParam("billCodeList[]") List<String> billCodeList){
+
+        MsgBean msgBean=new MsgBean();
+        try {
+            msgBean=   customerBillService.antiAuditSaleBill(billCodeList);
+        } catch (Exception e) {
+            msgBean.setCode(MsgBean.FAIL);
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+        }
+        return  msgBean;
+    }
+    @ResponseBody
+    @RequestMapping("queryBillByCode")
+    public CustomerBill queryBillByCode(String billCode){
+        CustomerBill customerBill=null;
+        try{
+            customerBill=customerBillService.queryCustomerBillByCode(billCode);
+        }
+        catch (Exception e){
+            return customerBill;
+        }
+        return  customerBill;
+
+
+    }
+
+    @ResponseBody
+    @RequestMapping("confirmBillByCode")
+    public MsgBean customerBillConfirm (@RequestParam("billCodeList[]")List<String> billCodeList){
+        MsgBean msgBean=new MsgBean();
+        try {
+            msgBean=   customerBillService.customerBillConfirm(billCodeList);
         } catch (Exception e) {
             msgBean.setCode(MsgBean.FAIL);
             msgBean.setMessage(ExceptionUtils.getMessage(e));
