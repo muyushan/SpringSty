@@ -58,7 +58,6 @@
                 }
             });
             setDefaultDate();
-
             table.render({
                 elem: '#storageBillTable',
                 id: 'storageBillTable',
@@ -113,7 +112,6 @@
                  $("#search_BillCode").val("");
                  $("#search_customerCode").val("");
                  $("#search_customerName").val("");
-
             });
 
             $("#antiAuditSaleBill").click(function () {
@@ -318,7 +316,7 @@
                 area: ['890px', '440px'],
                 btn: ['打印出库单', '关闭'],
                 yes: function () {
-                    printJS('printTable', 'html');
+                    printBillDetail(billCode);
                 },
                 btn2: function (index, layero) {
                     layer.close(index);
@@ -326,6 +324,26 @@
                 title: '销售出库单' + billCode + "详情",
                 content: $('#showSaleBillDetailContent')
             });
+        }
+        function printBillDetail(billCode){
+            var url = webRoot + "storagebill/queryStorageBillDetail.do?billCode=" + billCode;
+            $.get(url,function(returanData){
+                for(var i=0;i<returanData.data.length;i++){
+                  var tr="<tr>\n" +
+                      "        <td>"+parseInt(i+1)+"</td>\n" +
+                      "        <td>"+returanData.data[i]['productName']+"</td>\n" +
+                      "        <td>"+returanData.data[i]['flavourTxt']+"</td>\n" +
+                      "        <td>"+returanData.data[i]['specificationTxt']+"</td>\n" +
+                      "        <td>"+returanData.data[i]['quantity']+"</td>\n" +
+                      "        <td>2.5</td>\n" +
+                      "        <td>0</td>\n" +
+                      "    </tr>";
+
+                  $("#printTable tbody").append(tr);
+                }
+                printJS('printTable', 'html');
+            });
+
         }
         function showEditWindow() {
             var checkedRow = table.checkStatus('storageBillTable');
@@ -488,7 +506,7 @@
             </td>
             <td>客户</td>
             <td>
-                <input type="text" id="search_customerName" style="width:100px; " class="layui-input"/>
+                <input type="text" id="search_customerName" style="width:100px;" class="layui-input"/>
                 <input type="hidden" id="search_customerCode">
             </td>
                 <td>创建时间</td>
@@ -545,7 +563,6 @@
                     <fieldset class="layui-elem-field">
                         <legend>已选择物料及数量，双击可移除</legend>
                         <div class="layui-field-box" id="selectedBox">
-
                         </div>
                     </fieldset>
 
@@ -569,8 +586,19 @@
 <table id="printTable" border="1px" width="100%" style="visibility: hidden;">
     <thead>
     <tr>
-        <th>河南维淼饮品有限公司出库清单</th>
+        <th colspan="7">河南维淼饮品有限公司出库清单</th>
+    </tr>
+    <tr>
+        <th>序号</th>
+        <th>产品名称</th>
+        <th>口味</th>
+        <th>规格</th>
+        <th>数量</th>
+        <th>单价</th>
+        <th>金额(元)</th>
     </tr>
     </thead>
+    <tbody>
+    </tbody>
 </table>
 </html>
