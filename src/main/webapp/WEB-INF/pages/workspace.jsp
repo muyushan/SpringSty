@@ -48,7 +48,7 @@
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListType/showMainPage.do"/>','字典类别管理')">字典类别管理</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListItem/baseListItemPage.do"/>','数据字典维护')">数据字典维护</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseProductInfo/baseProductInfoPage.do"/>','物料信息维护')">物料信息维护</a></dd>
-                        <dd><a href="javascript:operation.tabAdd('<c:url value="customer/mainPage.do"/>','客户信息维护')">客户信息维护</a></dd>
+                        <dd><a href="javascript:operation.tabAdd('<c:url value="customer/mainPagey.do"/>','客户信息维护')">客户信息维护</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
