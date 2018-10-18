@@ -45,4 +45,11 @@ public class LoginController {
     public  String toWorkSpace(){
         return "workspace";
     }
+
+    @RequestMapping("logOut")
+    public String logOut(HttpServletRequest request){
+        SessionUtil.setCurrentUserInfo(request,null);
+        request.getSession().invalidate();
+        return "redirect:showLogin.do";
+    }
 }

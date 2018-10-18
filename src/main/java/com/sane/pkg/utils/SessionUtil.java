@@ -12,7 +12,12 @@ public class SessionUtil {
    public static String CURRENT_USER="CURRENT_USER";
     public  static void  setCurrentUserInfo(HttpServletRequest request, UserInfo userInfo){
        HttpSession session= request.getSession();
-       session.setAttribute(CURRENT_USER,userInfo.getEmailPhone());
+       if(userInfo==null){
+           session.removeAttribute(CURRENT_USER);
+       }else{
+           session.setAttribute(CURRENT_USER,userInfo.getEmailPhone());
+       }
+
     }
     public  static String  getCurrentUserInfo(HttpServletRequest request)throws Exception{
 

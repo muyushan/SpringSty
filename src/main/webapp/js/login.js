@@ -38,9 +38,7 @@ function doLogin(){
             }else if(data.code=="200"){
                 window.location.href="redirect_to_workspcae.do";
             }
-
-
-
         }
     });
 }
+

@@ -41,6 +41,10 @@
                 shade:[0.3,'#393D49']
             });
         }
+
+        function logout() {
+            $.get(webRoot+"logOut.do")
+        }
     </script>
 </head>
 <body>

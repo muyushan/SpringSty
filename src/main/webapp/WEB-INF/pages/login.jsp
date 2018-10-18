@@ -27,7 +27,7 @@
     <br/>
     <label for="inputPassword" class="sr-only">密码</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="密码" value="ddd" />
-    <div class="checkbox mb-3">
+    <div class="checkbox mb-3" style="display: none;">
         <label>
             <input type="checkbox" value="remember-me"> 记住我
         </label>

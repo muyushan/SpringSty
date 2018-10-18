@@ -23,12 +23,12 @@
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
                     <%=SessionUtil.getCurrentUserInfo()%>
                 </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
+                <%--<dl class="layui-nav-child">--%>
+                    <%--<dd><a href="">基本资料</a></dd>--%>
+                    <%--<dd><a href="">安全设置</a></dd>--%>
+                <%--</dl>--%>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="logOut.do">退了</a></li>
         </ul>
     </div>
 
@@ -48,7 +48,7 @@
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListType/showMainPage.do"/>','字典类别管理')">字典类别管理</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseListItem/baseListItemPage.do"/>','数据字典维护')">数据字典维护</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="baseProductInfo/baseProductInfoPage.do"/>','物料信息维护')">物料信息维护</a></dd>
-                        <dd><a href="javascript:operation.tabAdd('<c:url value="customer/mainPagey.do"/>','客户信息维护')">客户信息维护</a></dd>
+                        <dd><a href="javascript:operation.tabAdd('<c:url value="customer/mainPage.do"/>','客户信息维护')">客户信息维护</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -56,7 +56,7 @@
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:operation.tabAdd('<c:url value="storageProduct/toChangeLogPage.do"/>','库存变更查询')">库存变更查询</a></dd>
                         <dd><a href="javascript:operation.tabAdd('<c:url value="storageProduct/mainPage.do"/>','出入库管理')">出入库管理</a></dd>
-                        <dd><a href="javascript:operation.tabAdd('<c:url value="baseProductInfo/baseProductInfoPage.do"/>','损耗登记')">损耗登记</a></dd>
+                        <%--<dd><a href="javascript:operation.tabAdd('<c:url value="baseProductInfo/baseProductInfoPagey.do"/>','损耗登记')">损耗登记</a></dd>--%>
                     </dl>
                 </li>
             </ul>
