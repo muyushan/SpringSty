@@ -2,7 +2,7 @@ package com.sane.pkg.beans;
 
 import java.util.List;
 
-public class SorageBillParam {
+public class StorageBillParam {
     private  CustomerBill customerBill;
     private List<CustomerBillDetail> customerBillDetailList;
 

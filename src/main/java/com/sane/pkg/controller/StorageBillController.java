@@ -3,9 +3,7 @@ package com.sane.pkg.controller;
 import com.github.pagehelper.PageInfo;
 import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
-import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.CustomerBillService;
-import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +33,7 @@ public class StorageBillController {
 
     @RequestMapping("addOrEditStorageBill")
     @ResponseBody
-    public MsgBean createSaleBill(@RequestBody SorageBillParam param) {
+    public MsgBean createSaleBill(@RequestBody StorageBillParam param) {
         MsgBean msgBean = new MsgBean();
         CustomerBill customerBill = param.getCustomerBill();
         List<CustomerBillDetail> customerBillDetailList = param.getCustomerBillDetailList();
@@ -112,10 +109,13 @@ public class StorageBillController {
     }
     @ResponseBody
     @RequestMapping("queryBillByCode")
-    public CustomerBill queryBillByCode(String billCode){
-        CustomerBill customerBill=null;
+    public CustomerBillUD queryBillByCode(String billCode){
+        CustomerBillUD customerBill=null;
         try{
-            customerBill=customerBillService.queryCustomerBillByCode(billCode);
+            CustomerBillParam customerBillParam=new CustomerBillParam();
+            customerBillParam.setStorageProductBillCode(billCode);
+            PageInfo<CustomerBillUD>pageInfo=customerBillService.selectCustomBill(customerBillParam);
+            customerBill=pageInfo.getList().get(0);
         }
         catch (Exception e){
             return customerBill;

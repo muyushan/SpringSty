@@ -326,23 +326,37 @@
             });
         }
         function printBillDetail(billCode){
-            var url = webRoot + "storagebill/queryStorageBillDetail.do?billCode=" + billCode;
-            $.get(url,function(returanData){
-                for(var i=0;i<returanData.data.length;i++){
-                  var tr="<tr>\n" +
-                      "        <td>"+parseInt(i+1)+"</td>\n" +
-                      "        <td>"+returanData.data[i]['productName']+"</td>\n" +
-                      "        <td>"+returanData.data[i]['flavourTxt']+"</td>\n" +
-                      "        <td>"+returanData.data[i]['specificationTxt']+"</td>\n" +
-                      "        <td>"+returanData.data[i]['quantity']+"</td>\n" +
-                      "        <td>2.5</td>\n" +
-                      "        <td>0</td>\n" +
-                      "    </tr>";
+            $("#printTable tbody").empty();
+            var  date =new Date();
+            var year=date.getFullYear();
+            var month=getMonth(date);
+            var day=getDay(date);
+            var currentDate=year+"年"+month+"月"+day+"日";
+            var billUrl=webRoot + "storagebill/queryBillByCode.do?billCode=" + billCode;
+            $("#billCodeTh").text(billCode);
+            $("#printDateTh").text(currentDate);
+            $.get(billUrl,function(data){
+                $("#customerTh").text(data.customerName);
+                var url = webRoot + "storagebill/queryStorageBillDetail.do?billCode=" + billCode;
+                $.get(url,function(returanData){
+                    for(var i=0;i<returanData.data.length;i++){
+                        var tr="<tr>\n" +
+                            "        <td align='center'>"+parseInt(i+1)+"</td>\n" +
+                            "        <td style='padding-left: 2px;'>"+returanData.data[i]['productName']+"</td>\n" +
+                            "        <td style='padding-left: 2px;'>"+returanData.data[i]['flavourTxt']+"</td>\n" +
+                            "        <td style='padding-left: 2px;'>"+returanData.data[i]['specificationTxt']+"</td>\n" +
+                            "        <td  align='center'>"+returanData.data[i]['quantity']+"</td>\n" +
+                            "        <td></td>\n" +
+                            "        <td></td>\n" +
+                            "    </tr>";
 
-                  $("#printTable tbody").append(tr);
-                }
-                printJS('printTable', 'html');
+                        $("#printTable tbody").append(tr);
+                    }
+                    printJS('printTable', 'html');
+                });
             });
+
+
 
         }
         function showEditWindow() {
@@ -585,8 +599,22 @@
 </div>
 <table id="printTable" border="1px" width="100%" style="visibility: hidden;">
     <thead>
+    <tr style="height: 0px; border-top: none;">
+        <th width="40"></th>
+        <th width="100"></th>
+        <th width="100"></th>
+        <th width="100"></th>
+        <th width="100"></th>
+        <th width="80"></th>
+        <th width="80"></th>
+    </tr>
     <tr>
-        <th colspan="7">河南维淼饮品有限公司出库清单</th>
+        <th colspan="7" style="font-weight: bold; font-size: 30px;">河南维淼饮品有限公司出库清单</th>
+    </tr>
+    <tr>
+        <th colspan="3" style="border-right:none; text-align: left;" align="left">客户：<spna id="customerTh"></spna></th>
+        <th colspan="2" style="border-right:none; border-left: none; text-align: left;" align="left">出库单号：<spna id="billCodeTh"></spna></th>
+        <th colspan="2" style="border-left:none;" align="right">日期：<span id="printDateTh"></span></th>
     </tr>
     <tr>
         <th>序号</th>
@@ -600,5 +628,13 @@
     </thead>
     <tbody>
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2" style=" border-right:none;">审核：</td>
+        <td  style="border-left:none;border-right: none;">运费：</td>
+        <td colspan="2" style="border-left:none; border-right: none;">提货人电话：</td>
+        <td style="border-left:none;"colspan="2">车号：</td>
+    </tr>
+    </tfoot>
 </table>
 </html>
