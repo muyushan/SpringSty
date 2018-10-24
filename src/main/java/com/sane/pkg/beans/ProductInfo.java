@@ -37,6 +37,8 @@ public class ProductInfo {
 
     private Date modifyDate;
 
+    private Integer delFlag;
+
     public Integer getProductId() {
         return productId;
     }
@@ -171,5 +173,13 @@ public class ProductInfo {
 
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
+    }
+
+    public Integer getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
     }
 }

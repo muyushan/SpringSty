@@ -26,11 +26,11 @@
                     url:webRoot+"baseProductInfo/query.do",
                     cols: [[
                         {type:'checkbox'},
-                        {field: 'productName',title: '物料名称', width:100},
-                        {field: 'productCategoryTxt',title: '物料类别', width:80},
-                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'productName',title: '物料名称', width:200},
                         {field: 'specificationTxt',title: '规格', width:80},
-                        {field: 'packageSpecificationTxt',title: '包装规格', width:80}
+                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'packageSpecificationTxt',title: '包装规格', width:80},
+                        {field: 'productCategoryTxt',title: '物料类别', width:80}
                     ]]
                 },
                 done: function (elem, data) {
@@ -49,7 +49,6 @@
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
-                        {field: 'productCode',title: '物料编码', width:230},
                         {field: '',title: '物料名称',  width:100,
                             templet: function(d) {
                                 return  d.productInfoUD.productName;
@@ -98,10 +97,10 @@
                         cols: [[
                             {type:'checkbox'},
                             {field: 'productName',title: '物料名称', width:200},
-                            {field: 'productCategoryTxt',title: '物料类别', width:80},
-                            {field: 'flavourTxt',title: '口味', width:80},
                             {field: 'specificationTxt',title: '规格', width:80},
-                            {field: 'packageSpecificationTxt',title: '包装规格', width:80}
+                            {field: 'flavourTxt',title: '口味', width:80},
+                            {field: 'packageSpecificationTxt',title: '包装规格', width:80},
+                            {field: 'productCategoryTxt',title: '物料类别', width:80}
                         ]]
                     },
                     done: function (elem, data) {

@@ -25,11 +25,10 @@
                     cols: [[
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
-                        {field: 'productCode',title: '物料编码', width:250},
                         {field: 'productName',title: '物料名称', width:200},
                         {field: 'productCategoryTxt',title: '物料类别', width:100},
-                        {field: 'flavourTxt',title: '口味', width:100},
                         {field: 'specificationTxt',title: '规格', width:100},
+                        {field: 'flavourTxt',title: '口味', width:100},
                         {field: 'packageSpecificationTxt',title: '包装规格', width:100},
                         {field: 'unitTxt',title: '单位', width:100},
                         {field: 'packageUnitTxt',title: '包装单位', width:100},
@@ -45,6 +44,7 @@
             loadCommonBoxList($("#specification"));
             loadCommonBoxList($("#packageSpecification"));
             loadCommonBoxList($("#search_specification"));
+            loadCommonBoxList($("#flavour"));
             loadCommonBoxList($("#unit"));
             loadCommonBoxList($("#packageUnit"));
             loadCommonBoxList($("#productCategory"));
@@ -74,24 +74,13 @@
                 showEditWindow();
 
             });
+            $("#deleteProductInfo").click(function(){
+                deleteProductInfo();
 
-            $("#productName").blur(function(){
-                generateProductCode();
             });
+
             layui.use('form', function(){
                 var form = layui.form;
-                form.on('select(flavour)', function(data){
-                    generateProductCode();
-                });
-                form.on('select(specification)', function(data){
-                    generateProductCode();
-                });
-                form.on('select(packageSpecification)', function(data){
-                    generateProductCode();
-                });
-                form.on('select(productCategory)', function(data){
-                    generateProductCode();
-                });
             });
             $("#queryBtn").click(function(){
                 search();
@@ -109,24 +98,18 @@
                 return;
             }
             $("#productId").val(checkedRow.data[0]["productId"]);
-            $("#productCode").val(checkedRow.data[0]["productCode"]);
             $("#productName").val(checkedRow.data[0]["productName"]);
             $("#productCategory").val(checkedRow.data[0]["productCategory"]);
             $("#flavour").val(checkedRow.data[0]["flavour"]);
             $("#specification").val(checkedRow.data[0]["specification"]);
             $("#packageSpecification").val(checkedRow.data[0]["packageSpecification"]);
-            $("#productName").addClass("layui-disabled");
-            $("#productCategory").attr("disabled",true);
-            $("#flavour").attr("disabled",true);
-            $("#specification").attr("disabled",true);
-            $("#packageSpecification").attr("disabled",true);
             $("#unit").val(checkedRow.data[0]["unit"]);
             $("#packageUnit").val(checkedRow.data[0]["packageUnit"]);
             $("#volume").val(checkedRow.data[0]["volume"]);
             $("#weight").val(checkedRow.data[0]["weight"]);
             var form = layui.form;
             form.render();
-            $(".layui-input.layui-disabled").attr("disabled",true);//将下拉框的文本框禁止输入解决layUI问题
+            //$(".layui-input.layui-disabled").attr("disabled",true);//将下拉框的文本框禁止输入解决layUI问题
             layer.open({
                 type: 1,
                 closeBtn:1,
@@ -148,7 +131,6 @@
         }
 
         function search(){
-            var  productCode=$("#search_productCode").val();
             var  productName=$("#search_productName").val();
             var  productCategory=$("#search_productCategory").val();
             var  flavour=$("#search_flavour").val();
@@ -158,7 +140,6 @@
                     curr: 1 //重新从第 1 页开始
                 }
                 ,where: {
-                    productCode: productCode,
                     productName:productName,
                     productCategory:productCategory,
                     flavour:flavour,
@@ -166,46 +147,8 @@
                 }
             });
         }
-        function generateProductCode(){
-            var productName=$("#productName").val();
-            var productCategory=$("#productCategory").val();
-            var flavour=$("#flavour").val();
-            var specification=$("#specification").val();
-            var packageSpecification=$("#packageSpecification").val();
-            var productCode="";
-            if(productName!=""){
-               productCode=pinyin.getCamelChars(productName);
-            }
-
-            if(productCategory!=-1){
-                var options=$("#productCategory option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(flavour!=-1){
-                var options=$("#flavour option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(specification!=-1){
-                var options=$("#specification option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            if(packageSpecification!=-1){
-                var options=$("#packageSpecification option:selected");
-                var obj=options.attr('data');
-                obj=JSON.parse(obj);
-                productCode=productCode.concat(obj.listValue);
-            }
-            $("#productCode").val(productCode);
-        }
 
         function saveNewOrEdit(flag){
-            var productCode=$("#productCode").val();
             var productName=$("#productName").val();
             var flavour=$("#flavour").val();
             var specification=$("#specification").val();
@@ -219,7 +162,6 @@
             if(flag=="edit"){
                 baseProduct.productId=$("#productId").val();
             }
-            baseProduct.productCode=productCode;
             baseProduct.productName=productName;
             if(productCategory!="-1"){
                 baseProduct.productCategory=productCategory;
@@ -269,8 +211,34 @@
             });
         }
 
+        function deleteProductInfo(){
+            var checkedRow=table.checkStatus('baseProductInfoTable');
+            if(checkedRow.data.length==0){
+                layer.msg('请选择要删除的物料信息',{time:1000});
+                return;
+            }
+
+            layer.confirm('确定要删除所选物料信息么，请确保所选物料已经没有库存量?', function(index){
+                var ids=new Array();
+                for(var i in checkedRow.data){
+                    ids .push(checkedRow.data[i]["productId"]);
+                }
+                $.post(webRoot+"baseProductInfo/delete.do",{idList:ids},function(data){
+                    if(data.code=="200"){
+                        layer.msg('删除成功',{time:1000});
+                        layer.closeAll();
+                        search();
+
+                    }else{
+                        layer.alert(data.message, {icon: 1});
+                    }
+                });
+
+            });
+
+
+        }
         function resetAddForm(){
-            $("#productCode").val("");
             $("#productName").val("");
             $("#productCategory").val("-1");
             $("#specification").val("-1");
@@ -280,12 +248,6 @@
             $("#packageUnit").val("-1");
             $("#volume").val("");
             $("#weight").val("");
-            $("#productName").removeAttr("disabled");
-            $("#productName").removeClass("layui-disabled");
-            $("#productCategory").removeAttr("disabled");
-            $("#flavour").removeAttr("disabled");
-            $("#specification").removeAttr("disabled");
-            $("#packageSpecification").removeAttr("disabled");
             var form = layui.form;
             form.render();
 
@@ -296,17 +258,16 @@
 <div class="layui-form">
     <table class="laytable-query-table">
         <tr>
-            <td>物料编码</td>
-            <td><input type="text" id="search_productCode" style="width:150px; " class="layui-input"/></td>
             <td>物料名称</td>
             <td><input type="text" id="search_productName" style="width:150px; " class="layui-input"/></td>
             <td>物料类别</td>
-            <td><select lay-filter="search_productCategory"  id="search_productCategory" lay-search="" typeId="42"></select>
+            <td><select   id="search_productCategory" lay-search="" typeId="42"></select>
             </td>
-            <td>口味</td>
-            <td><select lay-filter="flavour"  id="search_flavour"  lay-search="" typeId="35"></select></td>
             <td>产品规格</td>
-            <td><select lay-filter="specification"  id="search_specification"  lay-search="" typeId="36"></select></td>
+            <td><select   id="search_specification"  lay-search="" typeId="36"></select></td>
+            <td>口味</td>
+            <td><select   id="search_flavour"  lay-search="" typeId="35"></select></td>
+
             <td><button class="layui-btn" id="queryBtn">查询</button></td>
         </tr>
     </table>
@@ -316,8 +277,7 @@
 <div class="layui-btn-group">
     <button class="layui-btn" id="createNewProductInfo"> <i class="layui-icon">&#xe654;</i>增加</button>
     <button class="layui-btn" id="editProductInfo"> <i class="layui-icon">&#xe642;</i>编辑</button>
-    <%--<button class="layui-btn" id="deleteProductInfo"> <i class="layui-icon">&#xe640;</i>删除</button>--%>
-    <%--<button class="layui-btn" id="uploadProductInfo"> <i class="layui-icon layui-icon-upload"></i>批量上传</button>--%>
+    <button class="layui-btn" id="deleteProductInfo"> <i class="layui-icon">&#xe640;</i>删除</button>
 </div>
 <table id="baseProductInfoTable" lay-filter="baseProductInfoTable">
 </table>
@@ -327,10 +287,8 @@
         <input type="hidden" id="productId">
       <table class="laytable-dialog-table_4column" cellpadding="0" cellspacing="0">
           <tr>
-              <td>物料编码</td>
-              <td><input  class="layui-input layui-disabled" disabled lay-filter="productCode" type="text" placeholder="无需填写自动生成" name="productCode" id="productCode"    autocomplete="off"></input></td>
               <td>物料名称</td>
-              <td>
+              <td colspan="3">
                   <input  class="layui-input" lay-filter="productName" type="text" placeholder="必填项" name="productName" id="productName"    autocomplete="off"></input>
               </td>
           </tr>
@@ -339,7 +297,6 @@
               <td>
                   <select lay-filter="productCategory"  id="productCategory" lay-search="" typeId="42"></select>
               </td>
-
               <td>规格</td>
               <td>
                   <select lay-filter="specification"  id="specification" lay-search="" typeId="36"></select>

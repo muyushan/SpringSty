@@ -45,11 +45,11 @@
                     url:webRoot+"baseProductInfo/query.do",
                     cols: [[
                         {type:'checkbox'},
-                        {field: 'productName',title: '物料名称', width:100},
-                        {field: 'productCategoryTxt',title: '物料类别', width:80},
-                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'productName',title: '物料名称', width:200},
                         {field: 'specificationTxt',title: '规格', width:80},
-                        {field: 'packageSpecificationTxt',title: '包装规格', width:80}
+                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'packageSpecificationTxt',title: '包装规格', width:80},
+                        {field: 'productCategoryTxt',title: '物料类别', width:80}
                     ]]
                 },
                 done: function (elem, data) {
@@ -227,11 +227,11 @@
                     url: webRoot + "baseProductInfo/query.do",
                     cols: [[
                         {type: 'checkbox'},
-                        {field: 'productName', title: '物料名称', width: 200},
-                        {field: 'productCategoryTxt', title: '物料类别', width: 80},
-                        {field: 'flavourTxt', title: '口味', width: 80},
-                        {field: 'specificationTxt', title: '规格', width: 80},
-                        {field: 'packageSpecificationTxt', title: '包装规格', width: 80}
+                        {field: 'productName',title: '物料名称', width:200},
+                        {field: 'specificationTxt',title: '规格', width:80},
+                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'packageSpecificationTxt',title: '包装规格', width:80},
+                        {field: 'productCategoryTxt',title: '物料类别', width:80}
                     ]]
                 },
                 done: function (elem, data) {
@@ -298,8 +298,8 @@
                 cols: [[
                     {title: '序号', type: 'numbers'},
                     {field: 'productName', title: '产品名称', width: 100},
-                    {field: 'flavourTxt', title: '口味', width: 100},
                     {field: 'specificationTxt', title: '规格', width: 100},
+                    {field: 'flavourTxt', title: '口味', width: 100},
                     {field: 'packageSpecificationTxt', title: '包装规格', width: 100},
                     {field: 'quantity', title: '订单总量', width: 100},
                     {field: 'outQuantity', title: '已出库数量', width: 100},
@@ -343,8 +343,8 @@
                         var tr="<tr>\n" +
                             "        <td align='center'>"+parseInt(i+1)+"</td>\n" +
                             "        <td style='padding-left: 2px;'>"+returanData.data[i]['productName']+"</td>\n" +
-                            "        <td style='padding-left: 2px;'>"+returanData.data[i]['flavourTxt']+"</td>\n" +
                             "        <td style='padding-left: 2px;'>"+returanData.data[i]['specificationTxt']+"</td>\n" +
+                            "        <td style='padding-left: 2px;'>"+returanData.data[i]['flavourTxt']+"</td>\n" +
                             "        <td  align='center'>"+returanData.data[i]['quantity']+"</td>\n" +
                             "        <td></td>\n" +
                             "        <td></td>\n" +
@@ -619,8 +619,8 @@
     <tr>
         <th>序号</th>
         <th>产品名称</th>
-        <th>口味</th>
         <th>规格</th>
+        <th>口味</th>
         <th>数量</th>
         <th>单价</th>
         <th>金额(元)</th>

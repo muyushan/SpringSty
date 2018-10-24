@@ -10,9 +10,11 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -59,5 +61,18 @@ public class BaseProductInfoController {
         resultMap.put("count",productInfoUDPageInfo.getTotal());
         resultMap.put("data",productInfoUDPageInfo.getList());
         return  resultMap;
+    }
+
+    @RequestMapping("delete")
+    @ResponseBody
+    public MsgBean deleteBaseProductInfo(@RequestParam("idList[]")List<Integer> idList){
+        MsgBean msgBean=new MsgBean();
+        try {
+            msgBean=baseProductInfoService.deleteBaseProductInfo(idList);
+        } catch (Exception e) {
+            msgBean.setMessage(ExceptionUtils.getMessage(e));
+            msgBean.setCode(MsgBean.FAIL);
+        }
+        return  msgBean;
     }
 }

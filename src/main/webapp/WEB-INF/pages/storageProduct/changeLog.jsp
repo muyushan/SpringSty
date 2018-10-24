@@ -26,11 +26,11 @@
                     url:webRoot+"baseProductInfo/query.do",
                     cols: [[
                         {type:'checkbox'},
-                        {field: 'productName',title: '物料名称', width:100},
-                        {field: 'productCategoryTxt',title: '物料类别', width:80},
-                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'productName',title: '物料名称', width:200},
                         {field: 'specificationTxt',title: '规格', width:80},
-                        {field: 'packageSpecificationTxt',title: '包装规格', width:80}
+                        {field: 'flavourTxt',title: '口味', width:80},
+                        {field: 'packageSpecificationTxt',title: '包装规格', width:80},
+                        {field: 'productCategoryTxt',title: '物料类别', width:80}
                     ]]
                 },
                 done: function (elem, data) {
@@ -50,7 +50,6 @@
                         {title:'序号',type:'numbers'},
                         {type:'checkbox'},
                         {field: 'inOutCode',title: '出入库编码', width:120},
-                        {field: 'productCode',title: '物料编码', width:230},
                         {field: 'productName',title: '物料名称',  width:100},
                         {field:'storageTypeTxt',title:'库存类型',width:80},
                         {field: 'productCategoryTxt',title: '产品类别', width:80},

@@ -12,7 +12,7 @@
   f.ListName as UnitTxt,
   g.ListName as PackageUnitTxt
   FROM
-  test.productinfo a
+  productinfo a
   LEFT JOIN
   baselistitem b ON a.ProductCategory = b.ListID
   left join baselistitem c on a.Flavour=c.ListID
@@ -45,6 +45,7 @@
   <if test="packageUnit!=null and packageUnit!=-1">
     AND a.PackageUnit=#{packageUnit}
   </if>
+  AND a.DelFlag=0
 </where>
   </select>
 

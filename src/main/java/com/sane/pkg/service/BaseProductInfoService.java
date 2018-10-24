@@ -7,8 +7,11 @@ import com.sane.pkg.beans.ProductInfoUD;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.exceptions.BizException;
 
+import java.util.List;
+
 public interface BaseProductInfoService {
     public MsgBean addBaseProductInfo(ProductInfo productInfo) throws BizException,Exception;
     public MsgBean updateBaseProductInfo(ProductInfo productInfo) throws BizException,Exception;
     public PageInfo<ProductInfoUD> queryProductInfo(ProductInfoParam productInfoParam);
+    public MsgBean deleteBaseProductInfo(List<Integer>idList)throws BizException, Exception;
 }

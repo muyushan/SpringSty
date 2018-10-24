@@ -19,6 +19,7 @@
     <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
     <result column="Modifyer" property="modifyer" jdbcType="VARCHAR" />
     <result column="ModifyDate" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="DelFlag" property="delFlag" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -81,7 +82,7 @@
   <sql id="Base_Column_List" >
     ProductId, ProductCode, ProductName, ProductCategory, Flavour, Unit, Specification, 
     PackageSpecification, PackageUnit, Weight, Volume, HasBarCode, BarCode, Creator, 
-    CreateDate, Modifyer, ModifyDate
+    CreateDate, Modifyer, ModifyDate, DelFlag
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sane.pkg.beans.ProductInfoCriteria" >
     select
@@ -125,13 +126,13 @@
       PackageSpecification, PackageUnit, Weight, 
       Volume, HasBarCode, BarCode, 
       Creator, CreateDate, Modifyer, 
-      ModifyDate)
+      ModifyDate, DelFlag)
     values (#{productCode,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productCategory,jdbcType=INTEGER}, 
       #{flavour,jdbcType=INTEGER}, #{unit,jdbcType=INTEGER}, #{specification,jdbcType=INTEGER}, 
       #{packageSpecification,jdbcType=INTEGER}, #{packageUnit,jdbcType=INTEGER}, #{weight,jdbcType=REAL}, 
       #{volume,jdbcType=REAL}, #{hasBarCode,jdbcType=INTEGER}, #{barCode,jdbcType=VARCHAR}, 
       #{creator,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{modifyer,jdbcType=VARCHAR}, 
-      #{modifyDate,jdbcType=TIMESTAMP})
+      #{modifyDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.sane.pkg.beans.ProductInfo" >
     <selectKey resultType="java.lang.Integer" keyProperty="productId" order="AFTER" >
@@ -187,6 +188,9 @@
       <if test="modifyDate != null" >
         ModifyDate,
       </if>
+      <if test="delFlag != null" >
+        DelFlag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="productCode != null" >
@@ -236,6 +240,9 @@
       </if>
       <if test="modifyDate != null" >
         #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -299,6 +306,9 @@
       <if test="record.modifyDate != null" >
         ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.delFlag != null" >
+        DelFlag = #{record.delFlag,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -322,7 +332,8 @@
       Creator = #{record.creator,jdbcType=VARCHAR},
       CreateDate = #{record.createDate,jdbcType=TIMESTAMP},
       Modifyer = #{record.modifyer,jdbcType=VARCHAR},
-      ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP}
+      ModifyDate = #{record.modifyDate,jdbcType=TIMESTAMP},
+      DelFlag = #{record.delFlag,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -378,6 +389,9 @@
       <if test="modifyDate != null" >
         ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="delFlag != null" >
+        DelFlag = #{delFlag,jdbcType=INTEGER},
+      </if>
     </set>
     where ProductId = #{productId,jdbcType=INTEGER}
   </update>
@@ -398,7 +412,8 @@
       Creator = #{creator,jdbcType=VARCHAR},
       CreateDate = #{createDate,jdbcType=TIMESTAMP},
       Modifyer = #{modifyer,jdbcType=VARCHAR},
-      ModifyDate = #{modifyDate,jdbcType=TIMESTAMP}
+      ModifyDate = #{modifyDate,jdbcType=TIMESTAMP},
+      DelFlag = #{delFlag,jdbcType=INTEGER}
     where ProductId = #{productId,jdbcType=INTEGER}
   </update>
 </mapper>

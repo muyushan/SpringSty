@@ -6,13 +6,16 @@ import com.sane.pkg.beans.*;
 import com.sane.pkg.beans.commons.MsgBean;
 import com.sane.pkg.dao.mappers.BaseListItemMapper;
 import com.sane.pkg.dao.mappers.ProductInfoMapper;
+import com.sane.pkg.dao.mappers.StorageProductMapper;
 import com.sane.pkg.dao.mappers.udmappers.BaseProductInfoUDMappper;
 import com.sane.pkg.exceptions.BizException;
 import com.sane.pkg.service.BaseProductInfoService;
+import com.sane.pkg.service.SeedSevice;
 import com.sane.pkg.utils.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +28,10 @@ public class BaseProductInfoServiceImpl implements BaseProductInfoService {
     private BaseProductInfoUDMappper productInfoUDMapper;
     @Autowired
     private BaseListItemMapper baseListItemMapper;
+    @Autowired
+    private StorageProductMapper storageProductMapper;
+    @Autowired
+    private SeedSevice seedSevice;
     //饮品
     private static  final  String CATEGORY_BERVERAGE="AGAA";
     //原料
@@ -35,7 +42,7 @@ public class BaseProductInfoServiceImpl implements BaseProductInfoService {
         msgBean.setCode(MsgBean.SUCCESS);
         productInfo.setCreator(SessionUtil.getCurrentUserInfo());
         productInfo.setCreateDate(new Date());
-        productInfo.setProductCode(productInfo.getProductCode().toUpperCase());
+        productInfo.setProductCode(seedSevice.getNewSeedValue("WL",6));
         baseProductValidate(productInfo);
         productInfoMapper.insertSelective(productInfo);
         return msgBean;
@@ -64,8 +71,10 @@ public class BaseProductInfoServiceImpl implements BaseProductInfoService {
     }
 
     private void   baseProductValidate(ProductInfo productInfo) throws BizException{
-        if(StringUtils.isEmpty(productInfo.getProductCode())){
-            throw  new BizException("请填写物料名称选择相关物料属性信息");
+        if(productInfo.getProductId()==null){
+            if(StringUtils.isEmpty(productInfo.getProductCode())){
+                throw  new BizException("物料编码生成错误，请重新保存");
+            }
         }
         if(productInfo.getProductCategory()==null||productInfo.getProductCategory().equals(Integer.parseInt("-1"))){
             throw  new BizException("请选择物料所属类别");
@@ -87,14 +96,54 @@ public class BaseProductInfoServiceImpl implements BaseProductInfoService {
         }
         ProductInfoCriteria productInfoCriteria=new ProductInfoCriteria();
         ProductInfoCriteria.Criteria productInfoCriteriaSql=productInfoCriteria.createCriteria();
-        productInfoCriteriaSql.andProductCodeEqualTo(productInfo.getProductCode());
         productInfoCriteriaSql.andProductNameEqualTo(productInfo.getProductName());
+        productInfoCriteriaSql.andFlavourEqualTo(productInfo.getFlavour());
+        productInfoCriteriaSql.andSpecificationEqualTo(productInfo.getSpecification());
         if(productInfo.getProductId()!=null){
             productInfoCriteriaSql.andProductIdNotEqualTo(productInfo.getProductId());
         }
         int count=productInfoMapper.countByExample(productInfoCriteria);
         if(count>0){
-            throw  new BizException("已经存在同名同类基础物料信息，请确认。");
+            throw  new BizException("已经存在同名同规格同口味的物料信息，请确认。");
         }
+    }
+
+    @Override
+    public MsgBean deleteBaseProductInfo(List<Integer> idList) throws BizException, Exception {
+        MsgBean msgBean=new MsgBean();
+        if(CollectionUtils.isEmpty(idList)){
+            msgBean.setMessage("请先选择要删除的物料信息");
+            msgBean.setCode(MsgBean.FAIL);
+            return msgBean;
+        }
+
+        for(Integer id:idList){
+           ProductInfo productInfo=productInfoMapper.selectByPrimaryKey(id);
+            StorageProductCriteria storageProductCriteria=new StorageProductCriteria();
+            StorageProductCriteria.Criteria criteria1=storageProductCriteria.createCriteria();
+            criteria1.andProductCodeEqualTo(productInfo.getProductCode());
+            criteria1.andQuantityGreaterThan(0d);
+            StorageProductCriteria.Criteria criteria2=storageProductCriteria.createCriteria();
+            criteria2.andProductCodeEqualTo(productInfo.getProductCode());
+            criteria2.andPlaceholderQuantityGreaterThan(0d);
+            storageProductCriteria.or(criteria2);
+           int count= storageProductMapper.countByExample(storageProductCriteria);
+           if(count>0){
+               throw  new BizException("物料："+productInfo.getProductName()+"存在库存不为0的记录无法删除该物料信息。");
+           }
+        }
+        ProductInfoCriteria delProductInfoCriteria =new ProductInfoCriteria();
+        ProductInfoCriteria.Criteria productInfoSql=delProductInfoCriteria.createCriteria();
+        productInfoSql.andProductIdIn(idList);
+
+        ProductInfo delProductInfo =new ProductInfo();
+        delProductInfo.setDelFlag(1);
+       int count=productInfoMapper.updateByExampleSelective(delProductInfo,delProductInfoCriteria);
+       if(count!=idList.size()){
+           throw new BizException("删除失败，请重试");
+       }
+       msgBean.setCode(MsgBean.SUCCESS);
+       msgBean.setMessage("删除成功");
+        return msgBean;
     }
 }
