@@ -19,13 +19,45 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>env/dev/**</exclude>
+                    <exclude>env/prod/**</exclude>
+                </excludes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources/env/${project.environment}</directory>
+                <targetPath>${project.build.directory}/classes/config</targetPath>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
     <packaging>war</packaging>
-
     <properties>
         <spring.version>3.2.8.RELEASE</spring.version>
         <spring.security.version>3.2.8.RELEASE</spring.security.version>
     </properties>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <project.environment>dev</project.environment>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <project.environment>prod</project.environment>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
